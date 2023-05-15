@@ -1,0 +1,42 @@
+{% extends 'home.html' %}
+{% block body %}
+{% block list_head %}
+
+{% endblock %}
+<body class="hold-transition sidebar-collapse dark-mode layout-fixed layout-navbar-fixed" style="height: auto;">
+<div class="wrapper">
+    <!--layout-fixed sidebar-closed sidebar-collapse dark-mode layout-navbar-fixed-->
+    <!--hold-transition sidebar-mini layout-fixed-->
+    {% include 'header.html' %}
+    {% include 'sidebar.html' %}
+    <div class="content-wrapper mb-5 pt-2">
+        <div class="content">
+            <div class="container-fluid">
+                {% block content %}
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    {% include 'footer.html' %}
+</div>
+{%block javascript %}
+
+{% endblock %}
+<script>
+    {% if messages %}
+    var html = '<p>';
+            {% for message in messages %}
+            html += '{{message}}<br>';
+            {% endfor %}
+        html += '</p>';
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          html: html,
+        });
+    {% endif %}
+
+</script>
+</body>
+{% endblock %}

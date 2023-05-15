@@ -1,0 +1,30 @@
+<footer class="main-footer">
+    <!-- To the right -->
+    <div class="float-right d-none d-sm-inline">
+        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Facebook">
+            <a href="#" class="a-logos">
+                <ion-icon name="logo-facebook"></ion-icon>
+            </a>
+        </span>
+        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Youtube">
+            <a href="#" class="a-logos">
+                <ion-icon name="logo-youtube"></ion-icon>
+            </a>
+        </span>
+        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Twitter">
+            <a href="#" class="a-logos">
+                <ion-icon name="logo-twitter"></ion-icon>
+            </a>
+        </span>
+    </div>
+    <!-- Default to the left -->
+    <strong>Copyright &copy; <a href="">Cost Control S.A </a>.</strong> All rights reserved.
+</footer>
+
+{% block javascript %}
+<script type="application/javascript">
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+{% endblock %}

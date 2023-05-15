@@ -1,0 +1,6 @@
+{% extends 'index.html' %}
+{% block content %}
+{% for pelicula in peliculas %}
+{{pelicula.id}} {{pelicula.nombre}}
+{% endfor %}
+{% endblock %}

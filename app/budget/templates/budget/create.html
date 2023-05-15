@@ -1,0 +1,159 @@
+{% extends 'list.html' %}
+{% load static %}
+{% block list_head %}
+<script src="{% static 'budget/js/form.js' %}"></script>
+<link href="{% static 'lib/jquery-ui-1.12.1/jquery-ui.min.css' %}" rel="stylesheet">
+<script src="{% static 'lib/jquery-ui-1.12.1/jquery-ui.min.js' %}"></script>
+
+
+{% endblock %}
+{% block content %}
+<form method="POST">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas {{icon}}"></i>
+                {{ title }}
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card card-success">
+                        <div class="card-header">
+                            <h3 class="card-title">Detalles de Ingresos</h3>
+                            <div class="card-tools">
+                                <button class="btn btn-tool" data-card-widget="collapse" type="button">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body" style="display: block;">
+                            <div class="input-group mb-3">
+                                <input autocomplete="off" class="form-control " id="buscar" placeholder="Buscar ingresos"
+                                       type="search">
+                                <div class="input-group-append">
+                                    <button class="btn  btn-default" type="submit">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <hr>
+                            <button class="btn btn-danger btn-xs" id="remove_incomes" type="button">
+                                <i class="fas fa-trash"></i>
+                                Eliminar todos mis items
+                            </button>
+                            <hr>
+                            <table class="table table-bordered" id="tblBudget">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Descripción</th>
+                                    <th>Monto</th>
+                                    <th>Fecha de creación</th>
+                                    <th>Estado</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card card-danger">
+                        <div class="card-header">
+                            <h3 class="card-title">Detalles de gastos</h3>
+                            <div class="card-tools">
+                                <button class="btn btn-tool" data-card-widget="collapse" type="button">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body" style="display: block;">
+                            <div class="input-group mb-3">
+                                <input autocomplete="off" class="form-control " id="busqueda"
+                                       placeholder="Buscar gastos"
+                                       type="search">
+                                <div class="input-group-append">
+                                    <button class="btn  btn-default" type="submit">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <hr>
+                            <button class="btn btn-danger btn-xs" id="remove_expenses" type="button">
+                                <i class="fas fa-trash"></i>
+                                Eliminar todos mis items
+                            </button>
+                            <hr>
+                            <table class="table table-bordered" id="tblBudgetexpenses">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Descripción</th>
+                                    <th>Monto</th>
+                                    <th>Fecha de creacion</th>
+                                    <th>Estado</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title">Datos del presupuesto</h3>
+                            <div class="card-tools">
+                                <button class="btn btn-tool" data-card-widget="collapse" type="button">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <input type="hidden" name="action" value="{{action}}">
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                {{form.name}}
+                            </div>
+                            <div class="form-group">
+                                <label>Total de ingresos</label>
+                                {{form.total_income}}
+                            </div>
+                            <div class="form-group">
+                                <label>Total gastos</label>
+                                {{form.total_expenses}}
+                            </div>
+                            <div class="form-group">
+                                <label>Total</label>
+                                {{form.total}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            {% block buttons_list %}
+            <button class="btn btn-primary btn-flat" type="submit">
+                <i class="fas fa-save"></i>
+                Guardar registro
+            </button>
+            <a class="btn btn-danger btn-flat ingresos" href="{{ url_link }}">
+                <i class="fas fa-times"></i>
+                Cancelar
+            </a>
+            {% endblock %}
+        </div>
+    </div>
+</form>
+<script>
+    vents.items.incomes = {{detIncome|safe}};
+    vents.list();
+    vents.items.expenses = {{detExpenses|safe}};
+    vents.listExpenses();
+</script>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'list.html' %}
+{% load static %}
+
+{% block list_head %}
+<script src="{% static 'income/js/list.js' %}" xmlns=""></script>
+{% endblock %}
+
+{% block columns %}
+<tr>
+    <th scope="col">#</th>
+    <th scope="col">Descripción</th>
+    <th scope="col valor">Fecha del ingreso</th>
+    <th scope="col valor">Monto</th>
+    <th scope="col valor">Categoría</th>
+    <th scope="col valor">Estado</th>
+    <th>Opciones</th>
+</tr>
+{% endblock %}
+
+{% block rows %}
+{% endblock %}
+
+
+

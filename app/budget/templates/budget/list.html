@@ -1,0 +1,27 @@
+{% extends 'list.html' %}
+{% load static %}
+
+{% block list_head %}
+<script src="{% static 'budget/js/list.js' %}" xmlns=""></script>
+{% endblock %}
+
+{% block columns %}
+<tr>
+    <th scope="col" style="width:5%;"></th>
+    <th scope="col" style="width:5%;">#</th>
+    <th scope="col" style="width:15%;">Nombre</th>
+    <th scope="col" style="width:15%;">Fecha de creación</th>
+    <th scope="col valor" style="width:15%;">Total de ingresos</th>
+    <th scope="col valor" style="width:20%;">Total de gastos</th>
+    <th scope="col valor" style="width:10%;">Total</th>
+    <th scope="col valor" style="width:15%;">Opciones</th>
+</tr>
+{% endblock %}
+
+{% block rows %}
+
+{% endblock %}
+
+{%block javascript %}
+
+{% endblock %}

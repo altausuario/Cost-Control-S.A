@@ -1,0 +1,26 @@
+{% extends 'list.html' %}
+{% load static %}
+
+{% block list_head %}
+<script src="{% static 'expenses/js/list.js' %}" xmlns=""></script>
+{% endblock %}
+
+{% block columns %}
+<tr>
+    <th scope="col">#</th>
+    <th scope="col">Descripción</th>
+    <th scope="col valor">Fecha del gasto</th>
+    <th scope="col valor">Monto</th>
+    <th scope="col valor">Categoria</th>
+    <th scope="col valor">Estado</th>
+    <th>Opciones</th>
+</tr>
+{% endblock %}
+
+{% block rows %}
+
+{% endblock %}
+
+{%block javascript %}
+
+{% endblock %}

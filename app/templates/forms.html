@@ -1,0 +1,63 @@
+{% extends 'body.html' %}
+{% load static %}
+{% block list_head %}
+<script src="{% static 'js/myForm.js' %}"></script>
+{% endblock %}
+{% block content %}
+<form id="formSave" method="POST"  action="." enctype="multipart/form-data" class="needs-validation">
+    <div class="card card-default mb-2" id="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas {{icon}}"></i>
+                {{title}}
+            </h3>
+        </div>
+        <div class="card-body">
+            {% block card-form %}
+
+            {% endblock %}
+        </div>
+        <div class="card-footer">
+            {% block card-footer %}
+                <button class="btn btn-primary btn-flat" type="submit">
+                    <i class="fas fa-save"></i>
+                    Guardar registro
+                </button>
+                <a class="btn btn-danger btn-flat ingresos" href="{{ url_link }}">
+                    <i class="fas fa-times"></i>
+                    Cancelar
+                </a>
+            {% endblock %}
+        </div>
+    </div>
+</form>
+{% block javaScript_form %}
+<script>
+    {% if form.errors %}
+        var errors = '';
+        {% for field in form %}
+            {% for error in field.errors %}
+                errors += '{{error}}\n';
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            errors += '{{error}}\n\n';
+        {% endfor %}
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: errors,
+    });
+    {% endif %}
+
+    $('form[id="formSave"]').on('submit', function(e){
+        e.preventDefault();
+        var parameters = new FormData(this);
+        console.log(parameters);
+        alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de cambiar tu contraseña?', parameters, function(){
+            location.href = '{{ url_link }}'
+        });
+    });
+</script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'forms.html' %}
+
+{% block card-form %}
+            {% csrf_token %}
+            <input type="hidden" name="action" value="{{ action }}">
+            {% for field in form.visible_fields %}
+            <div class="form-group">
+                <label for="{{ field.label }}">{{ field.label }}:</label>
+                {{field}}
+            </div>
+            {% endfor %}
+{% endblock %}
+
+{% block javaScript_form %}
+<script>
+    {% if form.errors %}
+        var errors = '';
+        {% for field in form %}
+            {% for error in field.errors %}
+                errors += '{{error}}\n';
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            errors += '{{error}}\n\n';
+        {% endfor %}
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: errors,
+    });
+    {% endif %}
+
+    $('form').on('submit', function(e){
+        e.preventDefault();
+        var parameters = new FormData(this);
+        var action = '{{action}}'
+        if(action == 'add'){
+            alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de crear un nuevo ingreso?', parameters, function(){
+               Swal.fire({
+                  title: 'Alerta',
+                  text: 'Nuevo ingreso registrado correctamente',
+                  icon: 'success',
+                  timer: 3000,
+                  onClose: () => {
+                    location.href = '{{ url_link }}'
+                  }
+                });
+            });
+        }
+        else{
+            alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de editar el registro?', parameters, function(){
+                Swal.fire({
+                  title: 'Alerta',
+                  text: 'Ingreso actualizado correctamente',
+                  icon: 'success',
+                  timer: 3000,
+                  onClose: () => {
+                    location.href = '{{ url_link }}'
+                  }
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}

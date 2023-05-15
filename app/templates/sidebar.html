@@ -1,0 +1,98 @@
+{% load static %}
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <a class="brand-link bg-info" href="index3.html">
+        <img alt="AdminLTE Logo" class="brand-image img-circle elevation-3" src="{% static 'img/logo.png' %}"
+             style="opacity: .8">
+        <span class="brand-text font-weight-light">Cost Control S.A</span>
+    </a>
+    <div class="sidebar os-host os-theme-light os-host-overflow os-host-overflow-y os-host-resize-disabled os-host-scrollbar-horizontal-hidden os-host-transition">
+        <div class="os-padding">
+            <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
+                <div class="os-content" style="padding: 0px 8px; height: 100%; width: 100%;">
+                    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                        <div class="image">
+                            {% if request.user.image %}
+                            <img alt="User Image" class="img-circle elevation-2" src="{{request.user.image.url}}">
+                            {% endif %}
+                            {% if not request.user.image %}
+                            <img alt="User Image" class="img-circle elevation-2" src="{% static 'img/empty.png' %}">
+                            {% endif %}
+                        </div>
+                        <div class="info">
+                            <a class="d-block" href="{% url 'inicio' %}">{{request.user.first_name}}
+                                {{request.user.last_name}}</a>
+                        </div>
+                    </div>
+                    <nav class="mt-2">
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview"
+                            role="menu">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{% url 'inicio' %}">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>
+                                        Dashboard
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-header">Mi Presupuesto</li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'list_budget' %}">
+                        <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                                    <p>Presupuesto</p>
+                    </a>
+                </li>
+                 <li class="nav-header">Mis Ingresos</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'list_income' %}">
+                        <i class="fa-solid fa-arrow-trend-up nav-icon"></i>
+                        <p>Ingresos</p>
+                    </a>
+                </li>
+                <li class="nav-header">Mis Gastos</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'list_expenses' %}">
+                        <i class="fa-solid fa-arrow-trend-down nav-icon"></i>
+                        <p>Gastos</p>
+                    </a>
+                </li>
+                <li class="nav-header">Mis Categorias</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'list_categories' %}">
+                        <i class="fa-solid fa-book-open nav-icon"></i>
+                        <p>Categoria</p>
+                    </a>
+                </li>
+                {% if request.user.groups.all %}
+                {% if 'Usuario' != request.session.group.name%}
+                <li class="nav-header">Mis usuarios</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'usuarios' %}">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Usuarios
+                        </p>
+                    </a>
+                </li>
+                {% endif %}
+                {% endif %}
+
+                {% if not request.user.groups.all %}
+                {% if request.user.is_superuser %}
+                <li class="nav-header">Mis usuarios</li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'usuarios' %}">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>
+                                        Usuarios
+                                    </p>
+                                </a>
+                            </li>
+                            {% endif %}
+                            {%endif%}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</aside>

@@ -1,0 +1,77 @@
+{% extends 'forms.html' %}
+{% block card-form %}
+{% csrf_token %}
+<input type="hidden" name="action" value="{{ action }}">
+<div class="alert alert-primary alert-dismissible">
+    <h5>
+        <i class="fas fa-exclamation-triangle"></i>
+        Notificación
+    </h5>
+    <p  style="text-align: center; font-weight: bold;">¿Estas seguro de eliminar el registro que contiene los siguientes datos del usuario?</p>
+    <table border="3" style="min-width:90%; margin:auto; border-color: #000;">
+        <thead>
+            <tr>
+                <th style="text-align: center;">Id</th>
+                <th style="text-align: center;">Nombre</th>
+                <th style="text-align: center;">Username</th>
+                <th style="text-align: center;">Fecha de registro</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: center;">{{object.id}}</td>
+                <td style="text-align: center;">{{object.first_name}} {{object.last_name}}</td>
+                <td style="text-align: center;">{{object.username}}</td>
+                <td style="text-align: center;">{{object.date_joined}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{%endblock %}
+{% block card-footer %}
+<button type="submit" class="btn btn-info btn-flat">
+    <i class="fas fa-save"></i>
+    si, aceptar
+</button>
+<a href="{{ url_link }}" class="btn btn-danger btn-flat ingresos">
+    <i class="fas fa-times"></i>
+    Cancelar
+</a>
+{% endblock %}
+{% block javaScript_form %}
+    <script>
+    {% if form.errors %}
+        var errors = '';
+        {% for field in form %}
+            {% for error in field.errors %}
+                errors += '{{error}}\n';
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            errors += '{{error}}\n';
+        {% endfor %}
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: errors,
+    });
+    {% endif %}
+
+    $('form').on('submit', function(e){
+        e.preventDefault();
+        var parameters = new FormData(this);
+        console.log(parameters);
+        alert_confirm(window.location.pathname, 'Notificasión', '¿Estas seguro de eliminar el usuario con el registro N°: {{object.id}}', parameters, function(){
+            Swal.fire({
+              title: 'Alerta',
+              text: 'Registro eliminado correctamente',
+              icon: 'success',
+              timer: 2000,
+              onClose: () => {
+                location.href = '{{ url_link }}'
+              }
+            });
+        });
+    });
+</script>
+{% endblock %}

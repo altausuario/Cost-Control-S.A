@@ -1,0 +1,94 @@
+{% extends 'forms.html' %}
+{% load static %}
+{% block list_head %}
+<link href="{% static 'lib/select2-4.0.13/css/select2.min.css' %}" rel="stylesheet"/>
+<link href="{% static 'lib/select2-4.0.13/css/select2-bootstrap4.min.css' %}" rel="stylesheet"/>
+<script src="{% static 'lib/select2-4.0.13/js/select2.min.js' %}"></script>
+<script src="{% static 'user/js/form.js' %}"></script>
+{% endblock %}
+{% block card-form %}
+{% csrf_token %}
+<input type="hidden" name="action" value="{{ action }}">
+{% for field in form.visible_fields %}
+{% if field.label != 'Permisos' %}
+<div class="form-group">
+    <label for="{{ field.label }}">{{ field.label }}:</label>
+    {{field}}
+</div>
+{% endif %}
+{% if field.label == 'Permisos' %}
+<label for="{{ field.label }}">{{ field.label }}:</label>
+<div class="input-group">
+    {{field}}
+    <div class="input-group-append">
+
+    </div>
+</div>
+{% endif %}
+{% endfor %}
+{% endblock %}
+
+{% block javaScript_form %}
+<script>
+    $('.ms').change(function() {
+
+        }).multipleSelect({
+            placeholder: 'Seleccione los permisos',
+            openOnHover: true,
+            filter: true,
+            filterPlaceholder: 'Buscar...',
+            locale: 'es-ES'
+        });
+
+    {% if form.errors %}
+        var errors = '';
+        {% for field in form %}
+            {% for error in field.errors %}
+                errors += '{{error}}\n';
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            errors += '{{error}}\n\n';
+        {% endfor %}
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: errors,
+    });
+    {% endif %}
+
+    $('form').on('submit', function(e){
+        e.preventDefault();
+        var parameters = new FormData(this);
+        var action = '{{action}}'
+        if(action == 'add'){
+            alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de crear un nuevo registro?', parameters, function(){
+                Swal.fire({
+                  title: 'Alerta',
+                  text: 'Nuevo usuario agregado correctamente',
+                  icon: 'success',
+                  timer: 2000,
+                  onClose: () => {
+                    location.href = '{{ url_link }}'
+                  }
+                });
+            });
+        }
+        else{
+            alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de editar el registro?', parameters, function(){
+                Swal.fire({
+                  title: 'Alerta',
+                  text: 'Usuario Actualisado correctamente',
+                  icon: 'success',
+                  timer: 2000,
+                  onClose: () => {
+                    location.href = '{{ url_link }}'
+                  }
+                });
+            });
+        }
+    });
+
+
+</script>
+{% endblock %}

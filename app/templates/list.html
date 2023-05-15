@@ -1,0 +1,53 @@
+{% extends 'body.html' %}
+
+{% block content %}
+<div class="card card-default mb-2" id="card">
+    <div class="card-header">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas {{icon}}"></i>
+                {{title}}
+            </h3>
+        </div>
+    </div>
+    <div class="card-body">
+        {% block card %}
+        <table class="table table-bordered" id="data" border="1">
+            <thead>
+            {% block columns %}
+
+            {% endblock %}
+            </thead>
+            <tbody>
+            {% block rows %}
+
+            {% endblock %}
+            </tbody>
+        </table>
+        {% endblock %}
+    </div>
+    <div class="card-footer">
+        {% block car-fotter %}
+        <a href="{{create_url}}" class="btn btn-primary btn-flat ingresos" id="addIngresos">
+            <i class="fas fa-plus"></i>
+            Nuevo registro
+        </a>
+        <a href="{{ link_url }}" class="btn btn-success btn-flat ">
+            <i class="fas fa-sync"></i>
+            Actualizar
+        </a>
+        {% endblock %}
+    </div>
+</div>
+{%block javascript %}
+<script type="application/javascript">
+        $(function () {
+            $('.table').DataTable({
+                responsive: true,
+                autoWidth: false,
+                retrieve: true,
+            });
+        });
+</script>
+{% endblock %}
+{% endblock %}

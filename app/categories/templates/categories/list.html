@@ -1,0 +1,22 @@
+{% extends 'list.html' %}
+{% load static %}
+
+{% block list_head %}
+<script src="{% static 'categories/js/list.js' %}" xmlns=""></script>
+{% endblock %}
+
+{% block columns %}
+<tr>
+    <th scope="col">#</th>
+    <th scope="col">Nombre</th>
+    <th scope="col valor">Descripción</th>
+    <th scope="col valor">Fecha de creacion</th>
+    <th>Opciones</th>
+</tr>
+{% endblock %}
+
+{% block rows %}
+{% endblock %}
+
+
+
