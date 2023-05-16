@@ -13,7 +13,8 @@ function getData(){
             data: {
                 'action':'searchdata'
             },
-            dataSrc: ""
+            dataSrc: "",
+            headers: {'X-CSRFToken': csrftoken}
         },
         columns: [
             {
@@ -117,7 +118,6 @@ function format(d) {
 
 $(function(){
    getData();
-
     $('#data tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = tblBudget.row(tr);

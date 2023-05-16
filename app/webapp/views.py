@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum, DecimalField
 from django.db.models.functions import Coalesce
 from django.http import JsonResponse
+from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
@@ -19,9 +20,6 @@ from random import randint
 class homeView(LoginRequiredMixin, TemplateView):
     template_name = 'home/index.html'
 
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
     def meses_año(self):
         data = '';
         month = datetime.now().month.real
@@ -98,7 +96,6 @@ class homeView(LoginRequiredMixin, TemplateView):
                         'y': float(Total)
                     })
                 Total = 0
-            print(data)
         except:
             pass
         return data
@@ -138,16 +135,5 @@ class homeView(LoginRequiredMixin, TemplateView):
         context['mes'] = self.meses_año()
         return context
 
-
-class TextView(TemplateView):
-    template_name = 'send_email_password.html'
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'home'
-        context['icon'] = 'fa-home'
-        return context
+def pageNotFound404(request, exception):
+    return render(request, '404.html')

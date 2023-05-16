@@ -6,6 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import *
 
+from budget.models import *
 from categories.models import Categories
 from income.forms import IncomeForm
 from income.models import Income
@@ -17,10 +18,6 @@ class IncomeListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListV
     model = Income
     template_name = 'income/list.html'
     permission_required = 'view_income'
-
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         data = {}
@@ -93,14 +90,53 @@ class IncomeUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
+    def get_calcular(self):
+        budget = Budget.objects.all().order_by('id')
+        total_ex = 0
+        total_in = 0
+        total = 0
+        for b in budget:
+            exc = ExpensesConetion.objects.filter(budget_id=b.id)
+            for ec in exc:
+                ex = Expenses.objects.filter(id=ec.expenses_id)
+                for e in ex:
+                    total_ex += e.amount
+            print(f'Expenses {total_ex}')
 
+            inc = IncomeConetion.objects.filter(budget_id=b.id)
+            for inm in inc:
+                ino = Income.objects.filter(id=inm.income_id)
+                for i in ino:
+                    total_in += i.amount
+            print(f'Incomes {total_in}')
+
+            total = total_in - total_ex
+            but =Budget()
+            but.id = b.id
+            but.name = b.name
+            but.date_creation = b.date_creation
+            but.total_income = total_in
+            but.total_expenses = total_ex
+            but.total = total
+            but.save()
+            total_ex = 0
+            total_in = 0
+        return ''
     def post(self, request, *args, **kwargs):
         data = {}
         try:
             action = request.POST['action']
             if action == 'edit':
-                form = self.get_form()
-                data = form.save()
+                pku = 0
+                pki = Income.objects.filter(id=self.kwargs.get('pk'))
+                for i in pki:
+                    pku = i.user_id
+                if pku == request.user.id:
+                    form = self.get_form()
+                    data = form.save()
+                    self.get_calcular()
+                else:
+                    data['error'] = 'No tienes las credenciales correspondientes'
             else:
                 data['error'] = 'No ha ingresado a ninguna opcion'
         except Exception as e:
@@ -125,10 +161,51 @@ class IncomeDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Del
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
+
+    def get_calcular(self):
+        budget = Budget.objects.all().order_by('id')
+        total_ex = 0
+        total_in = 0
+        total = 0
+        for b in budget:
+            exc = ExpensesConetion.objects.filter(budget_id=b.id)
+            for ec in exc:
+                ex = Expenses.objects.filter(id=ec.expenses_id)
+                for e in ex:
+                    total_ex += e.amount
+            print(f'Expenses {total_ex}')
+
+            inc = IncomeConetion.objects.filter(budget_id=b.id)
+            for inm in inc:
+                ino = Income.objects.filter(id=inm.income_id)
+                for i in ino:
+                    total_in += i.amount
+            print(f'Incomes {total_in}')
+
+            total = total_in - total_ex
+            but =Budget()
+            but.id = b.id
+            but.name = b.name
+            but.date_creation = b.date_creation
+            but.total_income = total_in
+            but.total_expenses = total_ex
+            but.total = total
+            but.save()
+            total_ex = 0
+            total_in = 0
+        return ''
     def post(self, request, *args, **kwargs):
         data = {}
         try:
-            self.object.delete()
+            pku = 0
+            pki = Income.objects.filter(id=self.kwargs.get('pk'))
+            for i in pki:
+                pku = i.user_id
+            if pku == request.user.id:
+                self.object.delete()
+                self.get_calcular()
+            else:
+                data['error'] = 'No tienes los permisos correspondientes'
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)

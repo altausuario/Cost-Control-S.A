@@ -5,5 +5,4 @@ from webapp.views import *
 
 urlpatterns = [
     path('Dashboard/', homeView.as_view(), name='inicio'),
-    # path('text/', GroupCreateView().as_view(), name='prueba')
 ]

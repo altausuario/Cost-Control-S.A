@@ -20,10 +20,6 @@ class BudgetListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListV
     template_name = 'budget/list.html'
     permission_required = 'view_budget'
 
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -36,7 +32,6 @@ class BudgetListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListV
                   item['position'] = position
                   data.append(item)
                   position += 1
-              print(data)
           else:
               data['error'] = 'Ha ocurrido un error'
         except Exception as e:
@@ -91,19 +86,16 @@ class BudgetCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Cre
 
             elif action == 'autocomplete':
                 data = []
-                print(request.POST['term'])
+
                 for i in Income.objects.filter(description__icontains=request.POST['term'], user_id=request.user.id)[0:10]:
                     item = i.toJSON()
                     item['value'] = i.description
-                    print(item)
                     data.append(item)
             elif action == 'autocompleteExpenses':
                 data = []
-                print(request.POST['term'])
                 for i in Expenses.objects.filter(description__icontains=request.POST['term'], user_id=request.user.id)[0:10]:
                     item = i.toJSON()
                     item['value'] = i.description
-                    print(item)
                     data.append(item)
             else:
                 data['error'] = 'No ha ingresado a ninguna opcion'
@@ -140,44 +132,47 @@ class BudgetUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
             if action == 'edit':
                 with transaction.atomic():
                     evens = json.loads(request.POST['vents'])
-                    budget = self.get_object()
-                    budget.name = evens['name']
-                    budget.total_income = float(evens['total_income'])
-                    budget.total_expenses = float(evens['total_expenses'])
-                    budget.total = float(evens['total'])
-                    budget.save()
-                    for i in IncomeConetion.objects.filter(budget_id=budget.id):
-                        i.delete()
+                    pku = 0
+                    pki = Budget.objects.filter(id=self.kwargs.get('pk'))
+                    for i in pki:
+                        pku = i.user_id
+                    if pku == request.user.id:
+                        budget = self.get_object()
+                        budget.name = evens['name']
+                        budget.total_income = float(evens['total_income'])
+                        budget.total_expenses = float(evens['total_expenses'])
+                        budget.total = float(evens['total'])
+                        budget.save()
+                        for i in IncomeConetion.objects.filter(budget_id=budget.id):
+                            i.delete()
 
-                    for i in evens['incomes']:
-                        ic = IncomeConetion()
-                        ic.budget_id = budget.id
-                        ic.income_id = i['id']
-                        ic.save()
+                        for i in evens['incomes']:
+                            ic = IncomeConetion()
+                            ic.budget_id = budget.id
+                            ic.income_id = i['id']
+                            ic.save()
 
-                    for e in ExpensesConetion.objects.filter(budget_id=budget.id):
-                        e.delete()
+                        for e in ExpensesConetion.objects.filter(budget_id=budget.id):
+                            e.delete()
 
-                    for e in evens['expenses']:
-                        ec = ExpensesConetion()
-                        ec.budget_id = budget.id
-                        ec.expenses_id = e['id']
-                        ec.save()
+                        for e in evens['expenses']:
+                            ec = ExpensesConetion()
+                            ec.budget_id = budget.id
+                            ec.expenses_id = e['id']
+                            ec.save()
+                    else:
+                        data['error'] = 'No tienes las credenciales correspondientes'
             elif action == 'autocomplete':
                 data = []
-                print(request.POST['term'])
                 for i in Income.objects.filter(description__icontains=request.POST['term'], user_id=request.user.id)[0:10]:
                     item = i.toJSON()
                     item['value'] = i.description
-                    print(item)
                     data.append(item)
             elif action == 'autocompleteExpenses':
                 data = []
-                print(request.POST['term'])
                 for i in Expenses.objects.filter(description__icontains=request.POST['term'], user_id=request.user.id)[0:10]:
                     item = i.toJSON()
                     item['value'] = i.description
-                    print(item)
                     data.append(item)
             else:
                 data['error'] = 'No ha ingresado a ninguna opcion'
@@ -241,7 +236,14 @@ class BudgetDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Del
     def post(self, request, *args, **kwargs):
         data = {}
         try:
-            self.object.delete()
+            pku = 0
+            pki = Budget.objects.filter(id=self.kwargs.get('pk'))
+            for i in pki:
+                pku = i.user_id
+            if pku == request.user.id:
+                self.object.delete()
+            else:
+                data['error'] = 'No tienes los permisos correspondientes'
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)

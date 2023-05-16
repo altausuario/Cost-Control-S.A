@@ -21,10 +21,6 @@ class UserListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListVie
     template_name = 'user/list.html'
     permission_required = 'view_user'
 
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:

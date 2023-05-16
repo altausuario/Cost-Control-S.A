@@ -9,18 +9,12 @@ from categories.forms import CategoriesForm
 from categories.models import Categories
 from user.mixins import ValidatePermissionRequiredMinxin
 
-
-
 # Create your views here.
 
 class CategoriesListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListView):
     model = Categories
     template_name = 'categories/list.html'
     permission_required = 'view_categories'
-
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         data = {}
@@ -34,7 +28,6 @@ class CategoriesListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, L
                   item['position'] = position
                   data.append(item)
                   position += 1
-              print(data)
           else:
               data['error'] = 'Ha ocurrido un error'
         except Exception as e:
@@ -97,8 +90,15 @@ class CategoriesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,
         try:
             action = request.POST['action']
             if action == 'edit':
-                form = self.get_form()
-                data = form.save()
+                pku = 0
+                pki = Categories.objects.filter(id=self.kwargs.get('pk'))
+                for i in pki:
+                    pku = i.user_id
+                if pku == request.user.id:
+                    form = self.get_form()
+                    data = form.save()
+                else:
+                    data['error'] = 'No tienes las credenciales correspondientes'
             else:
                 data['error'] = 'No ha ingresado a ninguna opcion'
         except Exception as e:
@@ -126,7 +126,14 @@ class CategoriesDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,
     def post(self, request, *args, **kwargs):
         data = {}
         try:
-            self.object.delete()
+            pku = 0
+            pki = Categories.objects.filter(id=self.kwargs.get('pk'))
+            for i in pki:
+                pku = i.user_id
+            if pku == request.user.id:
+                self.object.delete()
+            else:
+                data['error'] = 'No tienes los permisos correspondientes'
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)

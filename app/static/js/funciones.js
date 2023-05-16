@@ -1,3 +1,20 @@
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
 function mensaje_error(obj){
     var html = ``;
     if (typeof(obj) === 'object'){
@@ -39,6 +56,7 @@ function alert_confirm(url, title, content, parameters, callback){
                         dataType: 'json',
                         processData: false,
                         contentType: false,
+                        headers: {'X-CSRFToken': csrftoken}
                     }).done(function(data){
                         if(!data.hasOwnProperty('error')){
                             callback(data);
@@ -62,7 +80,6 @@ function alert_confirm(url, title, content, parameters, callback){
         }
     })
 }
-
 function alert_action(title, content, callback){
     $.confirm({
         theme: 'material',
@@ -92,6 +109,8 @@ function alert_action(title, content, callback){
         }
     })
 }
+
+
 
 
 

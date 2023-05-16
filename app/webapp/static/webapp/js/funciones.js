@@ -6,6 +6,7 @@ function get_graph_budget_year_month(){
               'action': 'get_graph_budget_year_month'
               },
         dataType: 'json',
+        headers: {'X-CSRFToken': csrftoken}
     }).done(function(data){
         if(!data.hasOwnProperty('error')){
             console.log(data)
@@ -27,6 +28,7 @@ function get_graph_income_year_month(){
               'action': 'get_graph_income_year_month'
               },
         dataType: 'json',
+        headers: {'X-CSRFToken': csrftoken}
     }).done(function(data){
         if(!data.hasOwnProperty('error')){
             console.log(data)
@@ -48,6 +50,7 @@ function get_graph_expenses_year_month(){
               'action': 'get_graph_expenses_year_month'
               },
         dataType: 'json',
+        headers: {'X-CSRFToken': csrftoken}
     }).done(function(data){
         if(!data.hasOwnProperty('error')){
             console.log(data)
@@ -69,6 +72,7 @@ function get_graph_budget_percentage_year_month(){
               'action': 'get_graph_budget_percentage_year_month'
               },
         dataType: 'json',
+        headers: {'X-CSRFToken': csrftoken}
     }).done(function(data){
         if(!data.hasOwnProperty('error')){
             console.log(data)

@@ -56,7 +56,6 @@ class ExpensesForm(ModelForm):
         try:
             if form.is_valid():
                 form.save()
-                self.groups.set([Group.objects.get(id=5)])
             else:
                 data['error'] = form.errors
         except Exception as e:
