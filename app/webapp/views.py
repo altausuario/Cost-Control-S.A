@@ -129,7 +129,7 @@ class homeView(LoginRequiredMixin, TemplateView):
         return super().get(request, *args, **kwargs)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Home'
+        context['title'] = 'Inicio'
         context['icon'] = 'fa-home'
         context['año'] = datetime.now().year.real
         context['mes'] = self.meses_año()

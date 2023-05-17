@@ -42,7 +42,7 @@ class UserListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListVie
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Lista de usuarios'
-        context['icon'] = 'fa-search'
+        context['icon'] = 'fa-list'
         context['url_link'] = reverse_lazy('usuarios')
         context['create_url'] = reverse_lazy('addUsuarios')
         return context

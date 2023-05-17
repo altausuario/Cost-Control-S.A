@@ -41,7 +41,7 @@ class BudgetListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListV
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Lista de presupuesto'
-        context['icon'] = 'fa-search'
+        context['icon'] = 'fa-list'
         context['url_link'] = reverse_lazy('budget')
         context['create_url'] = reverse_lazy('create_budget')
         return context

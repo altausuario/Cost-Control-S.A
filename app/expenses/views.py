@@ -42,7 +42,7 @@ class ExpensesListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Lis
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Listado de gastos'
-        context['icon'] = 'fa-search'
+        context['icon'] = 'fa-list'
         context['url_link'] = reverse_lazy('budget')
         context['create_url'] = reverse_lazy('create_expenses')
         return context
