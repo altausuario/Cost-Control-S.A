@@ -1,5 +1,4 @@
 import uuid
-
 from crum import get_current_request
 from django.contrib.auth import *
 from django.contrib.auth.views import *
@@ -10,7 +9,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import RedirectView, CreateView
 import app.settings as setting
 from login.forms import *
-
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -18,16 +16,13 @@ from django.template.loader import render_to_string
 from app import settings
 from user.forms import NewUserProfileForm
 from user.models import User
-
 # Create your views here.
 class loginFormView(LoginView):
     template_name = 'login/login.html'
-
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect(setting.LOGIN_REDIRECT_URL)
         return super().dispatch(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'iniciar sesión'

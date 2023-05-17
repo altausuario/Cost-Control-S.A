@@ -8,9 +8,7 @@ from django.views.generic import *
 from categories.forms import CategoriesForm
 from categories.models import Categories
 from user.mixins import ValidatePermissionRequiredMinxin
-
 # Create your views here.
-
 class CategoriesListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListView):
     model = Categories
     template_name = 'categories/list.html'
@@ -41,7 +39,6 @@ class CategoriesListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, L
         context['url_link'] = reverse_lazy('budget')
         context['create_url'] = reverse_lazy('create_categories')
         return context
-
 class CategoriesCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, CreateView):
     model = Categories
     form_class = CategoriesForm
@@ -80,11 +77,11 @@ class CategoriesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,
     success_url = reverse_lazy('list_categories')
     permission_required = 'change_categories'
     url_redirect = reverse_lazy('inicio')
-
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
+        if self.object.user_id != request.user.id:
+            return HttpResponseRedirect(reverse_lazy('list_budget'))
         return super().dispatch(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -104,7 +101,6 @@ class CategoriesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Editar categoria'
@@ -112,16 +108,16 @@ class CategoriesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,
         context['icon'] = 'fa-edit'
         context['url_link'] = self.success_url
         return context
-
 class CategoriesDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, DeleteView):
     model = Categories
     template_name = 'categories/delete.html'
     success_url = reverse_lazy('list_categories')
     permission_required = 'delete_categories'
     url_redirect = reverse_lazy('inicio')
-
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
+        if self.object.user_id != request.user.id:
+            return HttpResponseRedirect(reverse_lazy('list_budget'))
         return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
         data = {}

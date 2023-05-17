@@ -11,9 +11,7 @@ from categories.models import Categories
 from income.forms import IncomeForm
 from income.models import Income
 from user.mixins import ValidatePermissionRequiredMinxin
-
 # Create your views here.
-
 class IncomeListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListView):
     model = Income
     template_name = 'income/list.html'
@@ -47,7 +45,6 @@ class IncomeListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListV
         context['url_link'] = reverse_lazy('budget')
         context['create_url'] = reverse_lazy('create_income')
         return context
-
 class IncomeCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, CreateView):
     model = Income
     form_class = IncomeForm
@@ -89,6 +86,8 @@ class IncomeUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
+        if self.object.user_id != request.user.id:
+            return HttpResponseRedirect(reverse_lazy('list_budget'))
         return super().dispatch(request, *args, **kwargs)
     def get_calcular(self):
         budget = Budget.objects.all().order_by('id')
@@ -150,18 +149,17 @@ class IncomeUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
         context['icon'] = 'fa-edit'
         context['url_link'] = self.success_url
         return context
-
 class IncomeDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, DeleteView):
     model = Income
     template_name = 'income/delete.html'
     success_url = reverse_lazy('list_income')
     permission_required = 'delete_income'
     url_redirect = reverse_lazy('inicio')
-
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
+        if self.object.user_id != request.user.id:
+            return HttpResponseRedirect(reverse_lazy('list_budget'))
         return super().dispatch(request, *args, **kwargs)
-
     def get_calcular(self):
         budget = Budget.objects.all().order_by('id')
         total_ex = 0

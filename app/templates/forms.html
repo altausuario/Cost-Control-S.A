@@ -54,8 +54,16 @@
         e.preventDefault();
         var parameters = new FormData(this);
         console.log(parameters);
-        alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de cambiar tu contraseña?', parameters, function(){
-            location.href = '{{ url_link }}'
+        alert_confirm(window.location.pathname,'Notificación', '¿Estas seguro de cambiar tu contraseña?', parameters, function(){
+            Swal.fire({
+                  title: 'Alerta',
+                  text: 'Contraseña actualizada correctamente',
+                  icon: 'success',
+                  timer: 3000,
+                  onClose: () => {
+                    location.href = '{{ url_link }}'
+                  }
+                });
         });
     });
 </script>

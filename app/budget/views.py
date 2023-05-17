@@ -20,7 +20,6 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.contrib.staticfiles import finders
 # Create your views here.
-
 class BudgetListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListView):
     model = Budget
     template_name = 'budget/list.html'
@@ -129,6 +128,8 @@ class BudgetUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
+        if self.object.user_id != request.user.id:
+            return HttpResponseRedirect(reverse_lazy('list_budget'))
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -238,6 +239,8 @@ class BudgetDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Del
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
+        if self.object.user_id != request.user.id:
+            return HttpResponseRedirect(reverse_lazy('list_budget'))
         return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
         data = {}
@@ -293,17 +296,10 @@ class BudgetInvoicePdfView(LoginRequiredMixin, View):
                     data += i.amount
         return data
     def link_callback(self, uri, rel):
-        # result = finders.find(uri)
-        # if result:
-        #     if not isinstance(result, (list, tuple)):
-        #         result = [result]
-        #     result = list(os.path.realpath(path) for path in result)
-        #     path = result[0]
-        # else:
-        sUrl = settings.STATIC_URL  # Typically /static/
-        sRoot = settings.STATIC_ROOT  # Typically /home/userX/project_static/
-        mUrl = settings.MEDIA_URL  # Typically /media/
-        mRoot = settings.MEDIA_ROOT  # Typically /home/userX/project_static/media/
+        sUrl = settings.STATIC_URL
+        sRoot = settings.STATIC_ROOT
+        mUrl = settings.MEDIA_URL
+        mRoot = settings.MEDIA_ROOT
 
         if uri.startswith(mUrl):
             path = os.path.join(mRoot, uri.replace(mUrl, ""))
@@ -319,32 +315,36 @@ class BudgetInvoicePdfView(LoginRequiredMixin, View):
         return path
     def get(self, request, *args, **kwargs):
         try:
-            template = get_template('budget/invoice.html')
-            id = self.kwargs['pk']
-            context = {
-                'budget': Budget.objects.get(pk=self.kwargs['pk']),
-                'date_joined':datetime.now(),
-                'cli_names': request.user.first_name + ' ' + request.user.last_name,
-                'income': self.get_invoice_income(id),
-                'expenses': self.get_invoice_expenses(id),
-                'total_income': self.get_invoice_total_income(id),
-                'total_expenses': self.get_invoice_total_expenses(id),
-                'comp': {
-                    'name': 'Cost Control S.A.',
-                    'address': 'Bucaramanga, Santander'
+            budget = Budget.objects.get(pk=self.kwargs['pk'])
+            if budget.user_id == request.user.id:
+                template = get_template('budget/invoice.html')
+                id = self.kwargs['pk']
+                context = {
+                    'budget': Budget.objects.get(pk=self.kwargs['pk']),
+                    'date_joined':datetime.now(),
+                    'cli_names': request.user.first_name + ' ' + request.user.last_name,
+                    'income': self.get_invoice_income(id),
+                    'expenses': self.get_invoice_expenses(id),
+                    'total_income': self.get_invoice_total_income(id),
+                    'total_expenses': self.get_invoice_total_expenses(id),
+                    'comp': {
+                        'name': 'Cost Control S.A.',
+                        'address': 'Bucaramanga, Santander'
 
-                },
-                'icon': '{}{}'.format(settings.STATIC_URL, 'img/logo.png'),
-                'title': 'PDF'
-            }
-            html = template.render(context)
-            response = HttpResponse(content_type='application/pdf')
-            # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
-            pisa_status = pisa.CreatePDF(
-                html, dest=response,
-                link_callback=self.link_callback
-            )
-            return response
+                    },
+                    'icon': '{}{}'.format(settings.STATIC_URL, 'img/logo.png'),
+                    'title': 'PDF'
+                }
+                html = template.render(context)
+                response = HttpResponse(content_type='application/pdf')
+                # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+                pisa_status = pisa.CreatePDF(
+                    html, dest=response,
+                    link_callback=self.link_callback
+                )
+                return response
+            else:
+                return HttpResponseRedirect(reverse_lazy('list_budget'))
         except:
             pass
         return HttpResponseRedirect(reverse_lazy('list_budget'))

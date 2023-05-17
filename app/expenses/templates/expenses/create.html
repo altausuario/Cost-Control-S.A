@@ -35,10 +35,10 @@
         var parameters = new FormData(this);
         var action = '{{action}}'
         if(action == 'add'){
-            alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de crear un nuevo ingreso?', parameters, function(){
+            alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de crear un nuevo registro?', parameters, function(){
                Swal.fire({
                   title: 'Alerta',
-                  text: 'Nuevo ingreso registrado correctamente',
+                  text: 'Nuevo gasto registrado correctamente',
                   icon: 'success',
                   timer: 3000,
                   onClose: () => {
@@ -51,7 +51,7 @@
             alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de editar el registro?', parameters, function(){
                 Swal.fire({
                   title: 'Alerta',
-                  text: 'Ingreso actualizado correctamente',
+                  text: 'Gasto actualizado correctamente',
                   icon: 'success',
                   timer: 3000,
                   onClose: () => {

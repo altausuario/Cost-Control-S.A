@@ -209,8 +209,32 @@ $('#remove_expenses').on('click', function(){
         var parameters = new FormData(this);
         parameters.append('action', $('input[name="action"]').val());
         parameters.append('vents', JSON.stringify(vents.items));
-        alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de cambiar tu contraseña?', parameters, function(){
-            location.href = '/budget/list/'
-        });
+        var action = $('input[name="action"]').val()
+        if (action == 'add'){
+            alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de crear un nuevo registro?', parameters, function(){
+                Swal.fire({
+                      title: 'Alerta',
+                      text: 'Balance creado correctamente',
+                      icon: 'success',
+                      timer: 3000,
+                      onClose: () => {
+                        location.href = '/budget/list/'
+                      }
+                });
+            });
+        }
+        if(action == 'edit'){
+            alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de editar el registro', parameters, function(){
+                Swal.fire({
+                      title: 'Alerta',
+                      text: 'Balance actualizado correctamente',
+                      icon: 'success',
+                      timer: 3000,
+                      onClose: () => {
+                        location.href = '/budget/list/'
+                      }
+                });
+            });
+        }
     });
 });
