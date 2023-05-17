@@ -53,7 +53,7 @@ var vents = {
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    var buttons = '<button rel="remove" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></button>  ';
+                    var buttons = '<a rel="remove" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a>  ';
                     return buttons;
                 }
             },
@@ -91,7 +91,7 @@ var vents = {
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    var buttons = '<button rel="remove" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></button>  ';
+                    var buttons = '<a rel="remove" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a>  ';
                     return buttons;
                 }
             },
@@ -166,7 +166,7 @@ $( "#busqueda" ).autocomplete({
       }
     });
 
-$('#tblBudget tbody').on('click', 'button[rel="remove"]', function(){
+$('#tblBudget tbody').on('click', 'a[rel="remove"]', function(){
         var tr = tblBudget.cell($(this).closest('td, li')).index();
          alert_action('Notificación', '¿Estas seguro de eliminar el ingreso de tu detalle?', function(){
              vents.items.incomes.splice(tr.row, 1);
@@ -174,7 +174,7 @@ $('#tblBudget tbody').on('click', 'button[rel="remove"]', function(){
          })
      });
 
-$('#tblBudgetexpenses tbody').on('click', 'button[rel="remove"]', function(){
+$('#tblBudgetexpenses tbody').on('click', 'a[rel="remove"]', function(){
         var tr = tblBudgetexpenses.cell($(this).closest('td, li')).index();
         alert_action('Notificación', '¿Estas seguro de eliminar el egreso de tu detalle?', function(){
              vents.items.expenses.splice(tr.row, 1);

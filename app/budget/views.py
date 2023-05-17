@@ -1,18 +1,24 @@
 import json
+from datetime import datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import *
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import *
-
 from budget.forms import PresupuestoForm
 from budget.models import *
+from categories.models import Categories
 from expenses.models import Expenses
 from income.models import Income
 from user.mixins import ValidatePermissionRequiredMinxin
+import os
+from django.conf import settings
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.contrib.staticfiles import finders
 # Create your views here.
 
 class BudgetListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListView):
@@ -253,3 +259,92 @@ class BudgetDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Del
         context['icon'] = 'fa-trash-alt'
         context['url_link'] = self.success_url
         return context
+class BudgetInvoicePdfView(LoginRequiredMixin, View):
+    def get_invoice_income(self, pk):
+        data = []
+        for b in Budget.objects.filter(id=pk):
+            for ic in IncomeConetion.objects.filter(budget_id=b.id):
+                for i in Income.objects.filter(id=ic.income_id).order_by('id'):
+                    item = i.toJSON()
+                    item['categorie'] = i.categorie
+                    data.append(item)
+        return data
+    def get_invoice_expenses(self, pk):
+        data = []
+        for b in Budget.objects.filter(id=pk):
+            for ec in ExpensesConetion.objects.filter(budget_id=b.id):
+                for e in Expenses.objects.filter(id=ec.expenses_id).order_by('id'):
+                    item = e.toJSON()
+                    item['categorie'] = e.categorie
+                    data.append(item)
+        return data
+    def get_invoice_total_expenses(self, pk):
+        data = 0
+        for b in Budget.objects.filter(id=pk):
+            for ec in ExpensesConetion.objects.filter(budget_id=b.id):
+                for e in Expenses.objects.filter(id=ec.expenses_id).order_by('id'):
+                    data += e.amount
+        return data
+    def get_invoice_total_income(self, pk):
+        data = 0
+        for b in Budget.objects.filter(id=pk):
+            for ic in IncomeConetion.objects.filter(budget_id=b.id):
+                for i in Income.objects.filter(id=ic.income_id).order_by('id'):
+                    data += i.amount
+        return data
+    def link_callback(self, uri, rel):
+        # result = finders.find(uri)
+        # if result:
+        #     if not isinstance(result, (list, tuple)):
+        #         result = [result]
+        #     result = list(os.path.realpath(path) for path in result)
+        #     path = result[0]
+        # else:
+        sUrl = settings.STATIC_URL  # Typically /static/
+        sRoot = settings.STATIC_ROOT  # Typically /home/userX/project_static/
+        mUrl = settings.MEDIA_URL  # Typically /media/
+        mRoot = settings.MEDIA_ROOT  # Typically /home/userX/project_static/media/
+
+        if uri.startswith(mUrl):
+            path = os.path.join(mRoot, uri.replace(mUrl, ""))
+        elif uri.startswith(sUrl):
+            path = os.path.join(sRoot, uri.replace(sUrl, ""))
+        else:
+            return uri
+
+        if not os.path.isfile(path):
+            raise Exception(
+                'media URI must start with %s or %s' % (sUrl, mUrl)
+            )
+        return path
+    def get(self, request, *args, **kwargs):
+        try:
+            template = get_template('budget/invoice.html')
+            id = self.kwargs['pk']
+            context = {
+                'budget': Budget.objects.get(pk=self.kwargs['pk']),
+                'date_joined':datetime.now(),
+                'cli_names': request.user.first_name + ' ' + request.user.last_name,
+                'income': self.get_invoice_income(id),
+                'expenses': self.get_invoice_expenses(id),
+                'total_income': self.get_invoice_total_income(id),
+                'total_expenses': self.get_invoice_total_expenses(id),
+                'comp': {
+                    'name': 'Cost Control S.A.',
+                    'address': 'Bucaramanga, Santander'
+
+                },
+                'icon': '{}{}'.format(settings.STATIC_URL, 'img/logo.png'),
+                'title': 'PDF'
+            }
+            html = template.render(context)
+            response = HttpResponse(content_type='application/pdf')
+            # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+            pisa_status = pisa.CreatePDF(
+                html, dest=response,
+                link_callback=self.link_callback
+            )
+            return response
+        except:
+            pass
+        return HttpResponseRedirect(reverse_lazy('list_budget'))

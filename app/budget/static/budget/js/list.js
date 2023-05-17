@@ -44,7 +44,8 @@ function getData(){
                 orderable: false,
                 render: function (data, type, row) {
                     var buttons = '<a href="/budget/update/'+row.id+'" class="btn btn-warning btn-xs btn-flat" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fas fa-edit"></i></a>  ';
-                    buttons +=  '<a href="/budget/delete/'+row.id+'" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a>';
+                    buttons +=  '<a href="/budget/delete/'+row.id+'" class="btn btn-danger btn-xs btn-flat" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt"></i></a>';
+                    buttons +=  '<a href="/budget/invoice/pdf/'+row.id+'" target="_blank" class="btn btn-success btn-xs btn-flat ml-1" data-toggle="tooltip" data-placement="top" title="PDF"><i class="fa-solid fa-file-pdf"></i></a>';
                     return buttons;
                 }
             },
