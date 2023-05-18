@@ -23,7 +23,7 @@ from django.conf.urls import handler404
 from webapp.views import pageNotFound404
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
     path('', include('webapp.urls')),
     path('', include('income.urls')),
     path('', include('expenses.urls')),
@@ -32,6 +32,7 @@ urlpatterns = [
     path('', include('login.urls')),
     path('', include('user.urls')),
     path('', include('group.urls')),
+    path('', include('report.urls')),
 ]
 
 handler404 = pageNotFound404

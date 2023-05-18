@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'group',
     'categories',
     'budget',
+    'report',
     # ... otras aplicaciones ...
     'djmoney',
 ]

@@ -47,6 +47,12 @@ var vents = {
             {'data': 'date_creation'},
             {'data': 'state'},
         ],
+        order: false,
+        paging: false,
+        ordering: false,
+        info: false,
+        searching: false,
+
         columnDefs: [
             {
                 targets: [0],
@@ -85,6 +91,11 @@ var vents = {
             {'data': 'date_creation'},
             {'data': 'state'},
         ],
+        order: false,
+        paging: false,
+        ordering: false,
+        info: false,
+        searching: false,
         columnDefs: [
             {
                 targets: [0],

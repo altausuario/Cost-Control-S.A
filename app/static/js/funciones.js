@@ -14,7 +14,6 @@ function getCookie(name) {
     return cookieValue;
 }
 const csrftoken = getCookie('csrftoken');
-
 function mensaje_error(obj){
     var html = ``;
     if (typeof(obj) === 'object'){
