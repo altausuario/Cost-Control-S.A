@@ -99,14 +99,14 @@ function generate_report_budget() {
         //     {"data": "desc"},
         // ],
         columnDefs: [
-            {
-                targets: [-1, -2, -3],
-                class: 'text-center',
-                orderable: false,
-                render: function (data, type, row) {
-                    return '$' + data //parseFloat(data).toFixed(2);
-                }
-            },
+//            {
+//                targets: [-1, -2, -3],
+//                class: 'text-center',
+//                orderable: false,
+//                render: function (data, type, row) {
+//                    return '$' + data //parseFloat(data).toFixed(2);
+//                }
+//            },
         ],
         initComplete: function (settings, json) {
 

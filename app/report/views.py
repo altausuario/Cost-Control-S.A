@@ -1,9 +1,13 @@
+import json
 from django.db.models import *
 from django.db.models.functions import Coalesce
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import *
 from budget.models import Budget
+from categories.models import Categories
+from expenses.models import Expenses
+from income.models import Income
 from report.forms import ReportBudgetForm
 # Create your views here.
 class ReportBudgetView(TemplateView):
@@ -50,5 +54,95 @@ class ReportBudgetView(TemplateView):
         context['title'] = 'Reporte de presupuesto'
         context['icon'] = 'fa-chart-bar'
         context['link_url'] = reverse_lazy('report_budget')
+        context['form'] = ReportBudgetForm
+        return context
+class ReportIncomesView(TemplateView):
+    template_name = 'report/report_income.html'
+    def post(self, request, *args, **kwargs):
+        data = []
+        try:
+          action = request.POST['action']
+          if action == 'search_report_budget':
+              start_date = request.POST.get('start_date', '')
+              end_date = request.POST.get('end_date', '')
+              search = Income.objects.all()
+              name = '';
+              if len(start_date) and len(end_date):
+                search = search.filter(date_creation__range=[start_date, end_date], user_id=request.user.id)
+              for s in search:
+                  c = s.categorie.id
+                  n = Categories.objects.get(id=c)
+                  data.append([
+                      s.id,
+                      s.description,
+                      s.date_creation.strftime('%Y-%m-%d'),
+                      n.name,
+                      s.state,
+                      format(s.amount, '.2f'),
+                  ])
+              income_total = search.aggregate(r=Coalesce(Sum('amount'), 0, output_field=DecimalField())).get('r')
+              data.append([
+                  '---',
+                  '---',
+                  '----',
+                  '----',
+                  '----',
+                  format(income_total, '.2f'),
+              ])
+          else:
+              data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data,  safe=False)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Reporte de ingresos'
+        context['icon'] = 'fa-chart-bar'
+        context['link_url'] = reverse_lazy('report_incomes')
+        context['form'] = ReportBudgetForm
+        return context
+class ReportExpensesView(TemplateView):
+    template_name = 'report/report_expenses.html'
+    def post(self, request, *args, **kwargs):
+        data = []
+        try:
+          action = request.POST['action']
+          if action == 'search_report_budget':
+              start_date = request.POST.get('start_date', '')
+              end_date = request.POST.get('end_date', '')
+              search = Expenses.objects.all()
+              name = '';
+              if len(start_date) and len(end_date):
+                search = search.filter(date_creation__range=[start_date, end_date], user_id=request.user.id)
+              for s in search:
+                  c = s.categorie.id
+                  n = Categories.objects.get(id=c)
+                  data.append([
+                      s.id,
+                      s.description,
+                      s.date_creation.strftime('%Y-%m-%d'),
+                      n.name,
+                      s.state,
+                      format(s.amount, '.2f'),
+                  ])
+              income_total = search.aggregate(r=Coalesce(Sum('amount'), 0, output_field=DecimalField())).get('r')
+              data.append([
+                  '---',
+                  '---',
+                  '----',
+                  '----',
+                  '----',
+                  format(income_total, '.2f'),
+              ])
+          else:
+              data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data,  safe=False)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Reporte de gastos'
+        context['icon'] = 'fa-chart-bar'
+        context['link_url'] = reverse_lazy('report_expenses')
         context['form'] = ReportBudgetForm
         return context

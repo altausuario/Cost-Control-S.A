@@ -34,28 +34,25 @@
                                     </p>
                                 </a>
                             </li>
-                            <li class="nav-header">Mi Presupuesto</li>
+                            <li class="nav-header">Mis mantenimientos</li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'list_budget' %}">
-                        <i class="nav-icon fas fa-file-invoice-dollar"></i>
-                                    <p>Presupuesto</p>
+                       <i class="fas fa-balance-scale nav-icon"></i>
+                                    <p>Balance</p>
                     </a>
                 </li>
-                 <li class="nav-header">Mis Ingresos</li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'list_income' %}">
                         <i class="fa-solid fa-arrow-trend-up nav-icon"></i>
                         <p>Ingresos</p>
                     </a>
                 </li>
-                <li class="nav-header">Mis Gastos</li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'list_expenses' %}">
                         <i class="fa-solid fa-arrow-trend-down nav-icon"></i>
                         <p>Gastos</p>
                     </a>
                 </li>
-                    <li class="nav-header">Mis Categorias</li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'list_categories' %}">
                             <i class="fa-solid fa-tag nav-icon"></i>
@@ -65,18 +62,18 @@
                     <li class="nav-header">Mis Reportes</li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'report_budget' %}">
-                            <i class="fa-solid fa-tag nav-icon"></i>
+                            <i class="fas fa-file-invoice nav-icon"></i>
                             <p>Reporte de presupuesto</p>
                         </a>
                     </li>
                             <li class="nav-item">
-                        <a class="nav-link" href="{% url 'list_categories' %}">
-                            <i class="fa-solid fa-tag nav-icon"></i>
+                        <a class="nav-link" href="{% url 'report_incomes' %}">
+                           <i class="fas fa-file-invoice-dollar nav-icon"></i>
                             <p>Reporte de ingresos</p>
                         </a>
                     </li><li class="nav-item">
-                        <a class="nav-link" href="{% url 'list_categories' %}">
-                            <i class="fa-solid fa-tag nav-icon"></i>
+                        <a class="nav-link" href="{% url 'report_expenses' %}">
+                            <i class="fas fa-file-invoice-dollar nav-icon"></i>
                             <p>Reporte de gastos</p>
                         </a>
                     </li>

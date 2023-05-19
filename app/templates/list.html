@@ -1,5 +1,11 @@
 {% extends 'body.html' %}
 
+{% block list_head %}
+    {% block head_list %}
+
+    {% endblock %}
+{% endblock %}
+
 {% block content %}
 <div class="card card-default mb-2" id="card">
     <div class="card-header">
@@ -39,15 +45,15 @@
         {% endblock %}
     </div>
 </div>
-{%block javascript %}
-<script type="application/javascript">
-        $(function () {
-            $('.table').DataTable({
-                responsive: true,
-                autoWidth: false,
-                retrieve: true,
+    {%block javascript %}
+    <script type="application/javascript">
+            $(function () {
+                $('.table').DataTable({
+                    responsive: true,
+                    autoWidth: false,
+                    retrieve: true,
+                });
             });
-        });
-</script>
-{% endblock %}
+    </script>
+    {% endblock %}
 {% endblock %}

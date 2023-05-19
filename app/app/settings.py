@@ -30,16 +30,16 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #LIB
-    'widget_tweaks',
-    # myapps
+]
+
+LOCAL_APPS = [
     'income',
     'expenses',
     'user',
@@ -49,9 +49,13 @@ INSTALLED_APPS = [
     'categories',
     'budget',
     'report',
-    # ... otras aplicaciones ...
-    'djmoney',
 ]
+
+THIRD_PARTY_APPS = [
+    'widget_tweaks',
+]
+
+INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -166,3 +170,11 @@ EMAIL_HOST_USER = 'costcontrolsa@gmail.com'
 EMAIL_HOST_PASSWORD = 'fihdssgupyybvffn'
 
 DOMAIN = ''
+
+# DJANGO REST FRAMEWORK
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.IsAuthenticated',
+#     ]
+# }
