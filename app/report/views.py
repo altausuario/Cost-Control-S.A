@@ -19,8 +19,6 @@ class ReportBudgetView(TemplateView):
           if action == 'search_report_budget':
               start_date = request.POST.get('start_date', '')
               end_date = request.POST.get('end_date', '')
-              print(start_date)
-              print(end_date)
               search = Budget.objects.all()
               if len(start_date) and len(end_date):
                 search = search.filter(date_creation__range=[start_date, end_date], user_id=request.user.id)
@@ -66,7 +64,6 @@ class ReportIncomesView(TemplateView):
               start_date = request.POST.get('start_date', '')
               end_date = request.POST.get('end_date', '')
               search = Income.objects.all()
-              name = '';
               if len(start_date) and len(end_date):
                 search = search.filter(date_creation__range=[start_date, end_date], user_id=request.user.id)
               for s in search:

@@ -1,0 +1,21 @@
+{% extends 'list.html' %}
+{% load static %}
+
+{% block list_head %}
+<script src="{% static 'group/js/list.js' %}" xmlns=""></script>
+{% endblock %}
+
+{% block columns %}
+<tr>
+    <th scope="col">#</th>
+    <th scope="col">Nombre</th>
+    <th scope="col valor">Permisos</th>
+    <th>Opciones</th>
+</tr>
+{% endblock %}
+
+{% block rows %}
+{% endblock %}
+
+
+

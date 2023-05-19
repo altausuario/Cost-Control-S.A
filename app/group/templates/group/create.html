@@ -4,11 +4,12 @@
 <link href="{% static 'lib/select2-4.0.13/css/select2.min.css' %}" rel="stylesheet"/>
 <link href="{% static 'lib/select2-4.0.13/css/select2-bootstrap4.min.css' %}" rel="stylesheet"/>
 <script src="{% static 'lib/select2-4.0.13/js/select2.min.js' %}"></script>
-<script src="{% static 'user/js/form.js' %}"></script>
+<script src="{% static 'group/js/form.js' %}"></script>
+<script src="{% static 'js/myForm.js' %}"></script>
 {% endblock %}
+
 {% block card-form %}
-{% csrf_token %}
-<input type="hidden" name="action" value="{{ action }}">
+<input name="action" type="hidden" value="{{ action }}">
 {% for field in form.visible_fields %}
 {% if field.label != 'Permisos' %}
 <div class="form-group">
@@ -20,9 +21,6 @@
 <label for="{{ field.label }}">{{ field.label }}:</label>
 <div class="input-group">
     {{field}}
-    <div class="input-group-append">
-
-    </div>
 </div>
 {% endif %}
 {% endfor %}
@@ -30,16 +28,6 @@
 
 {% block javaScript_form %}
 <script>
-    $('.ms').change(function() {
-
-        }).multipleSelect({
-            placeholder: 'Seleccione los permisos',
-            openOnHover: true,
-            filter: true,
-            filterPlaceholder: 'Buscar...',
-            locale: 'es-ES'
-        });
-
     {% if form.errors %}
         var errors = '';
         {% for field in form %}
@@ -63,11 +51,11 @@
         var action = '{{action}}'
         if(action == 'add'){
             alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de crear un nuevo registro?', parameters, function(){
-                Swal.fire({
+               Swal.fire({
                   title: 'Alerta',
-                  text: 'Nuevo usuario agregado correctamente',
+                  text: 'Nuevo grupo registrado correctamente',
                   icon: 'success',
-                  timer: 2000,
+                  timer: 3000,
                   onClose: () => {
                     location.href = '{{ url_link }}'
                   }
@@ -78,9 +66,9 @@
             alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de editar el registro?', parameters, function(){
                 Swal.fire({
                   title: 'Alerta',
-                  text: 'Usuario Actualisado correctamente',
+                  text: 'Grupo actualizado correctamente',
                   icon: 'success',
-                  timer: 2000,
+                  timer: 3000,
                   onClose: () => {
                     location.href = '{{ url_link }}'
                   }
@@ -88,7 +76,5 @@
             });
         }
     });
-
-
 </script>
 {% endblock %}
