@@ -73,7 +73,13 @@ class ResetPasswordView(FormView):
             form = ResetPasswordForm(request.POST)
             if form.is_valid():
                 user = form.get_user()
-                data = self.send_email_reset_password(user)
+                men = {
+                    'email': user.email
+                }
+                data = {
+                    'data': self.send_email_reset_password(user),
+                    'success': user.email
+                }              
             else:
                 data['error'] = form.errors
 
@@ -83,7 +89,6 @@ class ResetPasswordView(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Reseteo de contraseña'
-        # context['user'] = user
         return context
 class ChangePasswordView(FormView):
     form_class = ChangePasswordForm
