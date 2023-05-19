@@ -19,7 +19,7 @@
                             {% endif %}
                         </div>
                         <div class="info">
-                            <a class="d-block" href="{% url 'inicio' %}">{{request.user.first_name}}
+                            <a class="d-block text-capitalize" href="{% url 'inicio' %}">{{request.user.first_name}}
                                 {{request.user.last_name}}</a>
                         </div>
                     </div>
@@ -43,13 +43,13 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'list_income' %}">
-                        <i class="fa-solid fa-arrow-trend-up nav-icon"></i>
+                        <i class="fa-solid fa-arrow-trend-up nav-icon text-success"></i>
                         <p>Ingresos</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'list_expenses' %}">
-                        <i class="fa-solid fa-arrow-trend-down nav-icon"></i>
+                        <i class="fa-solid fa-arrow-trend-down nav-icon text-danger"></i>
                         <p>Gastos</p>
                     </a>
                 </li>
@@ -63,17 +63,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'report_budget' %}">
                             <i class="fas fa-file-invoice nav-icon"></i>
-                            <p>Reporte de presupuesto</p>
+                            <p>Reporte de balance</p>
                         </a>
                     </li>
                             <li class="nav-item">
                         <a class="nav-link" href="{% url 'report_incomes' %}">
-                           <i class="fas fa-file-invoice-dollar nav-icon"></i>
+                           <i class="fas fa-file-invoice-dollar nav-icon text-success"></i>
                             <p>Reporte de ingresos</p>
                         </a>
                     </li><li class="nav-item">
                         <a class="nav-link" href="{% url 'report_expenses' %}">
-                            <i class="fas fa-file-invoice-dollar nav-icon"></i>
+                            <i class="fas fa-file-invoice-dollar nav-icon text-danger"></i>
                             <p>Reporte de gastos</p>
                         </a>
                     </li>
