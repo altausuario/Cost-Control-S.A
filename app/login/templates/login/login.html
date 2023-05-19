@@ -1,6 +1,4 @@
 {% extends 'login/base_login.html' %}
-{% load widget_tweaks %}
-
 {% block content %}
 <div class="login-box">
     <!-- /.login-logo -->
@@ -16,7 +14,7 @@
                 {% csrf_token %}
                 <input type="hidden" name="next" value="{{ next }}">
                 <div class="input-group mb-3">
-                    {{form.username|add_class:'form-control'|attr:'autocomplete:off'|attr:'placeholder:Ingrese su nombre de usuario'}}
+                    {{form.username}}
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-user"></span>
@@ -24,7 +22,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    {{form.password|add_class:'form-control'|attr:'autocomplete:off'|attr:'placeholder:Ingrese su contraseña'}}
+                    {{form.password}}
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -54,21 +52,15 @@
     <script type="application/javascript">
     {% if form.errors %}
         var errors = '';
-        {% for field in form %}
-            {% for error in field.errors %}
-                errors += '{{error}}\n';
-            {% endfor %}
-        {% endfor %}
         {% for error in form.non_field_errors %}
             errors += '{{error}}\n';
         {% endfor %}
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'Usuario o contraseña incorretos',
+          text: errors,
     });
     {% endif %}
-
     </script>
 </div>
 {% endblock %}

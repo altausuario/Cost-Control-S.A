@@ -17,16 +17,55 @@ from app import settings
 from user.forms import NewUserProfileForm
 from user.models import User
 # Create your views here.
-class loginFormView(LoginView):
+class LoginFormView(FormView):
+    form_class = AuthenticationForm
     template_name = 'login/login.html'
+    success_url = reverse_lazy(settings.LOGIN_REDIRECT_URL)
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect(setting.LOGIN_REDIRECT_URL)
         return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        login(self.request, user=form.get_user())
+        return super(LoginFormView, self).form_valid(form)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'iniciar sesión'
         return context
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# class loginFormView(LoginView):
+#     template_name = 'login/login.html'
+#     def dispatch(self, request, *args, **kwargs):
+#         if request.user.is_authenticated:
+#             return redirect(setting.LOGIN_REDIRECT_URL)
+#         return super().dispatch(request, *args, **kwargs)
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['title'] = 'iniciar sesión'
+#         return context
 class ResetPasswordView(FormView):
     form_class = ResetPasswordForm
     template_name = 'login/resetpassword.html'
@@ -79,7 +118,7 @@ class ResetPasswordView(FormView):
                 data = {
                     'data': self.send_email_reset_password(user),
                     'success': user.email
-                }              
+                }
             else:
                 data['error'] = form.errors
 

@@ -1,8 +1,45 @@
 from django import forms
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import Group
 
 
 from user.models import User
+
+class AuthenticationForm(forms.Form):
+    username = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'placeholder': 'Ingerse su nombre de usuario',
+            'class': 'form-control',
+            'autocomplete': 'off',
+            'autofocus': True
+        }
+    ))
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={
+            'placeholder': 'Ingrese su contraseña',
+            'class': 'form-control',
+            'autocomplete': 'off'
+        }
+    ))
+    def clean(self):
+        cleaned = super().clean()
+        username = cleaned.get('username', '')
+        password = cleaned.get('password', '')
+        if len(username) == 0:
+            raise forms.ValidationError('El campo username no puede ser vacio')
+        elif len(password) == 0:
+            raise forms.ValidationError('El campo password no puede ser vacio')
+        user = authenticate(username=username, password=password)
+        if user is None:
+            raise forms.ValidationError('Usuario o contraseña incorretos')
+        return cleaned
+
+    def get_user(self):
+        username = self.cleaned_data.get('username')
+        return User.objects.get(username=username)
+
+
+
 
 
 class ResetPasswordForm(forms.Form):
