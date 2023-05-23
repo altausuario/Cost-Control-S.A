@@ -1,46 +1,111 @@
-{% extends 'home.html' %}
+{% extends 'login/base_login.html' %}
 {% load static %}
 {% load widget_tweaks %}
-{% block body %}
-<body class="hold-transition sidebar-collapse dark-mode layout-fixed ">
-<div class="wrapper">
-    <div class="content-wrapper mt-3 mb-5">
-        <div class="content">
-            <div class="container-fluid">
-                <form action="." class="needs-validation" enctype="multipart/form-data" method="POST">
-                    <div class="card card-default mt-2 mb-2" id="card">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <i class="fas {{icon}}"></i>
-                                {{title}}
-                            </h3>
-                        </div>
-                        <div class="card-body">
-                            <input type="hidden" name="action" value="{{action}}">
-                                {% for field in form.visible_fields %}
-                                    <div class="form-floating mb-3">
-                                         <label for="{{ field.label }}">{{ field.label }}:</label>
-                                        {{field}}
-                                    </div>
-                                {% endfor %}
-                        </div>
-                        <div class="card-footer">
-                            <button class="btn btn-primary btn-flat" type="submit">
-                                <i class="fas fa-save"></i>
-                                Guardar registro
-                            </button>
-                            <a class="btn btn-danger btn-flat ingresos" href="{{url_link}}">
-                                <i class="fas fa-times"></i>
-                                Cancelar
-                            </a>
+{% block content %}
+<div class="register-box" style="width: 600px;">
+    <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+            <a class="h1" href="{% url 'login' %}"><b>Cost Control</b>S.A.</a>
+        </div>
+        <div class="card-body">
+            <p class="login-box-msg">Nuevo Registro</p>
+            <form action="." class="needs-validation" enctype="multipart/form-data" method="POST">
+                <input type="hidden" name="action" value="{{action}}">
+                <div class="row">
+                    <div class="form-group mb-3 col-6">
+                         <label for="input1">Nombre <span class="text-danger">*</span> </label>
+                         <div class="input-group">
+                        {{form.first_name}}
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-signature"></span>
+                            </div>
                         </div>
                     </div>
-                     {% csrf_token %}
-                </form>
-            </div>
+                    </div>
+                    <div class="form-group mb-3 col-6">
+                        <label for="input1">Apellidos <span class="text-danger">*</span> </label>
+                        <div class="input-group">
+                        {{form.last_name}}
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-file-signature"></span>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group mb-3 col-6">
+                         <label for="input1">Correo eletronico <span class="text-danger">*</span> </label>
+                    <div class="input-group">
+                        {{form.email}}
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="form-group mb-3 col-6">
+                         <label for="input1">Nombre de usuario <span class="text-danger">*</span> </label>
+                    <div class="input-group">
+                        {{form.username}}
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group mb-3 col-6">
+                         <label for="input1">Contraseña <span class="text-danger">*</span> </label>
+                    <div class="input-group">
+                        {{form.password}}
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="form-group mb-3 col-6">
+                         <label for="input1">Seleccione un foto de perfil</label>
+                    <div class="input-group">
+                        <div class="custom-file">
+                            {{form.image}}
+                            <label class="custom-file-label" for="customFile" id="name_img">Seleccione una imagen</label>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn-primary btn-block" type="submit">Registrarse</button>
+                    </div>
+
+                </div>
+            </form>
+            <a class="text-center" href="{% url 'login' %}">¿Ya tienes una cuenta?</a>
         </div>
     </div>
 </div>
+<script>
+$(document).ready(function() {
+  $('#customFile').change(function() {
+    var archivoInput = $(this);
+    var labelArchivo = $('#name_img');
+    if (archivoInput.val()) {
+      labelArchivo.text(archivoInput.val().replace(/.*[\/\\]/, ''));
+    } else {
+      labelArchivo.text('Seleccione una imagen');
+    }
+  });
+});
+</script>
 <script src="{% static 'js/myForm.js' %}"></script>
 <script>
       {% if form.errors %}
@@ -76,5 +141,4 @@
         });
     });
 </script>
-</body>
 {% endblock %}

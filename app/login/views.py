@@ -14,6 +14,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from django.template.loader import render_to_string
 from app import settings
+from security.models import AccessUsers
 from user.forms import NewUserProfileForm
 from user.models import User
 # Create your views here.
@@ -28,6 +29,7 @@ class LoginFormView(FormView):
 
     def form_valid(self, form):
         login(self.request, user=form.get_user())
+
         return super(LoginFormView, self).form_valid(form)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

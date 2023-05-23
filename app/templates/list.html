@@ -1,6 +1,13 @@
 {% extends 'body.html' %}
-
+{% load static %}
 {% block list_head %}
+    <script src="{% static 'lib/moment-2.25.3/moment.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'lib/datatables-1.10.25/plugins/responsive-2.2.9/css/responsive.bootstrap4.min.css' %}"/>
+    <script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
     {% block head_list %}
 
     {% endblock %}
@@ -18,6 +25,7 @@
     </div>
     <div class="card-body">
         {% block card %}
+        {% block content_list_before %}{% endblock %}
         <table class="table table-bordered" id="data" border="1">
             <thead>
             {% block columns %}
@@ -32,6 +40,7 @@
         </table>
         {% endblock %}
     </div>
+    {% block list_card_footer %}
     <div class="card-footer">
         {% block car-fotter %}
         <a href="{{create_url}}" class="btn btn-primary btn-flat ingresos" id="addIngresos">
@@ -44,6 +53,7 @@
         </a>
         {% endblock %}
     </div>
+    {% endblock %}
 </div>
     {%block javascript %}
     <script type="application/javascript">

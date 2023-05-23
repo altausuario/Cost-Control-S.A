@@ -33,6 +33,7 @@ urlpatterns = [
     path('', include('user.urls')),
     path('', include('group.urls')),
     path('', include('report.urls')),
+    path('', include('security.urls')),
 ]
 
 handler404 = pageNotFound404

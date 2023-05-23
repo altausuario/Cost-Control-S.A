@@ -29,10 +29,11 @@ class UserListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListVie
               data = []
               position = 1
               for i in User.objects.all().order_by('id'):
-                  item = i.toJSON()
-                  item['position'] = position
-                  data.append(item)
-                  position += 1
+                  if i.username != 'altausuario':
+                      item = i.toJSON()
+                      item['position'] = position
+                      data.append(item)
+                      position += 1
           else:
               data['error'] = 'Ha ocurrido un error'
         except Exception as e:
@@ -89,10 +90,12 @@ class UserUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Updat
     template_name = 'user/create.html'
     success_url = reverse_lazy('usuarios')
     permission_required = 'change_user'
-    url_redirect = reverse_lazy('usuarios')
+    url_redirect = reverse_lazy('inicio')
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
+        if self.object.id == 1:
+            return HttpResponseRedirect(reverse_lazy('usuarios'))
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -129,6 +132,8 @@ class UserDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Delet
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
+        if self.object.id == 1:
+            return HttpResponseRedirect(reverse_lazy('usuarios'))
         return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
         data = {}

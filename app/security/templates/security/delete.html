@@ -1,0 +1,88 @@
+{% extends 'forms.html' %}
+{% block card-form %}
+{% csrf_token %}
+<input type="hidden" name="action" value="{{ action }}">
+<div class="alert alert-primary alert-dismissible">
+    <h5>
+        <i class="fas fa-exclamation-triangle"></i>
+        Notificación
+    </h5>
+    <p  style="text-align: center; font-weight: bold;">¿Estas seguro de eliminar el registro que contiene los siguientes datos de ingresos?</p>
+    <table border="3" style="min-width:90%; margin:auto; border-color: #000;">
+        <thead>
+            <tr>
+                <th style="text-align: center;">Id</th>
+                <th style="text-align: center;">Usuario</th>
+                <th style="text-align: center;">Fecha de registro</th>
+                <th style="text-align: center;">Hora de registro</th>
+                <th style="text-align: center;">Dirección ip</th>
+                <th style="text-align: center;">Tipo de intento</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: center;">{{object.id}}</td>
+                <td style="text-align: center;">{{object.user}}</td>
+                <td style="text-align: center;">{{object.date_joined}}</td>
+                <td style="text-align: center;">{{object.time_joined}}</td>
+                <td style="text-align: center;">{{object.ip_address}}</td>
+                <td style="text-align: center;">
+                   {% if object.type == 'success' %}
+                    <span class="badge badge-success badge-pill">Éxito</span>
+
+                    {% else %}
+                    <span class="badge badge-danger badge-pill">Fallido</span>
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{%endblock %}
+{% block card-footer %}
+<button type="submit" class="btn btn-info btn-flat ingresos" id="addIngresos">
+    <i class="fas fa-save"></i>
+    Eliminar
+</button>
+<a href="{{ url_link }}" class="btn btn-danger btn-flat ingresos">
+    <i class="fas fa-times"></i>
+    Cancelar
+</a>
+{% endblock %}
+
+{% block javaScript_form %}
+<script>
+    {% if form.errors %}
+        var errors = '';
+        {% for field in form %}
+            {% for error in field.errors %}
+                errors += '{{error}}\n';
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            errors += '{{error}}\n\n';
+        {% endfor %}
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: errors,
+    });
+    {% endif %}
+
+    $('form').on('submit', function(e){
+        e.preventDefault();
+        var parameters = new FormData(this);
+        alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de eliminar registro N° {{object.id}}?', parameters, function(){
+            Swal.fire({
+                  title: 'Alerta',
+                  text: ' Accesos de Usuarios N°.{{object.id}} eliminado correctamente',
+                  icon: 'success',
+                  timer: 3000,
+                  onClose: () => {
+                    location.href = '{{ url_link }}'
+                  }
+               });
+        });
+    });
+</script>
+{% endblock %}

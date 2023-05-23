@@ -49,6 +49,7 @@ LOCAL_APPS = [
     'categories',
     'budget',
     'report',
+    'security',
 ]
 
 THIRD_PARTY_APPS = [

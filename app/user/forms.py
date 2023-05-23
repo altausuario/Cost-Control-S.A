@@ -156,28 +156,28 @@ class NewUserProfileForm(ModelForm):
         widgets = {
             'first_name': TextInput(
                 attrs={
-                    'placeholder': 'Ingrese sus nombres',
-                    'class': 'form-control',
+                    'placeholder': 'Ingrese su nombre',
+                    'class': 'form-control text-capitalize',
                    'required':''
                 }
             ),
             'last_name': TextInput(
                 attrs={
                     'placeholder': 'Ingrese sus apellidos',
-                    'class': 'form-control',
+                    'class': 'form-control text-capitalize',
                     'required': ''
                 }
             ),
             'email': EmailInput(
                 attrs={
-                    'placeholder': 'Ingrese sus email',
+                    'placeholder': 'Ingrese su correo eletronico',
                     'class': 'form-control',
                     'required': ''
                 }
             ),
             'username': TextInput(
                 attrs={
-                    'placeholder': 'Ingrese se nombre de usuario',
+                    'placeholder': 'Ingrese su nombre de usuario',
                     'class': 'form-control'
                 }
             ),
@@ -186,6 +186,13 @@ class NewUserProfileForm(ModelForm):
                 attrs={
                     'placeholder': 'Ingrese su contraseña',
                     'class': 'form-control'
+                }
+            ),
+            'image': FileInput(
+                # render_value=True,
+                attrs={
+                    'class': 'custom-file-input',
+                    'id': 'customFile'
                 }
             )
         }
