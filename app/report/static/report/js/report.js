@@ -1,133 +1,90 @@
-var date_range = null;
-var date_now = new moment().format('YYYY-MM-DD');
-function generate_report_budget() {
-    var parameters = {
-        'action': 'search_report_budget',
-        'start_date': date_now,
-        'end_date': date_now,
-    };
+var input_daterange;
 
-    if (date_range !== null) {
-        parameters['start_date'] = date_range.startDate.format('YYYY-MM-DD');
-        parameters['end_date'] = date_range.endDate.format('YYYY-MM-DD');
-    }
-
-    $('#data').DataTable({
-        responsive: true,
-        autoWidth: false,
-        destroy: true,
-        deferRender: true,
-        ajax: {
-            url: window.location.pathname,
-            type: 'POST',
-            data: parameters,
-            dataSrc: "",
-            headers: {'X-CSRFToken': csrftoken}
-        },
-        order: false,
-        paging: false,
-        ordering: false,
-        info: false,
-        searching: false,
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                extend: 'excelHtml5',
-                text: 'Descargar Excel <i class="fas fa-file-excel"></i>',
-                titleAttr: 'Excel',
-                className: 'btn btn-success btn-flat btn-xs'
+var access_users = {
+    list: function (all) {
+        var parameters = {
+            'action': 'search_report_budget',
+            'start_date': input_daterange.data('daterangepicker').startDate.format('YYYY-MM-DD'),
+            'end_date': input_daterange.data('daterangepicker').endDate.format('YYYY-MM-DD'),
+        };
+        if (all) {
+            parameters['start_date'] = '';
+            parameters['end_date'] = '';
+        }
+        $('#data').DataTable({
+            responsive: true,
+             scrollX: true,
+             autoWidth: false,
+            destroy: true,
+            deferRender: true,
+            ajax: {
+                url: window.location.pathname,
+                type: 'POST',
+                data: parameters,
+                dataSrc: "",
+                headers: {'X-CSRFToken': csrftoken}
             },
-            {
-                extend: 'pdfHtml5',
-                text: 'Descargar Pdf <i class="fas fa-file-pdf"></i>',
-                titleAttr: 'PDF',
-                className: 'btn btn-danger btn-flat btn-xs',
-                download: 'open',
-                orientation: 'landscape',
-                pageSize: 'LEGAL',
-                customize: function (doc) {
-                    doc.styles = {
-                        header: {
-                            fontSize: 18,
-                            bold: true,
-                            alignment: 'center'
-                        },
-                        subheader: {
-                            fontSize: 13,
-                            bold: true
-                        },
-                        quote: {
-                            italics: true
-                        },
-                        small: {
-                            fontSize: 8
-                        },
-                        tableHeader: {
-                            bold: true,
-                            fontSize: 11,
-                            color: 'white',
-                            fillColor: '#2d4154',
-                            alignment: 'center'
-                        }
-                    };
-                    doc.content[1].table.widths = ['20%','20%','15%','15%','15%','15%'];
-                    doc.content[1].margin = [0, 35, 0, 0];
-                    doc.content[1].layout = {};
-                    doc['footer'] = (function (page, pages) {
-                        return {
-                            columns: [
-                                {
-                                    alignment: 'left',
-                                    text: ['Fecha de creación: ', {text: date_now}]
-                                },
-                                {
-                                    alignment: 'right',
-                                    text: ['página ', {text: page.toString()}, ' de ', {text: pages.toString()}]
-                                }
-                            ],
-                            margin: 20
-                        }
-                    });
+             order: false,
+            paging: false,
+            ordering: false,
+            info: false,
+            searching: false,
+//            columns: [
+//                {"data": "id"},
+//                {"data": "user.username"},
+//                {"data": "date_joined"},
+//                {"data": "time_joined"},
+//                {"data": "ip_address"},
+//                {"data": "type.name"},
+//                {"data": "id"},
+//            ],
+//            columnDefs: [
+//                {
+//                    targets: [-1],
+//                    class: 'text-center',
+//                    orderable: false,
+//                    render: function (data, type, row) {
+//                        return '<a href="/access/users/delete/' + row.id + '" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a>';
+//                    }
+//                },
+//                {
+//                    targets: [-2],
+//                    class: 'text-center',
+//                    render: function (data, type, row) {
+//                    var name = row.type.name;
+//                        if(row.type.id === 'success'){
+//                            return '<span class="badge badge-success badge-pill">' + name + '</span>';
+//                        }
+//                        return '<span class="badge badge-danger badge-pill">' + name + '</span>';
+//                    }
+//                },
+//            ],
+            initComplete: function (settings, json) {
 
-                }
             }
-        ],
-        // columns: [
-        //     {"data": "id"},
-        //     {"data": "name"},
-        //     {"data": "desc"},
-        //     {"data": "desc"},
-        // ],
-        columnDefs: [
-//            {
-//                targets: [-1, -2, -3],
-//                class: 'text-center',
-//                orderable: false,
-//                render: function (data, type, row) {
-//                    return '$' + data //parseFloat(data).toFixed(2);
-//                }
-//            },
-        ],
-        initComplete: function (settings, json) {
+        });
+    },
+};
 
-        }
-    });
-}
 $(function () {
-    $('input[name="date_range"]').daterangepicker({
-        locale: {
-            format: 'YYYY-MM-DD',
-            applyLabel: '<i class="fas fa-chart-pie"></i> Aplicar',
-            cancelLabel: '<i class="fas fa-times"></i> Cancelar',
-        }
-    }).on('apply.daterangepicker', function (ev, picker) {
-        date_range = picker;
-        generate_report_budget();
-    }).on('cancel.daterangepicker', function (ev, picker) {
-        $(this).data('daterangepicker').setStartDate(date_now);
-        $(this).data('daterangepicker').setEndDate(date_now);
-        date_range = picker;
-        generate_report_budget();
+    input_daterange = $('#id_date_range');
+    input_daterange
+        .daterangepicker({
+            language: 'auto',
+            startDate: new Date(),
+            locale: {
+                format: 'YYYY-MM-DD',
+            }
+        });
+    $('.drp-buttons').hide();
+
+    $('.btnSearch').on('click', function () {
+        access_users.list(false);
     });
-    generate_report_budget();
+
+    $('.btnSearchAll').on('click', function () {
+        access_users.list(true);
+    });
+
+    access_users.list(false);
 });

@@ -53,6 +53,12 @@ class UserForm(ModelForm):
                     'multiple ': 'multiple',
                     'aria-label': 'Default select example'
                 }
+            ),
+            'image': FileInput(
+                attrs={
+                    'class': 'custom-file-input',
+                    'id': 'customFile'
+                }
             )
         }
         exclude = ['user_permissions', 'last_login', 'date_joined', 'is_active', 'is_staff']

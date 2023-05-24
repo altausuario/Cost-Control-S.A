@@ -1,31 +1,53 @@
-{% extends 'report.html' %}
+{% extends 'list.html' %}
 {% load static %}
-{% block head_report %}
+{% block head_list %}
+    <script src="{% static 'lib/bootstrap-daterangepicker-3.1/js/spanish.js' %}"></script>
+    <script src="{% static 'lib/bootstrap-daterangepicker-3.1/js/daterangepicker.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/bootstrap-daterangepicker-3.1/css/daterangepicker.css' %}"/>
     <script src="{% static 'report/js/report.js' %}"></script>
 {% endblock %}
 
-{% block content_report %}
+{% block columns %}
+    <tr>
+        <th scope="col" style="width:5%;">#</th>
+        <th scope="col" style="width:15%;">Nombre</th>
+        <th scope="col" style="width:15%;">Fecha de creación</th>
+        <th scope="col valor" style="width:15%;">Total de ingresos</th>
+        <th scope="col valor" style="width:20%;">Total de gastos</th>
+        <th scope="col valor" style="width:10%;">Total</th>
+    </tr>
+{% endblock %}
+
+{% block rows %}
+
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}
+
+{% block content_list_before %}
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-5">
             <div class="form-group">
-                <label>Rango de fechas:</label>
-                {{ form.date_range }}
+                <label>Rangos de fechas:</label>
+                <div class="input-group mb-3">
+                    {{ form.date_range }}
+                    <div class="input-group-append">
+                        <button class="btn btn-success btnSearch" type="button">
+                            <i class="fas fa-calendar-check"></i> Buscar por rangos
+                        </button>
+                        <button class="btn btn-warning btnSearchAll" type="button">
+                            <i class="fas fa-calendar-check"></i> Ver todas
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <hr>
-    <table class="table table-bordered" id="data">
-        <thead>
-        <tr>
-            <th scope="col" style="width:5%;">#</th>
-                <th scope="col" style="width:15%;">Nombre</th>
-                <th scope="col" style="width:15%;">Fecha de creación</th>
-                <th scope="col valor" style="width:15%;">Total de ingresos</th>
-                <th scope="col valor" style="width:20%;">Total de gastos</th>
-                <th scope="col valor" style="width:10%;">Total</th>
-        </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+{% endblock %}
+
+{% block list_card_footer %}
+
 {% endblock %}

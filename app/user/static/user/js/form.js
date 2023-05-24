@@ -18,9 +18,6 @@ $(function(){
    $('#formAddGroup').on('hidden.bs.modal', function (e){
       $('form[id="newGroup"]').trigger('reset');
    });
-
-
-
    $('form[id="newGroup"]').on('submit', function(e){
         e.preventDefault();
         var parameters = new FormData(this);
@@ -30,4 +27,14 @@ $(function(){
             $('#formAddGroup').modal('hide');
         });
     });
+
+    $('#customFile').change(function() {
+    var archivoInput = $(this);
+    var labelArchivo = $('#name_img');
+    if (archivoInput.val()) {
+      labelArchivo.text(archivoInput.val().replace(/.*[\/\\]/, ''));
+    } else {
+      labelArchivo.text('Seleccione una imagen');
+    }
+  });
 });

@@ -11,12 +11,21 @@
 {% csrf_token %}
 <input name="action" type="hidden" value="{{ action }}">
 {% for field in form.visible_fields %}
-{% if field.label != 'Grupos' and field.label != 'Image' %}
+
+{% if field.label != 'Grupos' and field.label != 'Image' and field.label != 'Contraseña' %}
 <div class="form-group">
     <label for="{{ field.label }}">{{ field.label }}:</label>
     {{field}}
 </div>
 {% endif %}
+
+{% if action == 'add' and field.label == 'Contraseña' %}
+<div class="form-group">
+    <label for="{{ field.label }}">{{ field.label }}:</label>
+    {{field}}
+</div>
+{% endif %}
+
 {% if field.label == 'Grupos'%}
 <label for="{{ field.label }}">{{ field.label }}:</label>
 <div class="input-group mb-3">
@@ -32,14 +41,17 @@
 {% endif %}
 
 {% if field.label == 'Image'%}
+<label for="{{ field.label }}">{{ field.label }}:</label>
 <div class="form-group">
-    <label for="{{ field.label }}" class="label-img">{{ field.label }}:</label>
-    <div class="file-select"  id="image">
-        {{field}}
-    </div>
+<div class="custom-file">
+    {{field}}
+<label class="custom-file-label" for="customFile" id="name_img">Seleccione una imagen</label>
+</div>
 </div>
 {% endif %}
+
 {% endfor %}
+
 {% endblock %}
 
 {% block javaScript_form %}

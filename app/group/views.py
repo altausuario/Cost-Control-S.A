@@ -27,7 +27,6 @@ class GroupListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListVi
                   pre = []
                   for p in permisos:
                       pre.append(p.name)
-                  print(pre)
                   data.append([
                       position,
                       g.name,
@@ -35,7 +34,6 @@ class GroupListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListVi
                       g.id
                   ])
                   position += 1
-              print(data)
           else:
               data['error'] = 'Ha ocurrido un error'
         except Exception as e:
