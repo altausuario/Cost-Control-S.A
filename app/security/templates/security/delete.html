@@ -1,6 +1,6 @@
 {% extends 'forms.html' %}
 {% block card-form %}
-{% csrf_token %}
+{% load i18n %}
 <input type="hidden" name="action" value="{{ action }}">
 <div class="alert alert-primary alert-dismissible">
     <h5>

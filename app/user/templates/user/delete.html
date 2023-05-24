@@ -1,4 +1,5 @@
 {% extends 'forms.html' %}
+{% load i18n %}
 {% block card-form %}
 {% csrf_token %}
 <input type="hidden" name="action" value="{{ action }}">
