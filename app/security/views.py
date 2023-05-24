@@ -16,7 +16,7 @@ from user.models import User
 class AccessUsersListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, FormView):
     form_class = ReportBudgetForm
     template_name = 'security/list.html'
-    permission_required = 'view_access_users'
+    permission_required = 'view_accessusers'
     url_redirect = reverse_lazy('inicio')
 
     def post(self, request, *args, **kwargs):
@@ -50,7 +50,7 @@ class AccessUsersDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin
     model = AccessUsers
     template_name = 'security/delete.html'
     success_url = reverse_lazy('list_security')
-    permission_required = 'delete_access_users'
+    permission_required = 'delete_accessusers'
     url_redirect = reverse_lazy('inicio')
 
     def dispatch(self, request, *args, **kwargs):
