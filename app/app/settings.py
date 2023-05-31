@@ -50,6 +50,7 @@ LOCAL_APPS = [
     'budget',
     'report',
     'security',
+    'locked',
 ]
 
 THIRD_PARTY_APPS = [
@@ -131,7 +132,7 @@ LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
+USE_I18N = False
 
 USE_TZ = True
 
@@ -168,7 +169,7 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'costcontrolsa@gmail.com'
-EMAIL_HOST_PASSWORD = 'fihdssgupyybvffn'
+EMAIL_HOST_PASSWORD = 'apgjoajxhqnkasaj'
 
 DOMAIN = ''
 

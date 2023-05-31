@@ -38,7 +38,7 @@ class AuthenticationForm(forms.Form):
             user = queryset[0]
             intent = user.accessusers_set.filter(type=LOGIN_TYPE[1][0], date_joined=datetime.now().date()).count()
             if not user.is_active:
-                    raise forms.ValidationError('El usuario ha sido bloqueado. Comuniquese con su administrador')
+                    raise forms.ValidationError('El usuario ha sido bloqueado. Comuniquese con su administrador atrabes del correo eletronico costcontrolsa@gmail.com')
             if authenticate(username=username, password=password) is None:
                 AccessUsers(user=user, type=LOGIN_TYPE[1][0]).save()
                 if intent > 2:

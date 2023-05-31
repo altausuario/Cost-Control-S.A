@@ -148,7 +148,6 @@ class UserDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Delet
         context['icon'] = 'fa-trash-alt'
         context['url_link'] = self.success_url
         return context
-
 class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserProfileForm
@@ -220,7 +219,6 @@ class UserChangePasswordUpdateView(LoginRequiredMixin, FormView):
         context['icon'] = 'fa-edit'
         context['url_link'] = self.success_url
         return context
-
 class UserChangeGroup(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         try:

@@ -1,0 +1,78 @@
+{% extends 'login/base_login.html' %}
+{% load i18n %}
+{% block content %}
+<div class="login-box">
+    <!-- /.login-logo -->
+    <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+            <h2 class="h1">
+                <i class="fas fa-coins"></i>
+                Cost Control S.A
+            </h2>
+        </div>
+        <div class="card-body">
+            <p class="login-box-msg">Habilitar cuenta</p>
+
+            <form action="." method="post">
+                <input type="hidden" name="next" value="{{ next }}">
+                <div class="input-group mb-3">
+                    {{form.username}}
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    {{form.password}}
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    {{form.confirmPassword}}
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <!--                            <i class="fas fa-sign-in-alt"></i>-->
+                            <i class="fas fa-lock-open"></i>
+                            Habilitar cuenta
+                        </button>
+                    </div>
+                </div>
+                <p class="text-center mt-2" >
+                    Si deseas vovel al login da un click
+                    <a href="{% url 'login' %}" > aqui</a>
+                </p>
+            </form>
+        </div>
+    </div>
+    <script type="application/javascript">
+        $(function(){
+            $('form').on('submit', function(e){
+                e.preventDefault();
+                var parameters = new FormData(this);
+                alert_confirm(window.location.pathname, 'Notificación', '¿Estas seguro de habilitar tu cuenta?', parameters, function(){
+                    Swal.fire({
+                      title: 'Notificación',
+                      text: 'Tu cuenta ha sido habilitada corretamente',
+                      icon: 'success',
+                      timer: 5000,
+                      onClose: () => {
+                        location.href = '/'
+                      }
+                    });
+                });
+            });
+        });
+    </script>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'list.html' %}
+{% load static %}
+{% load i18n %}
+{% block list_head %}
+<script src="{% static 'locked/js/list.js' %}" xmlns=""></script>
+{% endblock %}
+
+{% block columns %}
+<tr>
+    <th scope="col" style="width:5%;">#</th>
+    <th scope="col" style="width:15%;">Nombres</th>
+    <th scope="col valor" style="width:15%;">Username</th>
+    <th scope="col valor" style="width:20%;">Fecha de registro</th>
+    <th scope="col valor" style="width:10%;">Imagen</th>
+    <th scope="col valor" style="width:15%;">Gupos</th>
+    <th scope="col valor" style="width:15%;">Estado</th>
+</tr>
+{% endblock %}
+
+{% block rows %}
+{% endblock %}
+
+  {% block list_card_footer %}
+    <div class="card-footer">
+        {% block car-fotter %}
+        <a href="{{create_url}}" class="btn btn-primary btn-flat ingresos" id="addIngresos">
+            <i class="fas fa-lock-open"></i>
+             Habilitar usuario
+        </a>
+        <a href="{{ link_url }}" class="btn btn-success btn-flat ">
+            <i class="fas fa-sync"></i>
+            Actualizar
+        </a>
+        {% endblock %}
+    </div>
+    {% endblock %}
+

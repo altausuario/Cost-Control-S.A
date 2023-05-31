@@ -1,4 +1,6 @@
 import json
+
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import *
 from django.db.models.functions import Coalesce
 from django.http import JsonResponse
@@ -9,8 +11,11 @@ from categories.models import Categories
 from expenses.models import Expenses
 from income.models import Income
 from report.forms import ReportBudgetForm
+from user.mixins import ValidatePermissionRequiredMinxin
+
+
 # Create your views here.
-class ReportBudgetView(TemplateView):
+class ReportBudgetView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, TemplateView):
     template_name = 'report/report_budget.html'
     def post(self, request, *args, **kwargs):
         data = []
@@ -54,7 +59,7 @@ class ReportBudgetView(TemplateView):
         context['link_url'] = reverse_lazy('report_budget')
         context['form'] = ReportBudgetForm
         return context
-class ReportIncomesView(TemplateView):
+class ReportIncomesView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,TemplateView):
     template_name = 'report/report_income.html'
     def post(self, request, *args, **kwargs):
         data = []
@@ -98,7 +103,7 @@ class ReportIncomesView(TemplateView):
         context['link_url'] = reverse_lazy('report_incomes')
         context['form'] = ReportBudgetForm
         return context
-class ReportExpensesView(TemplateView):
+class ReportExpensesView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,TemplateView):
     template_name = 'report/report_expenses.html'
     def post(self, request, *args, **kwargs):
         data = []

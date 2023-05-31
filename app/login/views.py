@@ -36,28 +36,6 @@ class LoginFormView(FormView):
         context['title'] = 'iniciar sesión'
         return context
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # class loginFormView(LoginView):
 #     template_name = 'login/login.html'
 #     def dispatch(self, request, *args, **kwargs):
@@ -114,9 +92,6 @@ class ResetPasswordView(FormView):
             form = ResetPasswordForm(request.POST)
             if form.is_valid():
                 user = form.get_user()
-                men = {
-                    'email': user.email
-                }
                 data = {
                     'data': self.send_email_reset_password(user),
                     'success': user.email

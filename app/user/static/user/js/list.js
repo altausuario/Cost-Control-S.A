@@ -21,6 +21,7 @@ $('#data').DataTable({
             {'data': 'date_joined'},
             {'data': 'image'},
             {'data': 'groups'},
+            {'data': 'is_active'},
             {'data': 'id'},
         ],
 
@@ -45,6 +46,19 @@ $('#data').DataTable({
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
+                    var estado = row.is_active
+                    if (estado == false){
+                         return '<span class = "badge badge-danger"> Inactivo </span> ';
+                    }else{
+                        return '<span class = "badge badge-success"> Activo </span> ';
+                    }
+                }
+            },
+            {
+                targets: [-3],
+                class: 'text-center',
+                orderable: false,
+                render: function (data, type, row) {
                     var html = '';
                     $.each(row.groups,function (key, value){
                      html += '<span class = "badge badge-success">' + value.name +' </span> ';
@@ -53,7 +67,7 @@ $('#data').DataTable({
                 }
             },
             {
-                targets: [-3],
+                targets: [-4],
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
