@@ -18,6 +18,9 @@ from webapp.forms import *
 class homeView(LoginRequiredMixin, TemplateView):
     template_name = 'home/index.html'
 
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
     def meses_año(self):
         data = '';
         month = datetime.now().month.real
@@ -93,7 +96,7 @@ class homeView(LoginRequiredMixin, TemplateView):
                         'name': b.name,
                         'y': float(Total)
                     })
-                Total = 0
+                    Total = 0
         except:
             pass
         return data

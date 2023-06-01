@@ -12,11 +12,13 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import *
 from locked.forms import ActivateForm, ChangeActivateUserForm
+from security.models import AccessUsers
 from user.mixins import ValidatePermissionRequiredMinxin
 from user.models import User
 # Create your views here.
 class LockedListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, TemplateView):
     template_name = 'locked/list.html'
+    permission_required = 'view_user'
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -42,11 +44,11 @@ class LockedListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Templ
         context['url_link'] = reverse_lazy('list_locked')
         context['create_url'] = reverse_lazy('activate_locked')
         return context
-class LockedActivateFormView(FormView):
+class LockedActivateFormView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,FormView):
     form_class = ActivateForm
     template_name = 'locked/activate.html'
     success_url = reverse_lazy('list_locked')
-
+    permission_required = 'add_user'
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -119,7 +121,7 @@ class LockedActivateFormView(FormView):
         context['action'] = 'add'
         context['url_link'] = self.success_url
         return context
-class ChangeActivateUserView(FormView):
+class ChangeActivateUserView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,FormView):
     form_class = ChangeActivateUserForm
     template_name = 'locked/activateuser.html'
     success_url = reverse_lazy(settings.LOGIN_REDIRECT_URL)
@@ -139,6 +141,10 @@ class ChangeActivateUserView(FormView):
                 username = request.POST.get('username')
                 user = User.objects.get(token=self.kwargs['token'])
                 if username == user.username:
+                    acess = AccessUsers.objects.filter(user_id=user.pk)
+                    for ac in acess:
+                        a = AccessUsers.objects.get(id=ac.id)
+                        a.delete()
                     user.set_password(request.POST['password'])
                     user.token = uuid.uuid4()
                     user.is_active = True

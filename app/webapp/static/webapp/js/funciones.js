@@ -87,8 +87,9 @@ function get_graph_budget_percentage_year_month(){
     });
 }
 $(function () {
+    get_graph_budget_percentage_year_month()
     get_graph_budget_year_month()
     get_graph_income_year_month()
     get_graph_expenses_year_month()
-    get_graph_budget_percentage_year_month()
+
 });

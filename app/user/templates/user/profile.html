@@ -2,17 +2,88 @@
 {% load static %}
 {% load i18n %}
 {% block card-form %}
-            {% csrf_token %}
-            <input type="hidden" name="action" value="{{ action }}">
-            {% for field in form.visible_fields %}
-            <div class="form-group">
-                <label for="{{ field.label }}">{{ field.label }}:</label>
-                {{field}}
+<div class="row">
+    <input type="hidden" name="action" value="{{action}}">
+    <div class="form-group mb-3 col-3">
+        <div class="row"></div>
+        <div class="row">
+            <div class="form-group mb-3 col-12 text-center">
+                {% if request.user.image %}
+                <img class="img-fluid mx-auto d block image-user" src="{{request.user.image.url}}"
+                     style="width: 180px; height:180px; border-radius:5px;">
+                {% endif %}
+                {% if not request.user.image %}
+                <img class="img-fluid mx-auto d block image-user" src="{% static 'img/user.png' %}"
+                     style="width: 150px; height:150px;">
+                {% endif %}
             </div>
-            {% endfor %}
+            <div class="form-group mb-3 col-12 text-center">
+                <div class="row">
+                    <div class="form-group col-6 text-right">
+                        <label class="btn btn-success btn-sm" for="fileInput">
+                            <i class="fas fa-image"></i>
+                            <input class="d-none" id="fileInput" name="image" type="file">
+                        </label>
+                    </div>
+                    <div class="form-group col-6 text-left">
+                        <button class="btn btn-danger btn-sm image-user-delete" type="button">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group mb-3 col-9">
+        <div class="row">
+            <div class="form-group mb-3 col-6">
+                <label for="input1">Nombre</label>
+                {{form.first_name}}
+            </div>
+            <div class="form-group mb-3 col-6">
+                <label for="input1">Apellidos</label>
+                {{form.last_name}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group mb-3 col-6">
+                <label for="input1">Nombre de usuario</label>
+                {{form.username}}
+            </div>
+            <div class="form-group mb-3 col-6">
+                <label for="input1">Contraseña</label>
+                {{form.password}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group mb-3 col-12">
+                <label for="input1">Correo eletronico</label>
+                {{form.email}}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block javaScript_form %}
+<script>
+    $('.image-user-delete').on('click', function(){
+         var img = '/static/img/user.png'
+         $('.image-user').attr('src', img);
+    })
+</script>
+<script>
+    $('#fileInput').change(function() {
+        var input = this;
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            $('.image-user').attr('src', e.target.result);
+          }
+          reader.readAsDataURL(input.files[0]);
+        }
+      });
+</script>
 <script>
     {% if form.errors %}
         var errors = '';

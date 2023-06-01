@@ -77,9 +77,10 @@ class UserCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Creat
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Create user'
+        context['title'] = 'Nuevo usuario'
         context['action'] = 'add'
         context['icon'] = 'fa-user-plus'
+        context['img'] = 'user.png'
         context['url_link'] = self.success_url
         context['formGruop'] = GroupForm
         context['group'] = Group.objects.all().order_by('-id')[:1]
@@ -97,7 +98,14 @@ class UserUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Updat
         if self.object.id == 1:
             return HttpResponseRedirect(reverse_lazy('usuarios'))
         return super().dispatch(request, *args, **kwargs)
-
+    def image_user(self, pk):
+        user = User.objects.get(pk=pk)
+        if not user.image:
+            return 'user.png'
+        return user.image
+    def user_superuser(self,pk):
+        user = User.objects.get(pk=pk)
+        return user.is_superuser
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -117,9 +125,12 @@ class UserUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Updat
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        pk=self.kwargs.get('pk')
         context['title'] = 'Editar usuario'
         context['action'] = 'edit'
         context['icon'] = 'fa-user-edit'
+        context['img'] = self.image_user(pk)
+        context['superuser'] = self.user_superuser(pk)
         context['url_link'] = self.success_url
         context['formGruop'] = GroupForm
         return context
@@ -175,9 +186,9 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Actualizar usuario'
+        context['title'] = 'Actualizar Perfil'
         context['action'] = 'edit'
-        context['icon'] = 'fa-edit'
+        context['icon'] = 'fa-user-edit'
         context['url_link'] = self.success_url
         return context
 class UserChangePasswordUpdateView(LoginRequiredMixin, FormView):

@@ -28,13 +28,5 @@ $(function(){
         });
     });
 
-    $('#customFile').change(function() {
-    var archivoInput = $(this);
-    var labelArchivo = $('#name_img');
-    if (archivoInput.val()) {
-      labelArchivo.text(archivoInput.val().replace(/.*[\/\\]/, ''));
-    } else {
-      labelArchivo.text('Seleccione una imagen');
-    }
-  });
+
 });

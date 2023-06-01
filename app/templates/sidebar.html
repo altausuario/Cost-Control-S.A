@@ -13,10 +13,10 @@
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image">
                             {% if request.user.image %}
-                            <img alt="User Image" class="img-circle elevation-2" src="{{request.user.image.url}}">
+                            <img alt="User Image" class="elevation-2" src="{{request.user.image.url}}" style="width: 40px; height:40px; border-radius:5px;">
                             {% endif %}
                             {% if not request.user.image %}
-                            <img alt="User Image" class="img-circle elevation-2" src="{% static 'img/empty.png' %}">
+                            <img alt="User Image" class="elevation-2" src="{% static 'img/user.png' %}" style="width: 40px; height:40px; border-radius:5px;">
                             {% endif %}
                         </div>
                         <div class="info">

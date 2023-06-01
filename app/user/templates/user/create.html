@@ -7,44 +7,131 @@
 <script src="{% static 'lib/select2-4.0.13/js/select2.min.js' %}"></script>
 <script src="{% static 'user/js/form.js' %}"></script>
 <script src="{% static 'js/myForm.js' %}"></script>
+<style>
+      .switch-container {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+      }
+
+      .switch {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .switch-label {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        border-radius: 34px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .switch-label:before {
+        content: "";
+        position: absolute;
+        width: 26px;
+        height: 26px;
+        top: 0;
+        left: 4px;
+        background-color: #fff;
+        border-radius: 50%;
+        transition: transform 0.3s ease;
+      }
+
+      .switch:checked + .switch-label {
+        background-color: #4CAF50;
+      }
+
+      .switch:checked + .switch-label:before {
+        transform: translateX(26px);
+      }
+      </style>
 {% endblock %}
 {% block card-form %}
-{% csrf_token %}
-<input name="action" type="hidden" value="{{ action }}">
-{% for field in form.visible_fields %}
-
-{% if field.label != 'Grupos' and field.label != 'Image' %}
-<div class="form-group">
-    <label for="{{ field.label }}">{{ field.label }}:</label>
-    {{field}}
-</div>
-{% endif %}
-{% if field.label == 'Grupos'%}
-<label for="{{ field.label }}">{{ field.label }}:</label>
-<div class="input-group mb-3">
-    {{field}}
-    <div class="input-group-append">
-        <span class="d-inline-block" data-toggle="tooltip" tabindex="0" title="Agregar Nuevo Grupo">
-            <button class="btn btn-success btn-flat btnAddGroup" id="btnAddGroup" type="button">
-                <i class="fas fa-plus"></i>
-            </button>
-        </span>
+<div class="row">
+    <input name="action" type="hidden" value="{{action}}">
+    <div class="form-group mb-3 col-3">
+        <div class="row"></div>
+        <div class="row">
+            <div class="form-group mb-3 col-12 text-center">
+                <img class="img-fluid mx-auto d block image-user" src="/media/{{img}}"
+                     style="width: 180px; height:180px; border-radius:5px;">
+            </div>
+            <div class="form-group mb-3 col-12 text-center">
+                <div class="row">
+                    <div class="form-group col-6 text-right">
+                        <label class="btn btn-success btn-sm" for="fileInput">
+                            <i class="fas fa-image"></i>
+                            <input class="d-none" id="fileInput" name="image" type="file">
+                        </label>
+                    </div>
+                    <div class="form-group col-6 text-left">
+                        <button class="btn btn-danger btn-sm image-user-delete" type="button">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group mb-3 col-9">
+        <div class="row">
+            <div class="form-group mb-3 col-6">
+                <label for="input1">Nombre</label>
+                {{form.first_name}}
+            </div>
+            <div class="form-group mb-3 col-6">
+                <label for="input1">Apellidos</label>
+                {{form.last_name}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group mb-3 col-6">
+                <label for="input1">Nombre de usuario</label>
+                {{form.username}}
+            </div>
+            <div class="form-group mb-3 col-6">
+                <label for="input1">Contraseña</label>
+                {{form.password}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group mb-3 col-6">
+                <label for="input1">Correo eletronico</label>
+                {{form.email}}
+            </div>
+            <div class="input-group mb-3 col-6">
+                <label for="input1">Grupos</label>
+                <div class="input-group">
+                {{form.groups}}
+                <div class="input-group-append">
+                    <span class="d-inline-block" data-toggle="tooltip" tabindex="0" title="Agregar Nuevo Grupo">
+                        <button class="btn btn-success btn-flat btnAddGroup" id="btnAddGroup" type="button">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </span>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group mb-3 col-6">
+                <label for="input1">Super Usuario: </label>
+                <div class="switch-container">
+            <input id="superuserToggle" type="checkbox" class="switch" name="is_superuser"/>
+            <label for="superuserToggle" class="switch-label"></label>
+      </div>
+            </div>
+        </div>
     </div>
 </div>
-{% endif %}
-
-{% if field.label == 'Image'%}
-<label for="{{ field.label }}">{{ field.label }}:</label>
-<div class="form-group">
-<div class="custom-file">
-    {{field}}
-<label class="custom-file-label" for="customFile" id="name_img">Seleccione una imagen</label>
-</div>
-</div>
-{% endif %}
-
-{% endfor %}
-
 {% endblock %}
 
 {% block javaScript_form %}
@@ -88,6 +175,24 @@
         </div>
     </form>
 </div>
+<script>
+    $('.image-user-delete').on('click', function(){
+         var img = '/static/img/user.png'
+         $('.image-user').attr('src', img);
+    })
+</script>
+<script>
+    $('#fileInput').change(function() {
+        var input = this;
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            $('.image-user').attr('src', e.target.result);
+          }
+          reader.readAsDataURL(input.files[0]);
+        }
+      });
+</script>
 <script>
     function getnewgroup(){
         {% for g in group %}
@@ -147,4 +252,23 @@
 
 
 </script>
+
+
+<script>
+      $(document).ready(function() {
+        var isSuperuser = "{{superuser}}";
+        if (isSuperuser === "True") {
+          $('#superuserToggle').prop('checked', true);
+        } else {
+          $('#superuserToggle').prop('checked', false);
+        }
+        $('#superuserToggle').change(function() {
+          if ($(this).prop('checked')) {
+            isSuperuser = "True";
+          } else {
+            isSuperuser = "False";
+          }
+        });
+      });
+      </script>
 {% endblock %}
