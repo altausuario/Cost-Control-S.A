@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from crum import get_current_request
 from django.forms import *
 from django import forms
@@ -20,7 +22,7 @@ class IncomeForm(ModelForm):
 
     class Meta:
         model = Income
-        fields = 'description', 'amount', 'date_creation', 'annotations', 'categorie', 'state'
+        fields = 'description', 'amount', 'date_joined', 'annotations', 'categorie', 'state', 'iva', 'totaliva', 'total', 'image'
         widgets = {
             'description': Textarea(
                 attrs={
@@ -29,15 +31,50 @@ class IncomeForm(ModelForm):
                 },
 
             ),
-            'amount': NumberInput(
+            'amount': TextInput(
                 attrs={
-                    'placeholder': 'Ingrese el valor del ingreso',
+                    'placeholder': '0,0',
                 },
 
             ),
-            'date_creation': TextInput(
+            'iva': NumberInput(
                 attrs={
-                    'type': 'datetime-local',
+                    'class': 'col-md-8 form-control',
+                    'style':'width: 60%; padding-left:8px;',
+                    'readonly': 'readonly',
+                },
+
+            ),
+            'totaliva': NumberInput(
+                attrs={
+                    'readonly': 'readonly',
+                    'value': 0.00,
+                    'style': 'cursor: pointer'
+                },
+
+            ),
+            'total': NumberInput(
+                attrs={
+                    'readonly': 'readonly',
+                    'value': 0.00,
+                    'style': 'cursor: pointer'
+                },
+
+            ),
+            'date_joined': DateInput(
+                format='%Y-%m-%d',
+                attrs={
+                    # 'class': 'form-control datetimepicker-input',
+                    # # 'type': 'datetime-local',
+                    # 'date-target': '#id_date_creation',
+                    # 'date-toggle': 'datetimepicker'
+                    # 'value': datetime.now().strftime('%Y-%m-%d'),
+                    # 'type': 'date',
+                    'placeholder': 'YYYY-MM-DD',
+                    'class': 'form-control datetimepicker-input',
+                    'id': 'date_joined',
+                    'data-target': '#date_joined',
+                    'data-toggle': 'datetimepicker'
                 }
             ),
             'annotations': Textarea(

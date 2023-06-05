@@ -13,14 +13,15 @@ var vents = {
         var password = '';
         var date_joined = '';
         var email = '';
+        var image = '';
         $.each(this.items.datos, function(pos, dict){
-
-            first_name += dict.first_name
-            last_name += dict.last_name
-            username += dict.username
-            password += dict.password
-            date_joined += dict.date_joined
-            email += dict.email
+            first_name = dict.first_name
+            last_name = dict.last_name
+            username = dict.username
+            password = dict.password
+            date_joined = dict.date_joined
+            email = dict.email
+            image = dict.image
         })
         $('input[name="first_name"]').val(first_name)
         $('input[name="last_name"]').val(last_name)
@@ -28,6 +29,7 @@ var vents = {
         $('input[name="password"]').val(password)
         $('input[name="date_joined"]').val(date_joined)
         $('input[name="email"]').val(email)
+        $('#img').attr("src", image);
     }
   }
 

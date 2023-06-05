@@ -70,25 +70,31 @@ class ReportIncomesView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,Tem
               end_date = request.POST.get('end_date', '')
               search = Income.objects.all()
               if len(start_date) and len(end_date):
-                search = search.filter(date_creation__range=[start_date, end_date], user_id=request.user.id)
+                search = search.filter(date_joined__range=[start_date, end_date], user_id=request.user.id)
               for s in search:
                   c = s.categorie.id
                   n = Categories.objects.get(id=c)
                   data.append([
                       s.id,
                       s.description,
-                      s.date_creation.strftime('%Y-%m-%d'),
+                      s.date_joined.strftime('%Y-%m-%d'),
                       n.name,
                       s.state,
                       format(s.amount, '.2f'),
+                      format(s.iva, '.0f'),
+                      format(s.totaliva, '.2f'),
+                      format(s.total, '.2f'),
                   ])
-              income_total = search.aggregate(r=Coalesce(Sum('amount'), 0, output_field=DecimalField())).get('r')
+              income_total = search.aggregate(r=Coalesce(Sum('total'), 0, output_field=DecimalField())).get('r')
               data.append([
                   '---',
                   '---',
                   '----',
                   '----',
                   '----',
+                  '----',
+                  '----',
+                  f'----',
                   format(income_total, '.2f'),
               ])
           else:
@@ -115,22 +121,28 @@ class ReportExpensesView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,Te
               search = Expenses.objects.all()
               name = '';
               if len(start_date) and len(end_date):
-                search = search.filter(date_creation__range=[start_date, end_date], user_id=request.user.id)
+                search = search.filter(date_joined__range=[start_date, end_date], user_id=request.user.id)
               for s in search:
                   c = s.categorie.id
                   n = Categories.objects.get(id=c)
                   data.append([
                       s.id,
                       s.description,
-                      s.date_creation.strftime('%Y-%m-%d'),
+                      s.date_joined.strftime('%Y-%m-%d'),
                       n.name,
                       s.state,
                       format(s.amount, '.2f'),
+                      format(s.iva, '.0f'),
+                      format(s.totaliva, '.2f'),
+                      format(s.total, '.2f'),
                   ])
-              income_total = search.aggregate(r=Coalesce(Sum('amount'), 0, output_field=DecimalField())).get('r')
+              income_total = search.aggregate(r=Coalesce(Sum('total'), 0, output_field=DecimalField())).get('r')
               data.append([
                   '---',
                   '---',
+                  '----',
+                  '----',
+                  '----',
                   '----',
                   '----',
                   '----',

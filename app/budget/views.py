@@ -197,9 +197,12 @@ class BudgetUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
                         'id': i.id,
                         'description': i.description,
                         'amount': float(i.amount),
+                        'iva': float(i.iva),
+                        'totaliva': float(i.totaliva),
+                        'total': float(i.total),
                         'state': i.state,
                         'annotations': i.annotations,
-                        'date_creation': i.date_creation.strftime('%Y-%m-%d'),
+                        'date_joined': i.date_joined.strftime('%Y-%m-%d'),
                     })
         except:
             pass
@@ -214,9 +217,12 @@ class BudgetUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
                         'id': e.id,
                         'description': e.description,
                         'amount': float(e.amount),
+                        'iva': float(e.iva),
+                        'totaliva': float(e.totaliva),
+                        'total': float(e.total),
                         'state': e.state,
                         'annotations': e.annotations,
-                        'date_creation': e.date_creation.strftime('%Y-%m-%d'),
+                        'date_joined': e.date_joined.strftime('%Y-%m-%d'),
                     })
         except:
             pass
@@ -281,20 +287,75 @@ class BudgetInvoicePdfView(LoginRequiredMixin, View):
                     item['categorie'] = e.categorie
                     data.append(item)
         return data
-    def get_invoice_total_expenses(self, pk):
-        data = 0
+    def get_invoice_total_amount_expenses(self, pk):
+        amount = 0
+        total_iva = 0
+        total = 0
         for b in Budget.objects.filter(id=pk):
             for ec in ExpensesConetion.objects.filter(budget_id=b.id):
                 for e in Expenses.objects.filter(id=ec.expenses_id).order_by('id'):
-                    data += e.amount
-        return data
-    def get_invoice_total_income(self, pk):
-        data = 0
+                    amount += e.amount
+                    total_iva += e.totaliva
+                    total += total
+        return amount
+    def get_invoice_total_iva_expenses(self, pk):
+        amount = 0
+        total_iva = 0
+        total = 0
+        for b in Budget.objects.filter(id=pk):
+            for ec in ExpensesConetion.objects.filter(budget_id=b.id):
+                for e in Expenses.objects.filter(id=ec.expenses_id).order_by('id'):
+                    amount += e.amount
+                    total_iva += e.totaliva
+                    total += total
+        return total_iva
+    def get_invoice_total_expenses(self, pk):
+        amount = 0
+        total_iva = 0
+        total = 0
+        for b in Budget.objects.filter(id=pk):
+            for ec in ExpensesConetion.objects.filter(budget_id=b.id):
+                for e in Expenses.objects.filter(id=ec.expenses_id).order_by('id'):
+                    amount += e.amount
+                    total_iva += e.totaliva
+                    total += e.total
+        return total
+    def get_invoice_total_amount_income(self, pk):
+        data = []
+        amount = 0
+        total_iva=0
+        total = 0
         for b in Budget.objects.filter(id=pk):
             for ic in IncomeConetion.objects.filter(budget_id=b.id):
                 for i in Income.objects.filter(id=ic.income_id).order_by('id'):
-                    data += i.amount
-        return data
+                    amount += i.amount
+                    total_iva += i.totaliva
+                    total += i.total
+        return amount
+    def get_invoice_total_iva_income(self, pk):
+        data = []
+        amount = 0
+        total_iva=0
+        total = 0
+        for b in Budget.objects.filter(id=pk):
+            for ic in IncomeConetion.objects.filter(budget_id=b.id):
+                for i in Income.objects.filter(id=ic.income_id).order_by('id'):
+                    amount += i.amount
+                    total_iva += i.totaliva
+                    total += i.total
+        return total_iva
+    def get_invoice_total_income(self, pk):
+        data = []
+        amount = 0
+        total_iva=0
+        total = 0
+        for b in Budget.objects.filter(id=pk):
+            for ic in IncomeConetion.objects.filter(budget_id=b.id):
+                for i in Income.objects.filter(id=ic.income_id).order_by('id'):
+                    amount += i.amount
+                    total_iva += i.totaliva
+                    total += i.total
+        return total
     def link_callback(self, uri, rel):
         sUrl = settings.STATIC_URL
         sRoot = settings.STATIC_ROOT
@@ -325,7 +386,11 @@ class BudgetInvoicePdfView(LoginRequiredMixin, View):
                     'cli_names': request.user.first_name + ' ' + request.user.last_name,
                     'income': self.get_invoice_income(id),
                     'expenses': self.get_invoice_expenses(id),
+                    'total_amount_income': self.get_invoice_total_amount_income(id),
+                    'total_iva_income': self.get_invoice_total_iva_income(id),
                     'total_income': self.get_invoice_total_income(id),
+                    'total_amount_expenses': self.get_invoice_total_amount_expenses(id),
+                    'total_iva_expenses': self.get_invoice_total_iva_expenses(id),
                     'total_expenses': self.get_invoice_total_expenses(id),
                     'comp': {
                         'name': 'Cost Control S.A.',

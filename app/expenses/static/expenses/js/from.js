@@ -45,11 +45,11 @@ $("input[name='iva']").TouchSpin({
         get_Calcular()
     }).val(19);
 
-$('#id_amount').on('input', function() {
+$("input[name='amount']").on('input', function() {
     get_Calcular()
 })
 
-$('#id_iva').on('input', function() {
+$("input[name='iva']").on('input', function() {
     get_Calcular()
 })
 

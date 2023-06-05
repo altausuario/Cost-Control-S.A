@@ -70,12 +70,15 @@ function format(d) {
     html += '<table class="table">';
     html += '<thead class="thead-dark">';
     html += '<tr>';
-    html += '<th scope="col" colspan="4" class="bg-success">Detalle de ingresos</th>';
+    html += '<th scope="col" colspan="7" class="bg-success">Detalle de ingresos</th>';
     html += '</tr>';
     html += '<tr>';
     html += '<th scope="col">Descripción</th>';
     html += '<th scope="col">Fecha del ingreso</th>';
     html += '<th scope="col">Monto</th>';
+    html += '<th scope="col">Iva (%)</th>';
+    html += '<th scope="col">Total Iva</th>';
+    html += '<th scope="col">Total</th>';
     html += '<th scope="col">Estado</th>';
     html += '</tr>';
     html += '</thead>';
@@ -83,8 +86,11 @@ function format(d) {
     $.each(d.detIncome, function(key, value){
         html += '<tr>'
         html += '<td>'+ value.description +'</td>'
-        html += '<td>'+ value.date_creation +'</td>'
+        html += '<td>'+ value.date_joined +'</td>'
         html += '<td>$ '+ value.amount +'</td>'
+        html += '<td>'+parseFloat(value.iva).toFixed(0) +'</td>'
+        html += '<td>$ '+ value.totaliva +'</td>'
+        html += '<td>$ '+ value.total +'</td>'
         html += '<td>'+ value.state +'</td>'
         html += '</tr>'
     })
@@ -94,12 +100,15 @@ function format(d) {
     html += '<table class="table mt-5">';
     html += '<thead class="thead-dark">';
     html += '<tr>';
-    html += '<th scope="col" colspan="4" class="bg-danger">Detalle de egresos</th>';
+    html += '<th scope="col" colspan="7" class="bg-danger">Detalle de egresos</th>';
     html += '</tr>';
     html += '<tr>';
     html += '<th scope="col">Descripción</th>';
     html += '<th scope="col">Fecha del gasto</th>';
     html += '<th scope="col">Monto</th>';
+    html += '<th scope="col">Iva (%)</th>';
+    html += '<th scope="col">Total Iva</th>';
+    html += '<th scope="col">Total</th>';
     html += '<th scope="col">Estado</th>';
     html += '</tr>';
     html += '</thead>';
@@ -107,8 +116,11 @@ function format(d) {
     $.each(d.detExpenses, function(key, value){
         html += '<tr>'
         html += '<td>'+ value.description +'</td>'
-        html += '<td>'+ value.date_creation +'</td>'
+        html += '<td>'+ value.date_joined +'</td>'
         html += '<td>$ '+ value.amount +'</td>'
+        html += '<td>'+ parseFloat(value.iva).toFixed(0) +'</td>'
+        html += '<td>$ '+ value.totaliva +'</td>'
+        html += '<td>$ '+ value.total +'</td>'
         html += '<td>'+ value.state +'</td>'
         html += '</tr>'
     })

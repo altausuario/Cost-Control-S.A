@@ -74,6 +74,7 @@ class IncomeCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Cre
         context['title'] = 'Nuevo ingreso'
         context['action'] = 'add'
         context['icon'] = 'fa-plus'
+        context['img'] = 'facture.png'
         context['url_link'] = self.success_url
         return context
 class IncomeUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, UpdateView):
@@ -99,15 +100,12 @@ class IncomeUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
             for ec in exc:
                 ex = Expenses.objects.filter(id=ec.expenses_id)
                 for e in ex:
-                    total_ex += e.amount
-            print(f'Expenses {total_ex}')
-
+                    total_ex += e.total
             inc = IncomeConetion.objects.filter(budget_id=b.id)
             for inm in inc:
                 ino = Income.objects.filter(id=inm.income_id)
                 for i in ino:
-                    total_in += i.amount
-            print(f'Incomes {total_in}')
+                    total_in += i.total
 
             total = total_in - total_ex
             but =Budget()
@@ -121,6 +119,12 @@ class IncomeUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
             total_ex = 0
             total_in = 0
         return ''
+
+    def image_income(self, pk):
+        income = Income.objects.get(pk=pk)
+        if not income.image:
+            return 'facture.png'
+        return income.image
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -144,9 +148,11 @@ class IncomeUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        pk = self.kwargs.get('pk')
         context['title'] = 'Editar ingreso'
         context['action'] = 'edit'
         context['icon'] = 'fa-edit'
+        context['img'] = self.image_income(pk)
         context['url_link'] = self.success_url
         return context
 class IncomeDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, DeleteView):

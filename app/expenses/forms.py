@@ -22,7 +22,7 @@ class ExpensesForm(ModelForm):
 
     class Meta:
         model = Expenses
-        fields = 'description', 'amount', 'date_creation', 'annotations', 'categorie', 'state'
+        fields = 'description', 'amount', 'date_joined', 'annotations', 'categorie', 'state', 'iva', 'totaliva', 'total', 'image'
         widgets = {
             'description': Textarea(
                 attrs={
@@ -31,15 +31,44 @@ class ExpensesForm(ModelForm):
                 },
 
             ),
-            'amount': NumberInput(
+            'amount': TextInput(
                 attrs={
-                    'placeholder': 'Ingrese un monto',
+                    'placeholder': '0,0',
                 },
 
             ),
-            'date_creation': TextInput(
+            'iva': NumberInput(
                 attrs={
-                    'type': 'datetime-local',
+                    'class': 'col-md-8 form-control',
+                    'style':'width: 60%; padding-left:8px;',
+                    'readonly': 'readonly',
+                },
+
+            ),
+            'totaliva': NumberInput(
+                attrs={
+                    'readonly': 'readonly',
+                    'value': 0.00,
+                    'style': 'cursor: pointer'
+                },
+
+            ),
+            'total': NumberInput(
+                attrs={
+                    'readonly': 'readonly',
+                    'value': 0.00,
+                    'style': 'cursor: pointer'
+                },
+
+            ),
+            'date_joined': DateInput(
+                format='%Y-%m-%d',
+                attrs={
+                    'placeholder': 'YYYY-MM-DD',
+                    'class': 'form-control datetimepicker-input',
+                    'id': 'date_joined',
+                    'data-target': '#date_joined',
+                    'data-toggle': 'datetimepicker'
                 }
             ),
             'annotations': Textarea(

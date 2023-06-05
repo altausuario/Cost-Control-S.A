@@ -2,20 +2,106 @@
 {% load static %}
 {% load i18n %}
 {% block list_head %}
+<script src="{% static 'lib/moment-2.25.3/moment-with-locales.js' %}"></script>
+<link rel="stylesheet" href="lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.css">
+<script src="{% static 'lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.js' %}"></script>
+<script src="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css' %}">
+<script src="{% static 'lib/jquery.maskMoney/js/jquery.maskMoney.min.js' %}"></script>
 <script src="{% static 'income/js/form.js' %}"></script>
 {% endblock %}
 {% block card-form %}
-{% csrf_token %}
-<input name="action" type="hidden" value="{{ action }}">
-{% for field in form.visible_fields %}
-<div class="form-floating mb-3">
-     <label for="{{ field.label }}">{{ field.label }}:</label>
-    {{field}}
+<div class="row">
+    <input name="action" type="hidden" value="{{ action }}" id="id_action">
+    <div class="form-group mb-3 col-3">
+        <div class="row">
+            <div class="form-group mb-3 col-12 text-center">
+                <img class="img-fluid mx-auto d block image-user" src="/media/{{img}}"
+                     style="width: 100%; height:600px; border-radius:5px;">
+            </div>
+            <div class="form-group mb-3 col-12 text-center">
+                <div class="row">
+                    <div class="form-group col-6 text-right">
+                        <label class="btn btn-success btn-sm" for="fileInput">
+                            <i class="fas fa-image"></i>
+                            <input class="d-none" id="fileInput" name="image" type="file">
+                        </label>
+                    </div>
+                    <div class="form-group col-6 text-left">
+                        <button class="btn btn-danger btn-sm image-user-delete" type="button">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group mb-3 col-6">
+        <div class="row">
+            <div class="form-group mb-3 col-12">
+                <label for="input1">Descripción</label>
+                {{form.description}}
+            </div>
+            <div class="form-group mb-3 col-12">
+                <label for="input1">Anotaciones</label>
+                {{form.annotations}}
+            </div>
+        </div>
+    </div>
+    <div class="form-group mb-3 col-3">
+        <div class="row">
+            <div class="form-group mb-3 col-12">
+                <label for="input1">Fecha de registro</label>
+                {{form.date_joined}}
+            </div>
+            <div class="form-group mb-3 col-12">
+                <label for="input1">Categoria</label>
+                {{form.categorie}}
+            </div>
+            <div class="form-group mb-3 col-12">
+                <label for="input1">Estado</label>
+                {{form.state}}
+            </div>
+            <div class="form-group mb-3 col-12">
+                <label for="input1">Monto</label>
+                {{form.amount}}
+            </div>
+            <div class="form-group mb-3 col-12">
+                <label for="input1">Iva</label>
+                {{form.iva}}
+            </div>
+            <div class="form-group mb-3 col-12">
+                <label for="input1">Total del Iva</label>
+                {{form.totaliva}}
+            </div>
+            <div class="form-group mb-3 col-12">
+                <label for="input1">Total</label>
+                {{form.total}}
+            </div>
+        </div>
+    </div>
 </div>
-{% endfor %}
 {% endblock %}
 
 {% block javaScript_form %}
+<script>
+    $('.image-user-delete').on('click', function(){
+         var img = '/static/img/facture.png'
+         $('.image-user').attr('src', img);
+    })
+</script>
+<script>
+    $('#fileInput').change(function() {
+        var input = this;
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            $('.image-user').attr('src', e.target.result);
+          }
+          reader.readAsDataURL(input.files[0]);
+        }
+      });
+</script>
 <script>
     {% if form.errors %}
         var errors = '';

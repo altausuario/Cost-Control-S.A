@@ -73,6 +73,7 @@ class ExpensesCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, C
         context['title'] = 'Nuevo gasto'
         context['action'] = 'add'
         context['icon'] = 'fa-plus'
+        context['img'] = 'facture.png'
         context['url_link'] = self.success_url
         return context
 class ExpensesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, UpdateView):
@@ -82,6 +83,16 @@ class ExpensesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, U
     success_url = reverse_lazy('list_expenses')
     permission_required = 'change_expenses'
     url_redirect = reverse_lazy('inicio')
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.user_id != request.user.id:
+            return HttpResponseRedirect(reverse_lazy('list_budget'))
+        return super().dispatch(request, *args, **kwargs)
+    def image_expenses(self, pk):
+        income = Expenses.objects.get(pk=pk)
+        if not income.image:
+            return 'facture.png'
+        return income.image
     def get_calcular(self):
         budget = Budget.objects.all().order_by('id')
         total_ex = 0
@@ -92,14 +103,13 @@ class ExpensesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, U
             for ec in exc:
                 ex = Expenses.objects.filter(id=ec.expenses_id)
                 for e in ex:
-                    total_ex += e.amount
-            print(f'Expenses {total_ex}')
+                    total_ex += e.total
 
             inc = IncomeConetion.objects.filter(budget_id=b.id)
             for inm in inc:
                 ino = Income.objects.filter(id=inm.income_id)
                 for i in ino:
-                    total_in += i.amount
+                    total_in += i.total
             print(f'Incomes {total_in}')
 
             total = total_in - total_ex
@@ -114,11 +124,6 @@ class ExpensesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, U
             total_ex = 0
             total_in = 0
         return ''
-    def dispatch(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if self.object.user_id != request.user.id:
-            return HttpResponseRedirect(reverse_lazy('list_budget'))
-        return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -141,9 +146,11 @@ class ExpensesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, U
         return JsonResponse(data)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        pk = self.kwargs.get('pk')
         context['title'] = 'Editar gasto'
         context['action'] = 'edit'
         context['icon'] = 'fa-edit'
+        context['img'] = self.image_expenses(pk)
         context['url_link'] = self.success_url
         return context
 class ExpensesDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, DeleteView):

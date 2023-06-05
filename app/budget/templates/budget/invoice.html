@@ -83,7 +83,7 @@
 <table class="invoice"style="margin-bottom: 20px;">
     <thead>
     <tr>
-        <th Colspan="5" style="text-align: center;border-style: none;">INGRESOS</th>
+        <th Colspan="8" style="text-align: center;border-style: none;">INGRESOS</th>
     </tr>
     <tr>
         <th style="width: 30%;">DESCRIPCIÓN</th>
@@ -91,6 +91,9 @@
         <th style="width: 20%;">CATEGORIA</th>
         <th style="width: 20%;">ESTADO</th>
         <th style="width: 15%;">MONTO</th>
+        <th style="width: 15%;">IVA (%)</th>
+        <th style="width: 15%;">VALOR IVA</th>
+        <th style="width: 15%;">TOTAL</th>
     </tr>
     </thead>
     <tbody>
@@ -100,12 +103,18 @@
             <td class="text-left">{{ i.date_creation }}</td>
             <td >{{ i.categorie }}</td>
             <td>{{ i.state }}</td>
-            <td style="text-align: right;">$ {{ i.amount }}</td>
+            <td style="text-align: left;">$ {{ i.amount }}</td>
+            <td style="text-align: left;">{{ i.iva|floatformat }}</td>
+            <td style="text-align: left;">$ {{ i.totaliva }}</td>
+            <td style="text-align: left;">$ {{ i.total }}</td>
         </tr>
     {% endfor %}
     <tr style="border-top: 1px solid black; padding-top: 4px;">
         <td colspan="4"><b>TOTAL</b></td>
-        <td style="text-align: right">{{ total_income }}</td>
+        <td style="text-align: left">$ {{ total_amount_income }}</td>
+        <td style="text-align: left"></td>
+        <td style="text-align: left">$ {{ total_iva_income }}</td>
+        <td style="text-align: left">$ {{ total_income}}</td>
     </tr>
     </tbody>
 </table>
@@ -114,7 +123,7 @@
 <table class="invoice" style="margin-bottom: 20px;">
     <thead>
     <tr>
-        <th Colspan="5" style="text-align: center;border-style: none;">EGRESOS</th>
+        <th Colspan="8" style="text-align: center;border-style: none;">EGRESOS</th>
     </tr>
     <tr>
         <th style="width: 30%;">DESCRIPCIÓN</th>
@@ -122,6 +131,9 @@
         <th style="width: 20%;">CATEGORIA</th>
         <th style="width: 20%;">ESTADO</th>
         <th style="width: 15%;">MONTO</th>
+        <th style="width: 15%;">IVA (%)</th>
+        <th style="width: 15%;">VALOR IVA</th>
+        <th style="width: 15%;">TOTAL</th>
     </tr>
     </thead>
     <tbody>
@@ -131,12 +143,18 @@
             <td class="text-left">{{ e.date_creation }}</td>
             <td >{{ e.categorie }}</td>
             <td>{{ e.state }}</td>
-            <td style="text-align: right;">$ {{ e.amount }}</td>
+            <td style="text-align: left;">$ {{ e.amount }}</td>
+            <td style="text-align: left;">{{ e.iva|floatformat }}</td>
+            <td style="text-align: left;">$ {{ e.totaliva }}</td>
+            <td style="text-align: left;">$ {{ e.total }}</td>
         </tr>
     {% endfor %}
     <tr style="border-top: 1px solid black; padding-top: 4px;">
         <td colspan="4"><b>TOTAL</b></td>
-        <td style="text-align: right">{{ total_expenses }}</td>
+        <td style="text-align: left">$ {{ total_amount_expenses }}</td>
+        <td style="text-align: left"></td>
+        <td style="text-align: left">$ {{ total_iva_expenses }}</td>
+        <td style="text-align: left">$ {{ total_expenses }}</td>
     </tr>
     </tbody>
 </table>

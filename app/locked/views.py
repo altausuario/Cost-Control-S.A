@@ -100,7 +100,6 @@ class LockedActivateFormView(LoginRequiredMixin, ValidatePermissionRequiredMinxi
                            'data': self.send_email_reset_password(user),
                            'success': user.email
                        }
-                       print(user.email)
                 else:
                     data['error'] = form.errors
             elif action == 'autocomplete':

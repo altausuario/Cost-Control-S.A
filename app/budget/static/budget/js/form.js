@@ -12,11 +12,11 @@ var vents = {
     calculate_budget: function(){
         var incomes_total = 0.00;
         $.each(this.items.incomes, function(pos, dict){
-            incomes_total += parseFloat(dict.amount)
+            incomes_total += parseFloat(dict.total)
         })
         var expenses_total = 0.00;
         $.each(this.items.expenses, function(pos, dict){
-            expenses_total += parseFloat(dict.amount)
+            expenses_total += parseFloat(dict.total)
         })
         this.items.total_income =  incomes_total
         this.items.total_expenses =  expenses_total
@@ -44,7 +44,10 @@ var vents = {
             {'data': 'id'},
             {'data': 'description'},
             {'data': 'amount'},
-            {'data': 'date_creation'},
+            {'data': 'iva'},
+            {'data': 'totaliva'},
+            {'data': 'total'},
+            {'data': 'date_joined'},
             {'data': 'state'},
         ],
         order: false,
@@ -64,11 +67,19 @@ var vents = {
                 }
             },
             {
-                targets: [-3],
+                targets: [-3, -4, -6],
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    return '$ ' + data
+                    return '$ ' + parseFloat(data).toFixed(2)
+                }
+            },
+            {
+                targets: [-5],
+                class: 'text-center',
+                orderable: false,
+                render: function (data, type, row) {
+                    return parseFloat(data).toFixed(0)
                 }
             },
         ],
@@ -88,7 +99,10 @@ var vents = {
             {'data': 'id'},
             {'data': 'description'},
             {'data': 'amount'},
-            {'data': 'date_creation'},
+            {'data': 'iva'},
+            {'data': 'totaliva'},
+            {'data': 'total'},
+            {'data': 'date_joined'},
             {'data': 'state'},
         ],
         order: false,
@@ -107,11 +121,19 @@ var vents = {
                 }
             },
             {
-                targets: [-3],
+                targets: [-3, -4, -6],
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    return '$ ' + data
+                    return '$ ' + parseFloat(data).toFixed(2)
+                }
+            },
+            {
+                targets: [-5],
+                class: 'text-center',
+                orderable: false,
+                render: function (data, type, row) {
+                    return parseFloat(data).toFixed(0)
                 }
             },
         ],

@@ -11,6 +11,7 @@ class ActivateForm(forms.Form):
             'class': 'form-control',
             'autocomplete': 'off',
             'readonly': True,
+            'style': 'cursor: pointer;',
             'required': True
         }
     ))
@@ -20,6 +21,7 @@ class ActivateForm(forms.Form):
             'class': 'form-control',
             'autocomplete': 'off',
             'readonly': True,
+            'style': 'cursor: pointer;',
             'required': True
         }
     ))
@@ -29,6 +31,7 @@ class ActivateForm(forms.Form):
             'class': 'form-control',
             'autocomplete': 'off',
             'readonly': True,
+            'style': 'cursor: pointer;',
             'required': True
         }
     ))
@@ -38,6 +41,7 @@ class ActivateForm(forms.Form):
             'class': 'form-control',
             'autocomplete': 'off',
             'readonly': True,
+            'style': 'cursor: pointer;',
             'required': True
         }
     ))
@@ -47,6 +51,7 @@ class ActivateForm(forms.Form):
             'class': 'form-control',
             'autocomplete': 'off',
             'readonly': True,
+            'style': 'cursor: pointer;',
             'required': True
         }
     ))
@@ -56,6 +61,7 @@ class ActivateForm(forms.Form):
             'class': 'form-control',
             'autocomplete': 'off',
             'readonly': True,
+            'style': 'cursor: pointer;',
             'required': True
         }
     ))

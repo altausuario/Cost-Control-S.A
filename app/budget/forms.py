@@ -18,19 +18,19 @@ class PresupuestoForm(ModelForm):
             'total_income': NumberInput(attrs={
                 'class': 'form-control',
                 'disabled': '',
-                'style': 'cursor: not-allowed;',
+                'style': 'cursor: pointer;',
                 'value': '0.00'
             }),
             'total_expenses': NumberInput(attrs={
                 'class': 'form-control',
                 'disabled': '',
-                'style': 'cursor: not-allowed;',
+                'style': 'cursor: pointer;',
                 'value': '0.00'
             }),
             'total': NumberInput(attrs={
                 'class': 'form-control',
                 'disabled': '',
-                'style': 'cursor: not-allowed;',
+                'style': 'cursor: pointer;',
                 'value': '0.00'
             }),
         }
