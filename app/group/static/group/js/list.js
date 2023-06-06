@@ -19,7 +19,6 @@ $(function(){
 //            {'data': 'name'},
 //            {'data': 'name'},
 //        ],
-//
         columnDefs: [
             {
                 targets: [-1],
@@ -45,7 +44,6 @@ $(function(){
             },
         ],
         initComplete: function(settings, json) {
-
           }
         });
 });

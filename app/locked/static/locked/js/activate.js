@@ -32,8 +32,6 @@ var vents = {
         $('#img').attr("src", image);
     }
   }
-
-
 $( function() {
 $( "#buscar" ).autocomplete({
       source: function(request, response) {
@@ -50,7 +48,6 @@ $( "#buscar" ).autocomplete({
             }).fail(function (jqXHR, textStatus, errorThrown){
                 //alert(textStatus + ': ' + errorThrown);
             }).always(function (data){
-
             });
       },
       delay: 500,
@@ -62,20 +59,17 @@ $( "#buscar" ).autocomplete({
           $(this).val('');
       }
     });
-
  $('form').on('submit', function(e){
         e.preventDefault();
         var parameters = new FormData(this);
         parameters.append('action', $('input[name="action"]').val());
         parameters.append('vents', JSON.stringify(vents.items));
-
         nombre = $('input[name="first_name"]').val()
         apellidos = $('input[name="last_name"]').val()
         username = $('input[name="username"]').val()
         password = $('input[name="password"]').val()
         fecha = $('input[name="date_joined"]').val()
         email = $('input[name="email"]').val()
-
         if(nombre == '' && apellidos == '' && username == '' && password == '' && fecha == '' && email == ''){
             Swal.fire({
               icon: 'error',
@@ -85,7 +79,6 @@ $( "#buscar" ).autocomplete({
             $("#buscar").css("border-color", "red");
         }else{
             alert_activate_user(window.location.pathname,'Notificacion', '¿Estas seguro de habilitar al usuario?', parameters, function(){
-
             });
             }
     });

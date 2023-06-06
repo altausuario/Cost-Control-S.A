@@ -39,7 +39,6 @@ function mesaje_success(obj){
     html += '<b class="text-primary">'+obj+'</b></br>'
     html += 'con los pasos a seguir para que pueda resetear su contraseña'
     html += '</h5>'
-
     Swal.fire({
       title: 'Notificación',
       icon: 'success',
@@ -57,7 +56,6 @@ function mesaje_success_activate(obj){
     html += '<b class="text-primary">'+obj+'</b></br>'
     html += 'con los pasos a seguir para habilitar al usuario'
     html += '</h5>'
-
     Swal.fire({
       title: 'Notificación',
       icon: 'success',
@@ -150,7 +148,6 @@ function alert_confirm_ResetPassword(url, title, content, parameters, callback){
                     }).fail(function (jqXHR, textStatus, errorThrown){
                         alert(textStatus + ': ' + errorThrown);
                     }).always(function (data){
-
                     });
                 }
             },
@@ -158,7 +155,6 @@ function alert_confirm_ResetPassword(url, title, content, parameters, callback){
                 text: "No",
                 btnClass: 'btn-red',
                 action: function () {
-
                 }
             },
         }
@@ -198,7 +194,6 @@ function alert_activate_user(url, title, content, parameters, callback){
                     }).fail(function (jqXHR, textStatus, errorThrown){
                         alert(textStatus + ': ' + errorThrown);
                     }).always(function (data){
-
                     });
                 }
             },
@@ -206,7 +201,6 @@ function alert_activate_user(url, title, content, parameters, callback){
                 text: "No",
                 btnClass: 'btn-red',
                 action: function () {
-
                 }
             },
         }
@@ -235,7 +229,6 @@ function alert_action(title, content, callback){
                 text: "No",
                 btnClass: 'btn-red',
                 action: function () {
-
                 }
             },
         }

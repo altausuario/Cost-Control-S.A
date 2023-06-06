@@ -1,7 +1,5 @@
 from django.urls import path
-
 from expenses.views import *
-
 urlpatterns = [
     path('expenses/list/', ExpensesListView.as_view(), name='list_expenses'),
     path('expenses/create/', ExpensesCreateView.as_view(), name='create_expenses'),

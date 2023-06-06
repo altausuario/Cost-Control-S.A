@@ -44,13 +44,10 @@ $("input[name='iva']").TouchSpin({
     }).on('change',function(){
         get_Calcular()
     }).val(19);
-
 $("input[name='amount']").on('input', function() {
     get_Calcular()
 })
-
 $("input[name='iva']").on('input', function() {
     get_Calcular()
 })
-
 })

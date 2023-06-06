@@ -4,7 +4,6 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import *
-
 from categories.forms import CategoriesForm
 from categories.models import Categories
 from user.mixins import ValidatePermissionRequiredMinxin
@@ -13,7 +12,6 @@ class CategoriesListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, L
     model = Categories
     template_name = 'categories/list.html'
     permission_required = 'view_categories'
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -31,11 +29,10 @@ class CategoriesListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, L
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Lista de categorias'
-        context['icon'] = 'fa-list'
+        context['icon'] = 'fa-bars-staggered mr-1'
         context['url_link'] = reverse_lazy('budget')
         context['create_url'] = reverse_lazy('create_categories')
         return context
@@ -46,10 +43,8 @@ class CategoriesCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,
     success_url = reverse_lazy('list_categories')
     permission_required = 'add_categories'
     url_redirect = reverse_lazy('inicio')
-
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -62,12 +57,11 @@ class CategoriesCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Nueva categoria'
         context['action'] = 'add'
-        context['icon'] = 'fa-plus'
+        context['icon'] = 'fa-plus mr-1'
         context['url_link'] = self.success_url
         return context
 class CategoriesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, UpdateView):
@@ -105,7 +99,7 @@ class CategoriesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,
         context = super().get_context_data(**kwargs)
         context['title'] = 'Editar categoria'
         context['action'] = 'edit'
-        context['icon'] = 'fa-edit'
+        context['icon'] = 'fa-edit mr-1'
         context['url_link'] = self.success_url
         return context
 class CategoriesDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, DeleteView):
@@ -136,6 +130,6 @@ class CategoriesDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Eliminar categoria'
-        context['icon'] = 'fa-trash-alt'
+        context['icon'] = 'fa-trash-alt mr1'
         context['url_link'] = self.success_url
         return context

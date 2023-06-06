@@ -21,7 +21,6 @@ $(function(){
             {'data': 'date_creation'},
             {'data': 'valor'}
         ],
-
         columnDefs: [
             {
                 targets: [-1],
@@ -35,7 +34,6 @@ $(function(){
             },
         ],
         initComplete: function(settings, json) {
-
           }
         });
 });

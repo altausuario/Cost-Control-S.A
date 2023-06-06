@@ -14,7 +14,6 @@ $(function(){
     $('#btnAddGroup').on('click', function (){
       $('#formAddGroup').modal('show');
    });
-
    $('#formAddGroup').on('hidden.bs.modal', function (e){
       $('form[id="newGroup"]').trigger('reset');
    });
@@ -27,6 +26,4 @@ $(function(){
             $('#formAddGroup').modal('hide');
         });
     });
-
-
 });

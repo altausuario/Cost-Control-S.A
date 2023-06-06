@@ -1,5 +1,4 @@
 import json
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import *
 from django.db.models.functions import Coalesce
@@ -12,8 +11,6 @@ from expenses.models import Expenses
 from income.models import Income
 from report.forms import ReportBudgetForm
 from user.mixins import ValidatePermissionRequiredMinxin
-
-
 # Create your views here.
 class ReportBudgetView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, TemplateView):
     template_name = 'report/report_budget.html'

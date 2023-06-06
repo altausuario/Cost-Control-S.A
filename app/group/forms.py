@@ -1,9 +1,6 @@
 from django.contrib.auth.models import Group
 from django.forms import *
-
-
 class GroupForm(ModelForm):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for form in self.visible_fields():

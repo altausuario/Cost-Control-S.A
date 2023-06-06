@@ -36,11 +36,10 @@ class LockedListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Templ
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Lista de usuarios inhabilitados'
-        context['icon'] = 'fa-list'
+        context['icon'] = 'fa-list mr-1'
         context['url_link'] = reverse_lazy('list_locked')
         context['create_url'] = reverse_lazy('activate_locked')
         return context
@@ -116,7 +115,7 @@ class LockedActivateFormView(LoginRequiredMixin, ValidatePermissionRequiredMinxi
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Habilitar usuario'
-        context['icon'] = 'fa-user-check mr-2'
+        context['icon'] = 'fa-user-check mr-1'
         context['action'] = 'add'
         context['url_link'] = self.success_url
         return context

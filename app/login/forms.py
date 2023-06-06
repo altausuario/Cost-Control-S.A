@@ -1,13 +1,10 @@
 from datetime import datetime
-
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import Group
-
 from security.choices import LOGIN_TYPE
 from security.models import AccessUsers
 from user.models import User
-
 class AuthenticationForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(
         attrs={
@@ -32,7 +29,6 @@ class AuthenticationForm(forms.Form):
             raise forms.ValidationError('El campo username no puede ser vacio')
         elif len(password) == 0:
             raise forms.ValidationError('El campo password no puede ser vacio')
-
         queryset = User.objects.filter(username=username)
         if queryset.exists():
             user = queryset[0]
@@ -50,8 +46,6 @@ class AuthenticationForm(forms.Form):
             AccessUsers(user=user).save()
             return cleaned
         raise forms.ValidationError('Usuario o contraseña incorretos')
-
-
     def get_user(self):
         username = self.cleaned_data.get('username')
         return User.objects.get(username=username)
@@ -64,13 +58,11 @@ class ResetPasswordForm(forms.Form):
             'autofocus': True
         }
     ))
-
     def clean(self):
         cleaned = super().clean()
         if not User.objects.filter(username=cleaned['username']).exists():
             raise forms.ValidationError('El usuario no existe')
         return cleaned
-
     def get_user(self):
         username = self.cleaned_data.get('username')
         return User.objects.get(username=username)
@@ -96,4 +88,3 @@ class ChangePasswordForm(forms.Form):
         if password != confirmPassword:
             raise forms.ValidationError('Las contraseñas deben coincidir')
         return cleaned
-

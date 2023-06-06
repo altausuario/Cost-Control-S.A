@@ -15,7 +15,6 @@
         </div>
         <div class="card-body">
             {% block card-form %}
-
             {% endblock %}
         </div>
         <div class="card-footer">
@@ -50,7 +49,6 @@
           text: errors,
     });
     {% endif %}
-
     $('form[id="formSave"]').on('submit', function(e){
         e.preventDefault();
         var parameters = new FormData(this);

@@ -29,7 +29,6 @@
                 <td style="text-align: center;">
                    {% if object.type == 'success' %}
                     <span class="badge badge-success badge-pill">Éxito</span>
-
                     {% else %}
                     <span class="badge badge-danger badge-pill">Fallido</span>
                     {% endif %}
@@ -49,7 +48,6 @@
     Cancelar
 </a>
 {% endblock %}
-
 {% block javaScript_form %}
 <script>
     {% if form.errors %}
@@ -68,7 +66,6 @@
           text: errors,
     });
     {% endif %}
-
     $('form').on('submit', function(e){
         e.preventDefault();
         var parameters = new FormData(this);

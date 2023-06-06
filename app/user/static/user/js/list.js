@@ -24,7 +24,6 @@ $('#data').DataTable({
             {'data': 'is_active'},
             {'data': 'id'},
         ],
-
         columnDefs: [
             {
                 targets: [0],
@@ -80,9 +79,6 @@ $('#data').DataTable({
           }
         });
 }
-
 $(function(){
    getData();
-
-
 });

@@ -4,7 +4,6 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import *
-
 from budget.models import *
 from categories.models import Categories
 from expenses.forms import ExpensesForm
@@ -15,7 +14,6 @@ class ExpensesListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Lis
     model = Expenses
     template_name = 'expenses/list.html'
     permission_required = 'view_expenses'
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -36,11 +34,10 @@ class ExpensesListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Lis
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Listado de gastos'
-        context['icon'] = 'fa-list'
+        context['icon'] = 'fa-bars-staggered mr-1'
         context['url_link'] = reverse_lazy('budget')
         context['create_url'] = reverse_lazy('create_expenses')
         return context
@@ -51,10 +48,8 @@ class ExpensesCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, C
     success_url = reverse_lazy('list_expenses')
     permission_required = 'add_expenses'
     url_redirect = reverse_lazy('inicio')
-
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -67,12 +62,11 @@ class ExpensesCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, C
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Nuevo gasto'
         context['action'] = 'add'
-        context['icon'] = 'fa-plus'
+        context['icon'] = 'fa-plus mr-1'
         context['img'] = 'facture.png'
         context['url_link'] = self.success_url
         return context
@@ -149,7 +143,7 @@ class ExpensesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, U
         pk = self.kwargs.get('pk')
         context['title'] = 'Editar gasto'
         context['action'] = 'edit'
-        context['icon'] = 'fa-edit'
+        context['icon'] = 'fa-edit mr-1'
         context['img'] = self.image_expenses(pk)
         context['url_link'] = self.success_url
         return context
@@ -214,6 +208,6 @@ class ExpensesDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, D
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Eliminar gasto'
-        context['icon'] = 'fa-trash-alt'
+        context['icon'] = 'fa-trash-alt mr-1'
         context['url_link'] = self.success_url
         return context

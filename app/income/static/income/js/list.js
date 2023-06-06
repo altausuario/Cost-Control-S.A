@@ -26,7 +26,6 @@ $(function(){
             {'data': 'total'},
             {'data': 'valor'}
         ],
-
         columnDefs: [
             {
                 targets: [-1],
@@ -56,7 +55,6 @@ $(function(){
             },
         ],
         initComplete: function(settings, json) {
-
           }
         });
 });

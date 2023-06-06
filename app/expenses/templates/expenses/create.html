@@ -82,7 +82,6 @@
     </div>
 </div>
 {% endblock %}
-
 {% block javaScript_form %}
 <script>
     $('.image-user-delete').on('click', function(){
@@ -119,7 +118,6 @@
           text: errors,
     });
     {% endif %}
-
     $('form').on('submit', function(e){
         e.preventDefault();
         var parameters = new FormData(this);

@@ -24,7 +24,6 @@ class BudgetListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListV
     model = Budget
     template_name = 'budget/list.html'
     permission_required = 'view_budget'
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -42,11 +41,10 @@ class BudgetListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListV
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Lista de presupuesto'
-        context['icon'] = 'fa-list'
+        context['icon'] = 'fa-bars-staggered mr-1'
         context['url_link'] = reverse_lazy('budget')
         context['create_url'] = reverse_lazy('create_budget')
         return context
@@ -57,11 +55,9 @@ class BudgetCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Cre
     success_url = reverse_lazy('list_budget')
     permission_required = 'add_budget'
     url_redirect = reverse_lazy('inicio')
-
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -107,12 +103,11 @@ class BudgetCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Cre
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Nuevo presupuesto'
         context['action'] = 'add'
-        context['icon'] = 'fa-plus'
+        context['icon'] = 'fa-plus mr-1'
         context['detIncome'] = []
         context['detExpenses'] = []
         context['url_link'] = self.success_url
@@ -124,14 +119,12 @@ class BudgetUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
     success_url = reverse_lazy('list_budget')
     permission_required = 'change_budget'
     url_redirect = reverse_lazy('inicio')
-
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object.user_id != request.user.id:
             return HttpResponseRedirect(reverse_lazy('list_budget'))
         return super().dispatch(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -186,7 +179,6 @@ class BudgetUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
-
     def get_details_income(self):
         data = []
         try:
@@ -231,7 +223,7 @@ class BudgetUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
         context = super().get_context_data(**kwargs)
         context['title'] = 'Editar presupuesto'
         context['action'] = 'edit'
-        context['icon'] = 'fa-edit'
+        context['icon'] = 'fa-edit mr-1'
         context['detIncome'] = json.dumps(self.get_details_income())
         context['detExpenses'] = json.dumps(self.get_details_Expenses())
         context['url_link'] = self.success_url
@@ -242,7 +234,6 @@ class BudgetDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Del
     success_url = reverse_lazy('list_budget')
     permission_required = 'delete_budget'
     url_redirect = reverse_lazy('inicio')
-
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object.user_id != request.user.id:
@@ -265,7 +256,7 @@ class BudgetDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Del
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Eliminar presupuesto'
-        context['icon'] = 'fa-trash-alt'
+        context['icon'] = 'fa-trash-alt mr-1'
         context['url_link'] = self.success_url
         return context
 class BudgetInvoicePdfView(LoginRequiredMixin, View):

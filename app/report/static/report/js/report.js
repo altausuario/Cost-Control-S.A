@@ -1,5 +1,4 @@
 var input_daterange;
-
 var access_users = {
     list: function (all) {
         var parameters = {
@@ -60,12 +59,10 @@ var access_users = {
 //                },
 //            ],
             initComplete: function (settings, json) {
-
             }
         });
     },
 };
-
 $(function () {
     input_daterange = $('#id_date_range');
     input_daterange
@@ -77,14 +74,11 @@ $(function () {
             }
         });
     $('.drp-buttons').hide();
-
     $('.btnSearch').on('click', function () {
         access_users.list(false);
     });
-
     $('.btnSearchAll').on('click', function () {
         access_users.list(true);
     });
-
     access_users.list(false);
 });

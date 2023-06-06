@@ -10,28 +10,23 @@
         text-align: center;
         margin: 0 auto;
     }
-
     .head {
         text-align: center;
         text-transform: uppercase;
     }
-
     .invoice thead tr th {
         text-align: left;
         border-bottom: 1px solid black;
         border-top: 1px solid black;
         padding-top: 4px;
     }
-
     .invoice thead tr {
         margin-bottom: 0;
         padding-bottom: 0;
     }
-
     .invoice tbody tr {
         padding: 0;
     }
-
     .text-center{
         text-align: center;
     }
@@ -40,7 +35,6 @@
 <img src="{{ icon }}" class="img-invoice">
 <p class="head">
     {{ comp.name|upper }}<br>
-<!--    {{ comp.ruc }}<br>-->
     {{ comp.address|upper }}
 </p>
 <p>
@@ -48,7 +42,6 @@
     <b>FECHA DEL REPORTE:</b> {{ date_joined | date:"d/m/Y"}}<br>
     <b>CLIENTE:</b> {{ cli_names|upper }}<br>
 </p>
-
 <table class="invoice" style="margin-bottom: 20px;">
     <thead>
     <tr>
@@ -78,7 +71,6 @@
     </tr>
     </tbody>
 </table>
-
 {% if income %}
 <table class="invoice"style="margin-bottom: 20px;">
     <thead>

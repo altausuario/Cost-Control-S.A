@@ -6,11 +6,6 @@
 <script src="{% static 'lib/highcharts-8.1.2/modules/export-data.js' %}"></script>
 <script src="{% static 'lib/highcharts-8.1.2/modules/accessibility.js' %}"></script>
 <script src="{% static 'webapp/js/funciones.js' %}"></script>
-<!--<script src="https://code.highcharts.com/highcharts.js"></script>-->
-<!--<script src="https://code.highcharts.com/modules/exporting.js"></script>-->
-<!--<script src="https://code.highcharts.com/modules/export-data.js"></script>-->
-<!--<script src="https://code.highcharts.com/modules/accessibility.js"></script>-->
-
 {% endblock %}
 {% block content %}
 <div class="container-fluid">
@@ -61,22 +56,16 @@ var graphOnline = Highcharts.chart('container-online', {
                     }).always(function (data){
 
                     });
-
-
-
                 }, 1000);
             }
         }
     },
-
     time: {
         useUTC: false
     },
-
     title: {
         text: 'Live random data'
     },
-
     accessibility: {
         announceNewData: {
             enabled: true,
@@ -89,12 +78,10 @@ var graphOnline = Highcharts.chart('container-online', {
             }
         }
     },
-
     xAxis: {
         type: 'datetime',
         tickPixelInterval: 150
     },
-
     yAxis: {
         title: {
             text: 'Value'
@@ -105,20 +92,16 @@ var graphOnline = Highcharts.chart('container-online', {
             color: '#808080'
         }]
     },
-
     tooltip: {
         headerFormat: '<b>{series.name}</b><br/>',
         pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
     },
-
     legend: {
         enabled: false
     },
-
     exporting: {
         enabled: false
     },
-
     series: [{
         name: 'Random data',
         data: (function () {
@@ -126,7 +109,6 @@ var graphOnline = Highcharts.chart('container-online', {
             var data = [],
                 time = (new Date()).getTime(),
                 i;
-
             for (i = -19; i <= 0; i += 1) {
                 data.push({
                     x: time + i * 1000,

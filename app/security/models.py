@@ -1,13 +1,9 @@
 from datetime import datetime
-
 from crum import get_current_request
 from django.db import models
 from django.forms import model_to_dict
-
 from security.choices import LOGIN_TYPE
 from user.models import User
-
-
 # Create your models here.
 class AccessUsers(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -15,10 +11,8 @@ class AccessUsers(models.Model):
     time_joined = models.TimeField(default=datetime.now)
     ip_address = models.CharField(max_length=50)
     type = models.CharField(max_length=50, choices=LOGIN_TYPE, default=LOGIN_TYPE[0][0])
-
     def __str__(self):
         return self.ip_address
-
     def toJSON(self):
         item = model_to_dict(self)
         item['user'] = self.user.toJSON()

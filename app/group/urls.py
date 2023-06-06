@@ -1,8 +1,6 @@
 from django.urls import path
-
 from group.views import *
 from webapp.views import *
-
 urlpatterns = [
     path('list/group', GroupListView.as_view(), name='list_group'),
     path('create/group', GroupCreateView.as_view(), name='create_group'),

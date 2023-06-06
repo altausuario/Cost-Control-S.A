@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -10,15 +9,12 @@ from security.choices import LOGIN_TYPE
 from security.models import AccessUsers
 from user.mixins import ValidatePermissionRequiredMinxin
 from user.models import User
-
-
 # Create your views here.
 class AccessUsersListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, FormView):
     form_class = ReportBudgetForm
     template_name = 'security/list.html'
     permission_required = 'view_accessusers'
     url_redirect = reverse_lazy('inicio')
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -37,22 +33,19 @@ class AccessUsersListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, 
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Listado de Accesos de Usuarios'
-        context['icon'] = 'fa-chart-bar'
+        context['icon'] = 'fa-chart-bar mr-1'
         context['list_url'] = reverse_lazy('access_users_list')
         context['entity'] = 'Accesos de Usuarios'
         return context
-
 class AccessUsersDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, DeleteView):
     model = AccessUsers
     template_name = 'security/delete.html'
     success_url = reverse_lazy('list_security')
     permission_required = 'delete_accessusers'
     url_redirect = reverse_lazy('inicio')
-
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
@@ -66,6 +59,6 @@ class AccessUsersDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Eliminar Accesos de Usuarios'
-        context['icon'] = 'fa-trash-alt'
+        context['icon'] = 'fa-trash-alt mr-1'
         context['url_link'] = self.success_url
         return context

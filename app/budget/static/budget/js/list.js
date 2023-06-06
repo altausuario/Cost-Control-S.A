@@ -31,7 +31,6 @@ function getData(){
             {'data': 'total'},
             {'data': 'id'},
         ],
-
         columnDefs: [
             {
                 targets: [0],
@@ -63,7 +62,6 @@ function getData(){
           }
         });
 }
-
 function format(d) {
     var html = '';
     if (d.detIncome.length > 0) {
@@ -128,7 +126,6 @@ function format(d) {
     }
     return html;
 }
-
 $(function(){
    getData();
     $('#data tbody').on('click', 'td.details-control', function () {

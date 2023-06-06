@@ -5,7 +5,6 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import *
-
 from budget.models import *
 from categories.models import Categories
 from income.forms import IncomeForm
@@ -16,7 +15,6 @@ class IncomeListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListV
     model = Income
     template_name = 'income/list.html'
     permission_required = 'view_income'
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -37,11 +35,10 @@ class IncomeListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListV
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Lista de ingresos'
-        context['icon'] = 'fa-list'
+        context['icon'] = 'fa-bars-staggered mr-2'
         context['url_link'] = reverse_lazy('budget')
         context['create_url'] = reverse_lazy('create_income')
         return context
@@ -52,10 +49,8 @@ class IncomeCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Cre
     success_url = reverse_lazy('list_income')
     permission_required = 'add_income'
     url_redirect = reverse_lazy('inicio')
-
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -68,12 +63,11 @@ class IncomeCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Cre
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Nuevo ingreso'
         context['action'] = 'add'
-        context['icon'] = 'fa-plus'
+        context['icon'] = 'fa-plus mr-2'
         context['img'] = 'facture.png'
         context['url_link'] = self.success_url
         return context
@@ -84,7 +78,6 @@ class IncomeUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
     success_url = reverse_lazy('list_income')
     permission_required = 'change_income'
     url_redirect = reverse_lazy('inicio')
-
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object.user_id != request.user.id:
@@ -119,7 +112,6 @@ class IncomeUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
             total_ex = 0
             total_in = 0
         return ''
-
     def image_income(self, pk):
         income = Income.objects.get(pk=pk)
         if not income.image:
@@ -145,13 +137,12 @@ class IncomeUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         pk = self.kwargs.get('pk')
         context['title'] = 'Editar ingreso'
         context['action'] = 'edit'
-        context['icon'] = 'fa-edit'
+        context['icon'] = 'fa-edit mr-2'
         context['img'] = self.image_income(pk)
         context['url_link'] = self.success_url
         return context
@@ -216,6 +207,6 @@ class IncomeDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Del
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Eliminar ingreso'
-        context['icon'] = 'fa-trash-alt'
+        context['icon'] = 'fa-trash-alt mr-2'
         context['url_link'] = self.success_url
         return context

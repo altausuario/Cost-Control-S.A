@@ -1,8 +1,6 @@
 from django.contrib.auth.models import Group
 from django.forms import *
 from user.models import User
-
-
 class UserForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -85,7 +83,6 @@ class UserForm(ModelForm):
             data['error'] = str(e)
         return data
 class UserProfileForm(ModelForm):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for form in self.visible_fields():
@@ -135,7 +132,6 @@ class UserProfileForm(ModelForm):
         form = super()
         try:
             if form.is_valid():
-
                 pwd = self.cleaned_data['password']
                 u =form.save(commit=False)
                 if u.pk is None:

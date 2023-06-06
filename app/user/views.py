@@ -9,18 +9,15 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import *
-
 from group.forms import GroupForm
 from user.forms import *
 from user.mixins import ValidatePermissionRequiredMinxin
 from user.models import User
-
 # Create your views here.
 class UserListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListView):
     model = User
     template_name = 'user/list.html'
     permission_required = 'view_user'
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -39,7 +36,6 @@ class UserListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListVie
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Lista de usuarios'
@@ -54,10 +50,8 @@ class UserCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Creat
     success_url = reverse_lazy('usuarios')
     permission_required = 'add_user'
     url_redirect = reverse_lazy('usuarios')
-
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -74,7 +68,6 @@ class UserCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Creat
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Nuevo usuario'
@@ -92,7 +85,6 @@ class UserUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Updat
     success_url = reverse_lazy('usuarios')
     permission_required = 'change_user'
     url_redirect = reverse_lazy('inicio')
-
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object.id == 1:
@@ -122,7 +114,6 @@ class UserUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Updat
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         pk=self.kwargs.get('pk')
@@ -140,7 +131,6 @@ class UserDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Delet
     success_url = reverse_lazy('usuarios')
     permission_required = 'delete_user'
     url_redirect = reverse_lazy('usuarios')
-
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object.id == 1:
@@ -164,11 +154,9 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
     form_class = UserProfileForm
     template_name = 'user/profile.html'
     success_url = reverse_lazy('inicio')
-
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
-
     def get_object(self, queryset=None):
         return self.request.user
     def post(self, request, *args, **kwargs):
@@ -196,10 +184,8 @@ class UserChangePasswordUpdateView(LoginRequiredMixin, FormView):
     form_class = PasswordChangeForm
     template_name = 'user/change_password.html'
     success_url = reverse_lazy('login')
-
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-
     def get_form(self, form_class=None):
         form = PasswordChangeForm(user=self.request.user)
         form.fields['old_password'].widget.attrs['placeholder'] = 'Ingrese su comtraseña actual'
@@ -222,7 +208,6 @@ class UserChangePasswordUpdateView(LoginRequiredMixin, FormView):
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Actualizar contraseña'

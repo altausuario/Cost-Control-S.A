@@ -1,10 +1,6 @@
 from django import forms
-
 from user.models import User
-
-
 class ActivateForm(forms.Form):
-
     first_name = forms.CharField(widget=forms.TextInput(
         attrs={
             'placeholder': 'Nombre',
@@ -70,11 +66,9 @@ class ActivateForm(forms.Form):
         if not User.objects.filter(username=cleaned['username']).exists():
             raise forms.ValidationError('El usuario no existe')
         return cleaned
-
     def get_user(self):
         username = self.cleaned_data.get('username')
         return User.objects.get(username=username)
-
 class ChangeActivateUserForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(
         attrs={
@@ -84,7 +78,6 @@ class ChangeActivateUserForm(forms.Form):
             'autocomplete': 'off'
         }
     ))
-
     password = forms.CharField(widget=forms.PasswordInput(
         attrs={
             'placeholder': 'Ingrese su nueva contraseña',

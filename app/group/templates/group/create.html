@@ -8,7 +8,6 @@
 <script src="{% static 'group/js/form.js' %}"></script>
 <script src="{% static 'js/myForm.js' %}"></script>
 {% endblock %}
-
 {% block card-form %}
 <input name="action" type="hidden" value="{{ action }}">
 {% for field in form.visible_fields %}
@@ -26,7 +25,6 @@
 {% endif %}
 {% endfor %}
 {% endblock %}
-
 {% block javaScript_form %}
 <script>
     {% if form.errors %}
@@ -45,7 +43,6 @@
           text: errors,
     });
     {% endif %}
-
     $('form').on('submit', function(e){
         e.preventDefault();
         var parameters = new FormData(this);

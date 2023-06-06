@@ -17,7 +17,6 @@ function get_graph_budget_year_month(){
     }).fail(function (jqXHR, textStatus, errorThrown){
         alert(textStatus + ': ' + errorThrown);
     }).always(function (data){
-
     });
 }
 function get_graph_income_year_month(){

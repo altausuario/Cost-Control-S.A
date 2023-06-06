@@ -8,7 +8,6 @@ from app.settings import *
 class User(AbstractUser):
     image = models.ImageField(upload_to='users/%Y/%m/%d', null=True, blank=True)
     token = models.UUIDField(primary_key=False, editable=False, null=True, blank=True)
-
     def get_image(self):
         if self.image:
             return '{}{}'.format(MEDIA_URL, self.image)
@@ -22,7 +21,6 @@ class User(AbstractUser):
         item['full_name'] = self.get_full_name()
         item['groups'] = [{'id': g.id, 'name': g.name} for g in self.groups.all()]
         return item
-
     def get_goup_session(self):
         try:
             request = get_current_request()

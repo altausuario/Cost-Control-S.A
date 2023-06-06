@@ -23,7 +23,6 @@ $('#data').DataTable({
             {'data': 'groups'},
             {'data': 'is_active'},
         ],
-
         columnDefs: [
             {
                 targets: [0],
@@ -65,13 +64,9 @@ $('#data').DataTable({
             },
         ],
         initComplete: function(settings, json) {
-
           }
         });
 }
-
 $(function(){
    getData();
-
-
 });

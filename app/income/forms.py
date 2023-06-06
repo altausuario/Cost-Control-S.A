@@ -1,13 +1,10 @@
 from datetime import datetime
-
 from crum import get_current_request
 from django.forms import *
 from django import forms
-
 from categories.models import Categories
 from income.models import Income
 class IncomeForm(ModelForm):
-
     def __init__(self, *args, **kwargs):
         usuario = kwargs.pop('usuario', None)
         super().__init__(*args, **kwargs)
@@ -19,7 +16,6 @@ class IncomeForm(ModelForm):
         categorie = Categories.objects.filter(user_id=request.user.id).distinct()
         self.fields['categorie'].queryset = categorie
         print(usuario)
-
     class Meta:
         model = Income
         fields = 'description', 'amount', 'date_joined', 'annotations', 'categorie', 'state', 'iva', 'totaliva', 'total', 'image'
@@ -29,13 +25,11 @@ class IncomeForm(ModelForm):
                     'placeholder': 'Introduzca una breve descripción',
                     'style': 'height:130px; resize:none;',
                 },
-
             ),
             'amount': TextInput(
                 attrs={
                     'placeholder': '0,0',
                 },
-
             ),
             'iva': NumberInput(
                 attrs={
@@ -43,7 +37,6 @@ class IncomeForm(ModelForm):
                     'style':'width: 60%; padding-left:8px;',
                     'readonly': 'readonly',
                 },
-
             ),
             'totaliva': NumberInput(
                 attrs={
@@ -51,7 +44,6 @@ class IncomeForm(ModelForm):
                     'value': 0.00,
                     'style': 'cursor: pointer'
                 },
-
             ),
             'total': NumberInput(
                 attrs={
@@ -59,17 +51,10 @@ class IncomeForm(ModelForm):
                     'value': 0.00,
                     'style': 'cursor: pointer'
                 },
-
             ),
             'date_joined': DateInput(
                 format='%Y-%m-%d',
                 attrs={
-                    # 'class': 'form-control datetimepicker-input',
-                    # # 'type': 'datetime-local',
-                    # 'date-target': '#id_date_creation',
-                    # 'date-toggle': 'datetimepicker'
-                    # 'value': datetime.now().strftime('%Y-%m-%d'),
-                    # 'type': 'date',
                     'placeholder': 'YYYY-MM-DD',
                     'class': 'form-control datetimepicker-input',
                     'id': 'date_joined',
@@ -84,7 +69,6 @@ class IncomeForm(ModelForm):
                 }
             ),
         }
-
     def save(self, commit=True):
         data = {}
         form = super()

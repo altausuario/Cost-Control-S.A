@@ -17,7 +17,6 @@ from webapp.forms import *
 # Create your views here.
 class homeView(LoginRequiredMixin, TemplateView):
     template_name = 'home/index.html'
-
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -48,7 +47,6 @@ class homeView(LoginRequiredMixin, TemplateView):
             data = 'Noviembre'
         elif month == 12:
             data = 'Diciembre'
-
         return data
     def get_graph_budget_year_month(self):
         data = []

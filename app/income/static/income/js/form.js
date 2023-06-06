@@ -32,7 +32,6 @@ $('#date_joined').datetimepicker({
         locale: 'es',
         //minDate: moment().format("YYYY-MM-DD")
 });
-
 $("input[name='iva']").TouchSpin({
         min: 0,
         max: 100,
@@ -44,13 +43,10 @@ $("input[name='iva']").TouchSpin({
     }).on('change',function(){
         get_Calcular()
     }).val(19);
-
 $('#id_amount').on('input', function() {
     get_Calcular()
 })
-
 $('#id_iva').on('input', function() {
     get_Calcular()
 })
-
 })

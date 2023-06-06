@@ -55,7 +55,6 @@ $(function(){
             },
         ],
         initComplete: function(settings, json) {
-
           }
         });
 });

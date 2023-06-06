@@ -13,7 +13,6 @@ class GroupListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListVi
     template_name = 'group/list.html'
     permission_required = 'view_group'
     url_redirect = reverse_lazy('inicio')
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -39,7 +38,6 @@ class GroupListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListVi
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Lista de permisos'
@@ -53,10 +51,8 @@ class GroupCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Crea
     success_url = reverse_lazy('list_group')
     permission_required = 'add_group'
     url_redirect = reverse_lazy('inicio')
-
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -69,7 +65,6 @@ class GroupCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Crea
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Nuevo grupo de permisos'
@@ -99,7 +94,6 @@ class GroupUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upda
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Editar gropo de permisos'
@@ -123,7 +117,6 @@ class GroupDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Dele
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
-
     def get_permissions(self, pk):
         grupo = Group.objects.get(pk=pk)
         permisos = Permission.objects.filter(group=grupo).order_by('id')

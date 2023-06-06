@@ -55,7 +55,6 @@ var vents = {
         ordering: false,
         info: false,
         searching: false,
-
         columnDefs: [
             {
                 targets: [0],
@@ -84,7 +83,6 @@ var vents = {
             },
         ],
         initComplete: function(settings, json) {
-
           }
         });
     },
@@ -138,7 +136,6 @@ var vents = {
             },
         ],
         initComplete: function(settings, json) {
-
           }
         });
     }
@@ -160,7 +157,6 @@ $( "#buscar" ).autocomplete({
             }).fail(function (jqXHR, textStatus, errorThrown){
                 //alert(textStatus + ': ' + errorThrown);
             }).always(function (data){
-
             });
       },
       delay: 500,
@@ -171,7 +167,6 @@ $( "#buscar" ).autocomplete({
           $(this).val('');
       }
     });
-
 $( "#busqueda" ).autocomplete({
       source: function(request, response) {
             $.ajax({
@@ -198,7 +193,6 @@ $( "#busqueda" ).autocomplete({
           $(this).val('');
       }
     });
-
 $('#tblBudget tbody').on('click', 'a[rel="remove"]', function(){
         var tr = tblBudget.cell($(this).closest('td, li')).index();
          alert_action('Notificación', '¿Estas seguro de eliminar el ingreso de tu detalle?', function(){
@@ -206,7 +200,6 @@ $('#tblBudget tbody').on('click', 'a[rel="remove"]', function(){
              vents.list()
          })
      });
-
 $('#tblBudgetexpenses tbody').on('click', 'a[rel="remove"]', function(){
         var tr = tblBudgetexpenses.cell($(this).closest('td, li')).index();
         alert_action('Notificación', '¿Estas seguro de eliminar el egreso de tu detalle?', function(){
@@ -214,7 +207,6 @@ $('#tblBudgetexpenses tbody').on('click', 'a[rel="remove"]', function(){
              vents.listExpenses();
          })
      });
-
 $('#remove_incomes').on('click', function(){
        if(vents.items.incomes.length === 0) return false;
      alert_action('Notificación', '¿Estas seguro de eliminar todos los items del detalle de ingresos?', function(){
@@ -222,7 +214,6 @@ $('#remove_incomes').on('click', function(){
         vents.list();
      })
 });
-
 $('#remove_expenses').on('click', function(){
      if(vents.items.expenses.length === 0) return false;
      alert_action('Notificación', '¿Estas seguro de eliminar todos los items del detalle de egresos?', function(){
@@ -230,7 +221,6 @@ $('#remove_expenses').on('click', function(){
         vents.listExpenses();
      })
 })
-
 //Event submit
  $('form').on('submit', function(e){
         e.preventDefault();

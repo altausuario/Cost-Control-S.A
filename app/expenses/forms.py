@@ -4,10 +4,7 @@ from django.contrib.auth.models import Group
 from django import forms
 from categories.models import Categories
 from expenses.models import Expenses
-
-
 class ExpensesForm(ModelForm):
-
     def __init__(self, *args, **kwargs):
         usuario = kwargs.pop('usuario', None)
         super().__init__(*args, **kwargs)
@@ -19,7 +16,6 @@ class ExpensesForm(ModelForm):
         categorie = Categories.objects.filter(user_id=request.user.id).distinct()
         self.fields['categorie'].queryset = categorie
         print(usuario)
-
     class Meta:
         model = Expenses
         fields = 'description', 'amount', 'date_joined', 'annotations', 'categorie', 'state', 'iva', 'totaliva', 'total', 'image'
@@ -29,13 +25,11 @@ class ExpensesForm(ModelForm):
                     'placeholder': 'Ingrese una descripción',
                     'style': 'height:130px; resize:none;',
                 },
-
             ),
             'amount': TextInput(
                 attrs={
                     'placeholder': '0,0',
                 },
-
             ),
             'iva': NumberInput(
                 attrs={
@@ -43,7 +37,6 @@ class ExpensesForm(ModelForm):
                     'style':'width: 60%; padding-left:8px;',
                     'readonly': 'readonly',
                 },
-
             ),
             'totaliva': NumberInput(
                 attrs={
@@ -51,7 +44,6 @@ class ExpensesForm(ModelForm):
                     'value': 0.00,
                     'style': 'cursor: pointer'
                 },
-
             ),
             'total': NumberInput(
                 attrs={
@@ -59,7 +51,6 @@ class ExpensesForm(ModelForm):
                     'value': 0.00,
                     'style': 'cursor: pointer'
                 },
-
             ),
             'date_joined': DateInput(
                 format='%Y-%m-%d',
@@ -78,7 +69,6 @@ class ExpensesForm(ModelForm):
                 }
             ),
         }
-
     def save(self, commit=True):
         data = {}
         form = super()

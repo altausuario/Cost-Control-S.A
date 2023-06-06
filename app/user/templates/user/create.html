@@ -14,13 +14,11 @@
         width: 60px;
         height: 34px;
       }
-
       .switch {
         opacity: 0;
         width: 0;
         height: 0;
       }
-
       .switch-label {
         position: absolute;
         top: 0;
@@ -32,7 +30,6 @@
         cursor: pointer;
         transition: background-color 0.3s ease;
       }
-
       .switch-label:before {
         content: "";
         position: absolute;
@@ -44,11 +41,9 @@
         border-radius: 50%;
         transition: transform 0.3s ease;
       }
-
       .switch:checked + .switch-label {
         background-color: #4CAF50;
       }
-
       .switch:checked + .switch-label:before {
         transform: translateX(26px);
       }
@@ -199,7 +194,6 @@
         {% endfor %}
         $('#id_groups').append(opt)
     }
-
     {% if form.errors %}
         var errors = '';
         {% for field in form %}
@@ -216,7 +210,6 @@
           text: errors,
     });
     {% endif %}
-
     $('form[id="formSave"]').on('submit', function(e){
         e.preventDefault();
         var parameters = new FormData(this);
@@ -248,8 +241,6 @@
             });
         }
     });
-
-
 </script>
 <script>
       $(document).ready(function() {

@@ -1,7 +1,6 @@
 /**
  * @author zhixin wen <wenzhixin2010@gmail.com>
  */
-
 .ms-choice {
     display: block;
     width: 100%;
@@ -31,21 +30,18 @@
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
 }
-
 .ms-drop.bottom {
     top: 100%;
     -webkit-box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
     -moz-box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
     box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
 }
-
 .ms-drop.top {
     bottom: 100%;
     -webkit-box-shadow: 0 -4px 5px rgba(0, 0, 0, .15);
     -moz-box-shadow: 0 -4px 5px rgba(0, 0, 0, .15);
     box-shadow: 0 -4px 5px rgba(0, 0, 0, .15);
 }
-
 .ms-search {
     display: inline-block;
     margin: 0;
@@ -56,7 +52,6 @@
     width: 100%;
     z-index: 10000;
 }
-
 .ms-search input {
     width: 100%;
     height: auto !important;
@@ -77,7 +72,6 @@
      background-color: #343a40;
      color: #fff;
 }
-
 .ms-search, .ms-search input {
     -webkit-box-sizing: border-box;
     -khtml-box-sizing: border-box;
@@ -85,34 +79,28 @@
     -ms-box-sizing: border-box;
     box-sizing: border-box;
 }
-
 .ms-drop ul {
     overflow: auto;
     margin: 0;
     padding: 5px 8px;
 }
-
 .ms-drop ul > li {
     list-style: none;
     display: list-item;
     background-image: none;
     position: static;
 }
-
 .ms-drop ul > li .disabled {
     opacity: .35;
     filter: Alpha(Opacity=35);
 }
-
 .ms-drop ul > li.multiple {
     display: block;
     float: left;
 }
-
 .ms-drop ul > li.group {
     clear: both;
 }
-
 .ms-drop ul > li.multiple label {
     width: 100%;
     display: block;
@@ -120,26 +108,21 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
 .ms-drop ul > li label {
     font-weight: normal;
     display: block;
     white-space: nowrap;
 }
-
 .ms-drop ul > li label.optgroup {
     font-weight: bold;
 }
-
 .ms-drop input[type="checkbox"] {
     vertical-align: middle;
     margin-right: 5px;
 }
-
 .ms-drop .ms-no-results {
     display: none;
 }
-
 .input-group>.custom-select:not(:first-child), .input-group>.form-control:not(:first-child) {
     display: block;
     width: 100%;
