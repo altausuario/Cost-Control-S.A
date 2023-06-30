@@ -37,8 +37,8 @@ $("input[name='iva']").TouchSpin({
         max: 100,
         step: 1,
 //        decimals: 2,
-        boostat: 5,
-        maxboostedstep: 10,
+//        boostat: 5,
+//        maxboostedstep: 10,
         postfix: '%'
     }).on('change',function(){
         get_Calcular()

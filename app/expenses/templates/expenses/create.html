@@ -8,12 +8,13 @@
 <script src="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js' %}"></script>
 <link rel="stylesheet" href="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css' %}">
 <script src="{% static 'lib/jquery.maskMoney/js/jquery.maskMoney.min.js' %}"></script>
+<script src="{% static 'js/funciones_iva.js' %}"></script>
 <script src="{% static 'expenses/js/from.js' %}"></script>
 {% endblock %}
 {% block card-form %}
 <div class="row">
     <input name="action" type="hidden" value="{{ action }}" id="id_action">
-    <div class="form-group mb-3 col-3">
+    <div class="form-group mb-3 col-12 col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3">
         <div class="row">
             <div class="form-group mb-3 col-12 text-center">
                 <img class="img-fluid mx-auto d block image-user" src="/media/{{img}}"
@@ -36,7 +37,7 @@
             </div>
         </div>
     </div>
-    <div class="form-group mb-3 col-6">
+    <div class="form-group mb-3 col-12 col-xs-12 col-sm-12 col-md-4 col-lg-6 col-xl-6">
         <div class="row">
             <div class="form-group mb-3 col-12">
                 <label for="input1">Descripción</label>
@@ -48,7 +49,7 @@
             </div>
         </div>
     </div>
-    <div class="form-group mb-3 col-3">
+    <div class="form-group mb-3 col-12 col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3" id="cont">
         <div class="row">
             <div class="form-group mb-3 col-12">
                 <label for="input1">Fecha de registro</label>
