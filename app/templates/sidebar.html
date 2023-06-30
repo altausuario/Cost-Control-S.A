@@ -13,10 +13,12 @@
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image">
                             {% if request.user.image %}
-                            <img alt="User Image" class="elevation-2" src="{{request.user.image.url}}" style="width: 40px; height:40px; border-radius:5px;">
+                            <img alt="User Image" class="elevation-2" src="{{request.user.image.url}}"
+                                 style="width: 40px; height:40px; border-radius:5px;">
                             {% endif %}
                             {% if not request.user.image %}
-                            <img alt="User Image" class="elevation-2" src="{% static 'img/user.png' %}" style="width: 40px; height:40px; border-radius:5px;">
+                            <img alt="User Image" class="elevation-2" src="{% static 'img/user.png' %}"
+                                 style="width: 40px; height:40px; border-radius:5px;">
                             {% endif %}
                         </div>
                         <div class="info">
@@ -35,116 +37,133 @@
                                     </p>
                                 </a>
                             </li>
-                            <li class="nav-header">Mis mantenimientos</li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'list_budget' %}">
-                       <i class="fas fa-balance-scale nav-icon"></i>
+                                    <i class="fas fa-balance-scale nav-icon"></i>
                                     <p>Balance</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'list_income' %}">
-                        <i class="fa-solid fa-arrow-trend-up nav-icon text-success"></i>
-                        <p>Ingresos</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'list_expenses' %}">
-                        <i class="fa-solid fa-arrow-trend-down nav-icon text-danger"></i>
-                        <p>Gastos</p>
-                    </a>
-                </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'list_categories' %}">
-                            <i class="fa-solid fa-tag nav-icon"></i>
-                            <p>Categoria</p>
-                        </a>
-                    </li>
-                    <li class="nav-header">Mis Reportes</li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'report_budget' %}">
-                            <i class="fas fa-file-invoice nav-icon"></i>
-                            <p>Reporte de balance</p>
-                        </a>
-                    </li>
-                            <li class="nav-item">
-                        <a class="nav-link" href="{% url 'report_incomes' %}">
-                           <i class="fas fa-file-invoice-dollar nav-icon text-success"></i>
-                            <p>Reporte de ingresos</p>
-                        </a>
-                    </li>
-                            <li class="nav-item">
-                        <a class="nav-link" href="{% url 'report_expenses' %}">
-                            <i class="fas fa-file-invoice-dollar nav-icon text-danger"></i>
-                            <p>Reporte de gastos</p>
-                        </a>
-                    </li>
-                    {% if request.user.groups.all %}
-                    {% if 'Usuario' != request.session.group.name%}
-                    <li class="nav-header">Mantenimiento de usuarios</li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'usuarios' %}">
-                                <i class="nav-icon fas fa-users"></i>
-                                <p>
-                                    Usuarios
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'list_group' %}">
-                                <i class="fas fa-user-lock nav-icon"></i>
-                                <p>
-                                    Permisos
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'list_security' %}">
-                                <i class="fas fa-user-clock nav-icon"></i>
-                                <p>
-                                    Control de Accesos
-                                </p>
-                            </a>
-                        </li>
-                {% endif %}
-                {% endif %}
-                {% if not request.user.groups.all %}
-                {% if request.user.is_superuser %}
-                <li class="nav-header">Mantenimiento de usuarios</li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'usuarios' %}">
-                                    <i class="nav-icon fas fa-users"></i>
-                                    <p>
-                                        Usuarios
-                                    </p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'list_group' %}">
-                                    <i class="fas fa-user-lock nav-icon"></i>
-                                    <p>
-                                        Permisos
-                                    </p>
+                                <a class="nav-link" href="{% url 'list_income' %}">
+                                    <i class="fa-solid fa-arrow-trend-up nav-icon text-success"></i>
+                                    <p>Ingresos</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'list_security' %}">
-                                    <i class="fas fa-user-clock nav-icon"></i>
-                                    <p>
-                                        Control de Accesos
-                                    </p>
+                                <a class="nav-link" href="{% url 'list_expenses' %}">
+                                    <i class="fa-solid fa-arrow-trend-down nav-icon text-danger"></i>
+                                    <p>Gastos</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'list_locked' %}">
-                                    <i class="fas fa-user-times nav-icon"></i>
-                                    <p>
-                                       Usuarios inhabilitados
-                                    </p>
+                                <a class="nav-link" href="{% url 'list_categories' %}">
+                                    <i class="fa-solid fa-tag nav-icon"></i>
+                                    <p>Categoria</p>
                                 </a>
                             </li>
-                            {% endif %}
-                            {%endif%}
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <p>
+                                        Mis Reportes
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="display: none;">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'report_budget' %}">
+                                            <i class="fas fa-file-invoice nav-icon"></i>
+                                            <p>Reporte de balance</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'report_incomes' %}">
+                                            <i class="fas fa-file-invoice-dollar nav-icon text-success"></i>
+                                            <p>Reporte de ingresos</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'report_expenses' %}">
+                                            <i class="fas fa-file-invoice-dollar nav-icon text-danger"></i>
+                                            <p>Reporte de gastos</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <p>
+                                        Mantenimiento de usuarios
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="display: none;">
+                                    {% if request.user.groups.all %}
+                                    {% if 'Usuario' != request.session.group.name%}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'usuarios' %}">
+                                            <i class="nav-icon fas fa-users"></i>
+                                            <p>
+                                                Usuarios
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'list_group' %}">
+                                            <i class="fas fa-user-lock nav-icon"></i>
+                                            <p>
+                                                Permisos
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'list_security' %}">
+                                            <i class="fas fa-user-clock nav-icon"></i>
+                                            <p>
+                                                Control de Accesos
+                                            </p>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                    {% endif %}
+                                    {% if not request.user.groups.all %}
+                                    {% if request.user.is_superuser %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'usuarios' %}">
+                                            <i class="nav-icon fas fa-users"></i>
+                                            <p>
+                                                Usuarios
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'list_group' %}">
+                                            <i class="fas fa-user-lock nav-icon"></i>
+                                            <p>
+                                                Permisos
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'list_security' %}">
+                                            <i class="fas fa-user-clock nav-icon"></i>
+                                            <p>
+                                                Control de Accesos
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'list_locked' %}">
+                                            <i class="fas fa-user-times nav-icon"></i>
+                                            <p>
+                                                Usuarios inhabilitados
+                                            </p>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                    {%endif%}
+                                </ul>
+                            </li>
                         </ul>
                     </nav>
                 </div>
