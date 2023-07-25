@@ -15,6 +15,11 @@ class IncomeListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListV
     model = Income
     template_name = 'income/list.html'
     permission_required = 'view_income'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         data = {}
         try:
