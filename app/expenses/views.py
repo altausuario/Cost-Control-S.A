@@ -14,6 +14,9 @@ class ExpensesListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Lis
     model = Expenses
     template_name = 'expenses/list.html'
     permission_required = 'view_expenses'
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -48,6 +51,7 @@ class ExpensesCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, C
     success_url = reverse_lazy('list_expenses')
     permission_required = 'add_expenses'
     url_redirect = reverse_lazy('inicio')
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
@@ -77,6 +81,8 @@ class ExpensesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, U
     success_url = reverse_lazy('list_expenses')
     permission_required = 'change_expenses'
     url_redirect = reverse_lazy('inicio')
+
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object.user_id != request.user.id:
@@ -153,6 +159,7 @@ class ExpensesDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, D
     success_url = reverse_lazy('list_expenses')
     permission_required = 'delete_expenses'
     url_redirect = reverse_lazy('inicio')
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object.user_id != request.user.id:

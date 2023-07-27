@@ -1,6 +1,5 @@
 import json
 from datetime import datetime
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.http import *
@@ -24,6 +23,9 @@ class BudgetListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListV
     model = Budget
     template_name = 'budget/list.html'
     permission_required = 'view_budget'
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -234,6 +236,8 @@ class BudgetDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Del
     success_url = reverse_lazy('list_budget')
     permission_required = 'delete_budget'
     url_redirect = reverse_lazy('inicio')
+
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object.user_id != request.user.id:

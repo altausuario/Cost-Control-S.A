@@ -3,6 +3,8 @@ from django.contrib.auth.models import *
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import *
 from django.contrib.auth.models import Group
 from group.forms import GroupForm
@@ -13,6 +15,9 @@ class GroupListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListVi
     template_name = 'group/list.html'
     permission_required = 'view_group'
     url_redirect = reverse_lazy('inicio')
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -51,6 +56,7 @@ class GroupCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Crea
     success_url = reverse_lazy('list_group')
     permission_required = 'add_group'
     url_redirect = reverse_lazy('inicio')
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
@@ -79,6 +85,7 @@ class GroupUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upda
     success_url = reverse_lazy('list_group')
     permission_required = 'change_group'
     url_redirect = reverse_lazy('inicio')
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
@@ -107,6 +114,8 @@ class GroupDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Dele
     success_url = reverse_lazy('list_group')
     permission_required = 'delete_group'
     url_redirect = reverse_lazy('inicio')
+
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)

@@ -12,7 +12,6 @@ $(function(){
                 'action':'searchdata'
             },
             dataSrc: "",
-//            headers: {'X-CSRFToken': csrftoken}
         },
         columns: [
             {'data': 'position'},

@@ -18,6 +18,9 @@ class UserListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListVie
     model = User
     template_name = 'user/list.html'
     permission_required = 'view_user'
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -50,6 +53,7 @@ class UserCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Creat
     success_url = reverse_lazy('usuarios')
     permission_required = 'add_user'
     url_redirect = reverse_lazy('usuarios')
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
@@ -85,9 +89,11 @@ class UserUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Updat
     success_url = reverse_lazy('usuarios')
     permission_required = 'change_user'
     url_redirect = reverse_lazy('inicio')
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if self.object.id == 1:
+        usuario = User.objects.get(pk=self.object.id)
+        if usuario.username == 'altausuario' and usuario.is_superuser:
             return HttpResponseRedirect(reverse_lazy('usuarios'))
         return super().dispatch(request, *args, **kwargs)
     def image_user(self, pk):
@@ -131,9 +137,11 @@ class UserDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Delet
     success_url = reverse_lazy('usuarios')
     permission_required = 'delete_user'
     url_redirect = reverse_lazy('usuarios')
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if self.object.id == 1:
+        usuario = User.objects.get(pk=self.object.id)
+        if usuario.username == 'altausuario' and usuario.is_superuser:
             return HttpResponseRedirect(reverse_lazy('usuarios'))
         return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
@@ -154,6 +162,7 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
     form_class = UserProfileForm
     template_name = 'user/profile.html'
     success_url = reverse_lazy('inicio')
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
@@ -184,6 +193,7 @@ class UserChangePasswordUpdateView(LoginRequiredMixin, FormView):
     form_class = PasswordChangeForm
     template_name = 'user/change_password.html'
     success_url = reverse_lazy('login')
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     def get_form(self, form_class=None):

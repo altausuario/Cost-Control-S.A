@@ -4,6 +4,8 @@ from django.db.models import *
 from django.db.models.functions import Coalesce
 from django.http import JsonResponse
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import *
 from budget.models import Budget
 from categories.models import Categories
@@ -14,6 +16,9 @@ from user.mixins import ValidatePermissionRequiredMinxin
 # Create your views here.
 class ReportBudgetView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, TemplateView):
     template_name = 'report/report_budget.html'
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
         data = []
         try:
@@ -58,6 +63,9 @@ class ReportBudgetView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Tem
         return context
 class ReportIncomesView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,TemplateView):
     template_name = 'report/report_income.html'
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
         data = []
         try:
@@ -108,6 +116,9 @@ class ReportIncomesView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,Tem
         return context
 class ReportExpensesView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,TemplateView):
     template_name = 'report/report_expenses.html'
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
         data = []
         try:

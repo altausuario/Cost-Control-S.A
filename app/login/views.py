@@ -1,8 +1,6 @@
 import uuid
-from crum import get_current_request
 from django.contrib.auth import *
 from django.contrib.auth.views import *
-from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import *
 from django.views.decorators.csrf import csrf_exempt
@@ -14,7 +12,6 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from django.template.loader import render_to_string
 from app import settings
-from security.models import AccessUsers
 from user.forms import NewUserProfileForm
 from user.models import User
 # Create your views here.
@@ -22,6 +19,7 @@ class LoginFormView(FormView):
     form_class = AuthenticationForm
     template_name = 'login/login.html'
     success_url = reverse_lazy(settings.LOGIN_REDIRECT_URL)
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect(setting.LOGIN_REDIRECT_URL)
@@ -121,6 +119,7 @@ class ChangePasswordView(FormView):
         return context
 class LogoutRedirectView(RedirectView):
     pattern_name = 'login'
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         logout(request)
         return super().dispatch(request, *args, **kwargs)
@@ -129,6 +128,7 @@ class NewUserProfileView(CreateView):
     form_class = NewUserProfileForm
     template_name = 'login/NewUserProfile.html'
     success_url = reverse_lazy('login')
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
