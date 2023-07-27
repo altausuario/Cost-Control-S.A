@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&o#r&o8z(*9p4aqpv@_9q!)6iad=shsz&99_mhao6(vd+y_gau'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 # Application definition
 DJANGO_APPS = [
     'django.contrib.admin',
@@ -75,9 +75,9 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'pre_db',
+        'NAME': 'costcontrol',
         'USER': 'postgres',
-        'PASSWORD': 'admin',
+        'PASSWORD': 'altausuario',
         'HOST': 'localhost',
         'PORT': '5432',
     }

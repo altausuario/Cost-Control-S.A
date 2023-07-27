@@ -140,8 +140,12 @@ class UserDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Delet
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
+<<<<<<< HEAD
+        if self.object.id == 2:
+=======
         usuario = User.objects.get(pk=self.object.id)
         if usuario.username == 'altausuario' and usuario.is_superuser:
+>>>>>>> 96bd8f41a7971745a8868a7fb07c5e3ad9f97b16
             return HttpResponseRedirect(reverse_lazy('usuarios'))
         return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):

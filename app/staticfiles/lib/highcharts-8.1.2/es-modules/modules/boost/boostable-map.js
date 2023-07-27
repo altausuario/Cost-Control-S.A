@@ -1,18 +1,1 @@
-/* *
- *
- *  Copyright (c) 2019-2020 Highsoft AS
- *
- *  Boost module: stripped-down renderer for higher performance
- *
- *  License: highcharts.com/license
- *
- *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
- *
- * */
-import boostables from './boostables.js';
-// These are the series we allow boosting for.
-var boostableMap = {};
-boostables.forEach(function (item) {
-    boostableMap[item] = 1;
-});
-export default boostableMap;
+/home/alvaro/Cost-Control-S.A/app/static/lib/highcharts-8.1.2/es-modules/modules/boost/boostable-map.js

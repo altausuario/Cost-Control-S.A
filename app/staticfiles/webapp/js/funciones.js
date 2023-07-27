@@ -1,0 +1,1 @@
+/home/alvaro/Cost-Control-S.A/app/webapp/static/webapp/js/funciones.js

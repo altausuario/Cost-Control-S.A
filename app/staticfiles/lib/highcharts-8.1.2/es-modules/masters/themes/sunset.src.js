@@ -1,11 +1,1 @@
-/**
- * @license Highcharts JS v8.1.2 (2020-06-16)
- * @module highcharts/themes/sunset
- * @requires highcharts
- *
- * (c) 2009-2019 Highsoft AS
- *
- * License: www.highcharts.com/license
- */
-'use strict';
-import '../../themes/sunset.js';
+/home/alvaro/Cost-Control-S.A/app/static/lib/highcharts-8.1.2/es-modules/masters/themes/sunset.src.js

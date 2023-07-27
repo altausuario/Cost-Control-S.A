@@ -1,1 +1,1 @@
-console.error('code.highcharts.local has moved to the /code folder'); // eslint-disable-line no-console
+/home/alvaro/Cost-Control-S.A/app/static/lib/highcharts-8.1.2/es-modules/error.js
