@@ -239,4 +239,3 @@ function alert_action(title, content, callback){
 
 
 
-

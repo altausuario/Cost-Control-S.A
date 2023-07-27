@@ -19,11 +19,10 @@ class IncomeListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListV
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
-        data = {}
+        data = []
         try:
           action = request.POST['action']
           if action == 'searchdata':
-              data = []
               position = 1
               for i in Income.objects.filter(user_id=request.user.id).order_by('id'):
                   item = i.toJSON()
@@ -31,7 +30,8 @@ class IncomeListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListV
                   for c in Categories.objects.filter(id=i.user_id):
                       name = c.name
                       item['categorie'] = name
-                      data.append(item)
+                      print(item.catgorie)
+                  data.append(item)
                   position += 1
           else:
               data['error'] = 'Ha ocurrido un error'
