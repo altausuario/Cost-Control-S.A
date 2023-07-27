@@ -133,7 +133,7 @@ class UserDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Delet
     url_redirect = reverse_lazy('usuarios')
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if self.object.id == 1:
+        if self.object.id == 2:
             return HttpResponseRedirect(reverse_lazy('usuarios'))
         return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):

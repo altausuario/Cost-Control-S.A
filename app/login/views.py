@@ -22,6 +22,7 @@ class LoginFormView(FormView):
     form_class = AuthenticationForm
     template_name = 'login/login.html'
     success_url = reverse_lazy(settings.LOGIN_REDIRECT_URL)
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect(setting.LOGIN_REDIRECT_URL)
