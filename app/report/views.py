@@ -14,7 +14,7 @@ from income.models import Income
 from report.forms import ReportBudgetForm
 from user.mixins import ValidatePermissionRequiredMinxin
 # Create your views here.
-class ReportBudgetView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, TemplateView):
+class ReportBudgetView(LoginRequiredMixin,TemplateView):
     template_name = 'report/report_budget.html'
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -61,7 +61,7 @@ class ReportBudgetView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Tem
         context['link_url'] = reverse_lazy('report_budget')
         context['form'] = ReportBudgetForm
         return context
-class ReportIncomesView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,TemplateView):
+class ReportIncomesView(LoginRequiredMixin, TemplateView):
     template_name = 'report/report_income.html'
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -114,7 +114,7 @@ class ReportIncomesView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,Tem
         context['link_url'] = reverse_lazy('report_incomes')
         context['form'] = ReportBudgetForm
         return context
-class ReportExpensesView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,TemplateView):
+class ReportExpensesView(LoginRequiredMixin,TemplateView):
     template_name = 'report/report_expenses.html'
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):

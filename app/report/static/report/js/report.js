@@ -27,6 +27,15 @@ var access_users = {
             ordering: false,
             info: false,
             searching: false,
+            dom: 'Bfrtip',
+            buttons: [
+            {
+                extend: 'excelHtml5',
+                text: 'Descargar Excel <i class="fas fa-file-excel"></i>',
+                titleAttr: 'Excel',
+                className: 'btn btn-success btn-flat btn-xs'
+            },
+        ],
             initComplete: function (settings, json) {
             }
         });
