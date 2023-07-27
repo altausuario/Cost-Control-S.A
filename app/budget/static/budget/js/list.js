@@ -14,7 +14,6 @@ function getData(){
                 'action':'searchdata'
             },
             dataSrc: "",
-            headers: {'X-CSRFToken': csrftoken}
         },
         columns: [
             {

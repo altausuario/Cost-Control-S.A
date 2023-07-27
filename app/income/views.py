@@ -15,11 +15,9 @@ class IncomeListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListV
     model = Income
     template_name = 'income/list.html'
     permission_required = 'view_income'
-
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -54,6 +52,7 @@ class IncomeCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Cre
     success_url = reverse_lazy('list_income')
     permission_required = 'add_income'
     url_redirect = reverse_lazy('inicio')
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
@@ -83,6 +82,7 @@ class IncomeUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
     success_url = reverse_lazy('list_income')
     permission_required = 'change_income'
     url_redirect = reverse_lazy('inicio')
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object.user_id != request.user.id:
@@ -104,7 +104,6 @@ class IncomeUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
                 ino = Income.objects.filter(id=inm.income_id)
                 for i in ino:
                     total_in += i.total
-
             total = total_in - total_ex
             but =Budget()
             but.id = b.id
@@ -157,6 +156,8 @@ class IncomeDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Del
     success_url = reverse_lazy('list_income')
     permission_required = 'delete_income'
     url_redirect = reverse_lazy('inicio')
+
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object.user_id != request.user.id:

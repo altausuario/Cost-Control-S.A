@@ -1,12 +1,1 @@
-/**
- * @license Highcharts JS v8.1.2 (2020-06-16)
- * @module highcharts/modules/wordcloud
- * @requires highcharts
- *
- * (c) 2016-2019 Highsoft AS
- * Authors: Jon Arild Nygard
- *
- * License: www.highcharts.com/license
- */
-'use strict';
-import '../../modules/wordcloud.src.js';
+/home/alvaro/Cost-Control-S.A/app/static/lib/highcharts-8.1.2/es-modules/masters/modules/wordcloud.src.js

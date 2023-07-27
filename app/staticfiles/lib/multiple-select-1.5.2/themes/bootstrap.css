@@ -1,14 +1,1 @@
-.ms-parent.form-control {
-  padding: 0; }
-  .ms-parent.form-control .ms-choice {
-    height: 100%;
-    border: 0; }
-    .ms-parent.form-control .ms-choice > span {
-      top: 50%;
-      transform: translateY(-50%); }
-  .ms-parent.form-control.form-control-sm .ms-drop input[type=radio],
-  .ms-parent.form-control.form-control-sm .ms-drop input[type=checkbox] {
-    margin-top: 0.4rem; }
-  .ms-parent.form-control.form-control-lg .ms-drop input[type=radio],
-  .ms-parent.form-control.form-control-lg .ms-drop input[type=checkbox] {
-    margin-top: 0.5rem; }
+/home/alvaro/Cost-Control-S.A/app/static/lib/multiple-select-1.5.2/themes/bootstrap.css

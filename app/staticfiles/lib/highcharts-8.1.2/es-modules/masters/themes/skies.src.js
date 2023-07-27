@@ -1,11 +1,1 @@
-/**
- * @license Highcharts JS v8.1.2 (2020-06-16)
- * @module highcharts/themes/skies
- * @requires highcharts
- *
- * (c) 2009-2019 Torstein Honsi
- *
- * License: www.highcharts.com/license
- */
-'use strict';
-import '../../themes/skies.js';
+/home/alvaro/Cost-Control-S.A/app/static/lib/highcharts-8.1.2/es-modules/masters/themes/skies.src.js

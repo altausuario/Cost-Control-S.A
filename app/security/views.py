@@ -3,6 +3,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import *
 from report.forms import ReportBudgetForm
 from security.choices import LOGIN_TYPE
@@ -15,6 +17,9 @@ class AccessUsersListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, 
     template_name = 'security/list.html'
     permission_required = 'view_accessusers'
     url_redirect = reverse_lazy('inicio')
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -46,6 +51,7 @@ class AccessUsersDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin
     success_url = reverse_lazy('list_security')
     permission_required = 'delete_accessusers'
     url_redirect = reverse_lazy('inicio')
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)

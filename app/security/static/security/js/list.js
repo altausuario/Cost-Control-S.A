@@ -21,7 +21,6 @@ var access_users = {
                 type: 'POST',
                 data: parameters,
                 dataSrc: "",
-                headers: {'X-CSRFToken': csrftoken}
             },
              order: false,
             paging: false,

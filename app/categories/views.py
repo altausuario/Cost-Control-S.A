@@ -12,6 +12,9 @@ class CategoriesListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, L
     model = Categories
     template_name = 'categories/list.html'
     permission_required = 'view_categories'
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -43,6 +46,7 @@ class CategoriesCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,
     success_url = reverse_lazy('list_categories')
     permission_required = 'add_categories'
     url_redirect = reverse_lazy('inicio')
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
@@ -71,6 +75,7 @@ class CategoriesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,
     success_url = reverse_lazy('list_categories')
     permission_required = 'change_categories'
     url_redirect = reverse_lazy('inicio')
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object.user_id != request.user.id:
@@ -108,6 +113,7 @@ class CategoriesDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin,
     success_url = reverse_lazy('list_categories')
     permission_required = 'delete_categories'
     url_redirect = reverse_lazy('inicio')
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object.user_id != request.user.id:
