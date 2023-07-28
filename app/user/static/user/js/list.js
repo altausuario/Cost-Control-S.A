@@ -79,11 +79,8 @@ $('#data').DataTable({
           }
         });
 }
-$(function(){
-   getData();
-   $('#data').on('click', '.blockUser' , function(){
-        pk = $(this).val()
-        $.ajax({
+function getBlockUser(pk){
+    $.ajax({
             url: window.location.pathname,
             type: 'POST',
             data: {
@@ -111,5 +108,38 @@ $(function(){
             alert(textStatus + ': ' + errorThrown);
         }).always(function (data){
         });
+}
+$(function(){
+   getData();
+   $('#data').on('click', '.blockUser' , function(){
+        var pk = $(this).val()
+
+        $.confirm({
+        theme: 'material',
+        title: 'Notificación',
+        icon: 'fa fa-info',
+        content: '¿Estas segura de bloquear al usuario?',
+        columnClass: 'small',
+        typeAnimated: true,
+        cancelButtonClass: 'btn-primary',
+        draggable: true,
+        dragWindowBorder: false,
+        buttons: {
+            info: {
+                text: "Si",
+                btnClass: 'btn-primary',
+                action: function () {
+                    getBlockUser(pk)
+                }
+            },
+            danger: {
+                text: "No",
+                btnClass: 'btn-red',
+                action: function () {
+
+                }
+            },
+        }
+    })
    })
 });
