@@ -31,9 +31,9 @@ class ActivateForm(forms.Form):
             'required': True
         }
     ))
-    password = forms.CharField(widget=forms.PasswordInput(
+    last_login = forms.CharField(widget=forms.TextInput(
         attrs={
-            'placeholder': 'Contraseña',
+            'placeholder': 'Último acceso',
             'class': 'form-control',
             'autocomplete': 'off',
             'readonly': True,

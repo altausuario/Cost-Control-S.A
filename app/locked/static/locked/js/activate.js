@@ -18,7 +18,7 @@ var vents = {
             first_name = dict.first_name
             last_name = dict.last_name
             username = dict.username
-            password = dict.password
+            last_login = dict.last_login
             date_joined = dict.date_joined
             email = dict.email
             image = dict.image
@@ -26,7 +26,7 @@ var vents = {
         $('input[name="first_name"]').val(first_name)
         $('input[name="last_name"]').val(last_name)
         $('input[name="username"]').val(username)
-        $('input[name="password"]').val(password)
+        $('input[name="last_login"]').val(last_login)
         $('input[name="date_joined"]').val(date_joined)
         $('input[name="email"]').val(email)
         $('#img').attr("src", image);
@@ -67,10 +67,10 @@ $( "#buscar" ).autocomplete({
         nombre = $('input[name="first_name"]').val()
         apellidos = $('input[name="last_name"]').val()
         username = $('input[name="username"]').val()
-        password = $('input[name="password"]').val()
+        last_login = $('input[name="last_login"]').val()
         fecha = $('input[name="date_joined"]').val()
         email = $('input[name="email"]').val()
-        if(nombre == '' && apellidos == '' && username == '' && password == '' && fecha == '' && email == ''){
+        if(nombre == '' && apellidos == '' && username == '' && last_login == '' && fecha == '' && email == ''){
             Swal.fire({
               icon: 'error',
               title: 'Oops...',

@@ -61,16 +61,8 @@
         e.preventDefault();
         var parameters = new FormData(this);
         console.log(parameters);
-        alert_confirm(window.location.pathname, 'Notificasión', '¿Estas seguro de eliminar el usuario con el registro N°: {{object.id}}', parameters, function(){
-            Swal.fire({
-              title: 'Alerta',
-              text: 'Registro eliminado correctamente',
-              icon: 'success',
-              timer: 2000,
-              onClose: () => {
-                location.href = '{{ url_link }}'
-              }
-            });
+        alert_confirm_delete_user(window.location.pathname, 'Notificasión', '¿Estas seguro de eliminar el usuario con el registro N°: {{object.id}}', parameters, function(){
+
         });
     });
 </script>

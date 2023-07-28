@@ -34,8 +34,9 @@ $('#data').DataTable({
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    var buttons = '<a href="/list/usuarios/edit/'+row.id+'" class="btn btn-warning btn-xs btn-flat" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fas fa-edit"></i></a>  ';
-                    buttons +=  '<a href="/list/usuarios/delete/'+row.id+'" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a>';
+                    var buttons = '<a href="/list/usuarios/edit/'+row.id+'" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>  ';
+                    buttons +=  '<a href="/list/usuarios/delete/'+row.id+'" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a> ';
+                    buttons +=  '<button type="button" value="'+row.id+'"class="btn btn-secondary btn-xs btn-flat blockUser"><i class="fas fa-ban"></i></button>';
                     return buttons;
                 }
             },
@@ -80,4 +81,35 @@ $('#data').DataTable({
 }
 $(function(){
    getData();
+   $('#data').on('click', '.blockUser' , function(){
+        pk = $(this).val()
+        $.ajax({
+            url: window.location.pathname,
+            type: 'POST',
+            data: {
+                'action':'block_user',
+                'pk':pk
+            },
+            dataType: 'json',
+        }).done(function(data){
+            if(!data.hasOwnProperty('error')){
+                Swal.fire({
+                  title: 'Alerta',
+                  text: data.text,
+                  icon: data.icon,
+                  timer: 5000,
+                  onClose: () => {
+                    if (data.url != ''){
+                        location.href = data.url
+                    }
+                  }
+                });
+                return false;
+            }
+            mensaje_error(data.error);
+        }).fail(function (jqXHR, textStatus, errorThrown){
+            alert(textStatus + ': ' + errorThrown);
+        }).always(function (data){
+        });
+   })
 });

@@ -93,7 +93,74 @@ function alert_confirm(url, title, content, parameters, callback){
                     }).done(function(data){
                         if(!data.hasOwnProperty('error')){
                             callback(data);
-                            console.log(data.success)
+                            return false;
+                        }
+                        mensaje_error(data.error);
+                    }).fail(function (jqXHR, textStatus, errorThrown){
+                        alert(textStatus + ': ' + errorThrown);
+                    }).always(function (data){
+
+                    });
+                }
+            },
+            danger: {
+                text: "No",
+                btnClass: 'btn-red',
+                action: function () {
+
+                }
+            },
+        }
+    })
+}
+function alert_confirm_delete_user(url, title, content, parameters, callback){
+    $.confirm({
+        theme: 'material',
+        title: title,
+        icon: 'fa fa-info',
+        content: content,
+        columnClass: 'small',
+        typeAnimated: true,
+        cancelButtonClass: 'btn-primary',
+        draggable: true,
+        dragWindowBorder: false,
+        buttons: {
+            info: {
+                text: "Si",
+                btnClass: 'btn-primary',
+                action: function () {
+                    $.ajax({
+                        url:url,  //window.location.pathname
+                        type: 'POST',
+                        data: parameters,
+                        dataType: 'json',
+                        processData: false,
+                        contentType: false,
+                        headers: {'X-CSRFToken': csrftoken}
+                    }).done(function(data){
+                        if(!data.hasOwnProperty('error')){
+                            callback(data);
+                            if(data.state == true){
+                                Swal.fire({
+                                  title: 'Alerta',
+                                  text: 'Registro eliminado correctamente',
+                                  icon: 'success',
+                                  timer: 2000,
+                                  onClose: () => {
+                                    location.href = data.url
+                                  }
+                                });
+                            }else{
+                                Swal.fire({
+                                  title: 'Alerta',
+                                  text: 'El usuario no se puede eliminar antes de cumplir dos años de inactivada',
+                                  icon: 'error',
+                                  timer: 5000,
+                                  onClose: () => {
+                                    location.href = data.url
+                                  }
+                                });
+                            }
                             return false;
                         }
                         mensaje_error(data.error);

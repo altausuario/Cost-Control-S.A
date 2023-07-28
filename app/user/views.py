@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
@@ -5,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group
 from django.db import transaction
 from django.http import JsonResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -34,6 +36,37 @@ class UserListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListVie
                       item['position'] = position
                       data.append(item)
                       position += 1
+          elif action == 'block_user':
+              data = {}
+              try:
+                  pkadmin = request.user.id
+                  admin = User.objects.get(pk=pkadmin)
+                  if admin.has_perm('delete_user') or admin.is_superuser:
+                    pk = request.POST['pk']
+                    user = User.objects.get(pk=pk)
+                    if user.is_active:
+                        user.is_active = False
+                        user.save()
+                        data = {
+                            'url':reverse_lazy('usuarios'),
+                            'text': f'El usuario {user.first_name} {user.last_name} fue bloqueado exitosamente',
+                            'icon': 'success'
+                        }
+                    else:
+                        data = {
+                            'url': '',
+                            'text': f'El usuario {user.first_name} {user.last_name} ya esta bloqueado',
+                            'icon': 'info'
+                        }
+                  else:
+                      data = {
+                          'url': reverse_lazy('usuarios'),
+                          'text': f'El usuario {admin.first_name} {admin.last_name} no tiene los permisos suficientes para realizar esta acción',
+                          'icon': 'error'
+                      }
+              except Exception as e:
+                  data['error'] = str(e)
+
           else:
               data['error'] = 'Ha ocurrido un error'
         except Exception as e:
@@ -147,10 +180,28 @@ class UserDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Delet
     def post(self, request, *args, **kwargs):
         data = {}
         try:
-            self.object.delete()
+            pk = kwargs.get('pk')
+            user = get_object_or_404(User, pk=pk)
+            current_datetime = timezone.now()
+            idle_time = current_datetime - user.last_login
+            idle_days = idle_time.days
+            time_years = idle_days/365.25
+            estado_delete = False
+            if time_years > 2:
+                estado_delete = True
+                data = {
+                    'state': estado_delete,
+                    'url': reverse_lazy('usuarios')
+                }
+                self.object.delete()
+            else:
+                data = {
+                    'state': estado_delete,
+                    'url': reverse_lazy('usuarios')
+                }
         except Exception as e:
             data['error'] = str(e)
-        return JsonResponse(data)
+        return JsonResponse(data, safe=False)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Eliminar Usuario'
