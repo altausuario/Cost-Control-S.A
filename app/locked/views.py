@@ -1,5 +1,6 @@
 import smtplib
 import uuid
+from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from app import settings
@@ -87,6 +88,15 @@ class LockedActivateFormView(LoginRequiredMixin, ValidatePermissionRequiredMinxi
         except Exception as e:
             data['error'] = str(e)
         return data
+
+    def get_last_login(self, username):
+        user = User.objects.get(username=username)
+        if user.last_login is None:
+            print('hola last login')
+            user.last_login = datetime.now()
+            user.save()
+        return user.toJSON()
+
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -107,7 +117,8 @@ class LockedActivateFormView(LoginRequiredMixin, ValidatePermissionRequiredMinxi
             elif action == 'autocomplete':
                 data = []
                 for i in User.objects.filter(username__icontains=request.POST['term'], is_active=False)[0:10]:
-                    item = i.toJSON()
+                    # item
+                    item = self.get_last_login(i.username)
                     item['value'] = i.username
                     data.append(item)
             else:

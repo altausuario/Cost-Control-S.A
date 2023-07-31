@@ -1,5 +1,6 @@
 from _pydecimal import Decimal
-from datetime import datetime
+from datetime import datetime, timedelta
+from django.utils import timezone
 from crum import get_current_request
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,6 +14,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from budget.models import Budget
 from random import randint
+
+from user.models import User
 from webapp.forms import *
 # Create your views here.
 class homeView(LoginRequiredMixin, TemplateView):
@@ -98,6 +101,17 @@ class homeView(LoginRequiredMixin, TemplateView):
         except:
             pass
         return data
+
+    def get_user_block(self):
+        ahora = timezone.now()
+        user = User.objects.filter(last_login__isnull=True)
+        for u in user:
+           if u.last_login is None:
+               diferencia = ahora - u.date_joined
+               if diferencia >= timedelta(days=1):
+                  u.is_active = False
+                  u.save()
+
     def post(self, request, *args, **kwargs):
         data = []
         try:
@@ -115,7 +129,6 @@ class homeView(LoginRequiredMixin, TemplateView):
                   'colorByPoint': True,
                   'data': self.get_graph_budget_percentage_year_month()
               }
-              print(data)
           elif action == 'get_graph_online':
               data = {'y': randint(1, 100)}
           else:
@@ -126,6 +139,7 @@ class homeView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         request.user.get_goup_session()
+        self.get_user_block()
         return super().get(request, *args, **kwargs)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
