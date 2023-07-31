@@ -22,7 +22,9 @@ class AccessUsers(models.Model):
         return item
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         request = get_current_request()
-        self.ip_address = request.META['REMOTE_ADDR']
+        self.ip_address = request.META.get('HTTP_X_FORWARDED_FOR')
+        if not self.ip_address:
+            self.ip_address = request.META.get('REMOTE_ADDR')
         super(AccessUsers, self).save()
     class Meta:
         verbose_name = 'Acceso de usuario'
