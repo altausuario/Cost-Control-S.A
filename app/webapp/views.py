@@ -101,7 +101,6 @@ class homeView(LoginRequiredMixin, TemplateView):
         except:
             pass
         return data
-
     def get_user_block(self):
         ahora = timezone.now()
         user = User.objects.filter(last_login__isnull=True)
@@ -111,7 +110,6 @@ class homeView(LoginRequiredMixin, TemplateView):
                if diferencia >= timedelta(days=1):
                   u.is_active = False
                   u.save()
-
     def post(self, request, *args, **kwargs):
         data = []
         try:
@@ -136,7 +134,6 @@ class homeView(LoginRequiredMixin, TemplateView):
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
-
     def get(self, request, *args, **kwargs):
         request.user.get_goup_session()
         self.get_user_block()

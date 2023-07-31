@@ -31,7 +31,6 @@ class IncomeListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListV
                       name = c.name
                       item['categorie'] = name
                       data.append(item)
-                  print(data)
                   position += 1
           else:
               data['error'] = 'Ha ocurrido un error'
@@ -174,15 +173,12 @@ class IncomeDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Del
                 ex = Expenses.objects.filter(id=ec.expenses_id)
                 for e in ex:
                     total_ex += e.amount
-            print(f'Expenses {total_ex}')
 
             inc = IncomeConetion.objects.filter(budget_id=b.id)
             for inm in inc:
                 ino = Income.objects.filter(id=inm.income_id)
                 for i in ino:
                     total_in += i.amount
-            print(f'Incomes {total_in}')
-
             total = total_in - total_ex
             but =Budget()
             but.id = b.id

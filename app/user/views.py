@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.utils import timezone
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
@@ -173,10 +175,17 @@ class UserDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Delet
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
+        pk = kwargs.get('pk')
+        self.get_user_last_login(pk)
         usuario = User.objects.get(pk=self.object.id)
         if usuario.username == 'altausuario' and usuario.is_superuser:
             return HttpResponseRedirect(reverse_lazy('usuarios'))
         return super().dispatch(request, *args, **kwargs)
+    def get_user_last_login(self, pk):
+        user = User.objects.get(pk=pk)
+        if user.last_login is None:
+            user.last_login=datetime.now()
+            user.save()
     def post(self, request, *args, **kwargs):
         data = {}
         try:
