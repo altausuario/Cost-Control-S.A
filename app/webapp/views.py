@@ -115,6 +115,7 @@ class homeView(LoginRequiredMixin, TemplateView):
                   'colorByPoint': True,
                   'data': self.get_graph_budget_percentage_year_month()
               }
+              print(data)
           elif action == 'get_graph_online':
               data = {'y': randint(1, 100)}
           else:

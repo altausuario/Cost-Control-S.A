@@ -11,6 +11,7 @@ from budget.forms import PresupuestoForm
 from budget.models import *
 from categories.models import Categories
 from expenses.models import Expenses
+from income.forms import IncomeForm
 from income.models import Income
 from user.mixins import ValidatePermissionRequiredMinxin
 import os
@@ -85,8 +86,6 @@ class BudgetCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Cre
                          ec.budget_id = budget.id
                          ec.expenses_id = e['id']
                          ec.save()
-
-
             elif action == 'autocomplete':
                 data = []
 
@@ -100,6 +99,34 @@ class BudgetCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Cre
                     item = i.toJSON()
                     item['value'] = i.description
                     data.append(item)
+            elif action == 'Ingreso':
+                income = Income()
+                income.description = request.POST['description']
+                income.annotations = request.POST['annotations']
+                income.date_joined = request.POST['date_joined']
+                income.categorie_id = request.POST['categorie']
+                income.state = request.POST['state']
+                income.amount = request.POST['amount']
+                income.iva = request.POST['iva']
+                income.totaliva = request.POST['totaliva']
+                income.total = request.POST['totalRegister']
+                income.image = request.POST['image']
+                income.user_id = request.user.id
+                income.save()
+            elif action == 'Gasto':
+                expense = Expenses()
+                expense.description = request.POST['description']
+                expense.annotations = request.POST['annotations']
+                expense.date_joined = request.POST['date_joined']
+                expense.categorie_id = request.POST['categorie']
+                expense.state = request.POST['state']
+                expense.amount = request.POST['amount']
+                expense.iva = request.POST['iva']
+                expense.totaliva = request.POST['totaliva']
+                expense.total = request.POST['totalRegister']
+                expense.image = request.POST['image']
+                expense.user_id = request.user.id
+                expense.save()
             else:
                 data['error'] = 'No ha ingresado a ninguna opcion'
         except Exception as e:
@@ -110,9 +137,11 @@ class BudgetCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Cre
         context['title'] = 'Nuevo presupuesto'
         context['action'] = 'add'
         context['icon'] = 'fa-plus mr-1'
+        context['img'] = 'facture.png'
         context['detIncome'] = []
         context['detExpenses'] = []
         context['url_link'] = self.success_url
+        context['register'] = IncomeForm
         return context
 class BudgetUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, UpdateView):
     model = Budget
@@ -164,6 +193,34 @@ class BudgetUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
                             ec.save()
                     else:
                         data['error'] = 'No tienes las credenciales correspondientes'
+            elif action == 'Ingreso':
+                income = Income()
+                income.description = request.POST['description']
+                income.annotations = request.POST['annotations']
+                income.date_joined = request.POST['date_joined']
+                income.categorie_id = request.POST['categorie']
+                income.state = request.POST['state']
+                income.amount = request.POST['amount']
+                income.iva = request.POST['iva']
+                income.totaliva = request.POST['totaliva']
+                income.total = request.POST['totalRegister']
+                income.image = request.POST['image']
+                income.user_id = request.user.id
+                income.save()
+            elif action == 'Gasto':
+                expense = Expenses()
+                expense.description = request.POST['description']
+                expense.annotations = request.POST['annotations']
+                expense.date_joined = request.POST['date_joined']
+                expense.categorie_id = request.POST['categorie']
+                expense.state = request.POST['state']
+                expense.amount = request.POST['amount']
+                expense.iva = request.POST['iva']
+                expense.totaliva = request.POST['totaliva']
+                expense.total = request.POST['totalRegister']
+                expense.image = request.POST['image']
+                expense.user_id = request.user.id
+                expense.save()
             elif action == 'autocomplete':
                 data = []
                 for i in Income.objects.filter(description__icontains=request.POST['term'], user_id=request.user.id)[0:10]:
@@ -226,9 +283,11 @@ class BudgetUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
         context['title'] = 'Editar presupuesto'
         context['action'] = 'edit'
         context['icon'] = 'fa-edit mr-1'
+        context['img'] = 'facture.png'
         context['detIncome'] = json.dumps(self.get_details_income())
         context['detExpenses'] = json.dumps(self.get_details_Expenses())
         context['url_link'] = self.success_url
+        context['register'] = IncomeForm
         return context
 class BudgetDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, DeleteView):
     model = Budget

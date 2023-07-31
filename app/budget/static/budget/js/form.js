@@ -140,6 +140,36 @@ var vents = {
         });
     }
 };
+ var opcionesOriginales;
+function Get_opt_select(opt){
+     $("#state").html('');
+    if(opt === 'Ingreso'){
+        var opcionesNuevas = [
+            { value: '', selected: '', text: '---------' },
+            { value: 'Esperando a recibir', text: 'Esperando a recibir' },
+            { value: 'Ya ha sido recibido', text: 'Ya ha sido recibido' },
+        ];
+        $.each(opcionesNuevas, function(i, opcion) {
+            $("#state").append($('<option>', {
+                value: opcion.value,
+                text: opcion.text
+            }));
+        });
+    }
+    if(opt === 'Gasto'){
+        var opcionesNuevas = [
+            { value: '', selected: '', text: '---------' },
+            { value: 'Por pagar', text: 'Por pagar' },
+            { value: 'Ya ha sido pagado', text: 'Ya ha sido pagado' },
+        ];
+        $.each(opcionesNuevas, function(i, opcion) {
+            $("#state").append($('<option>', {
+                value: opcion.value,
+                text: opcion.text
+            }));
+        });
+    }
+}
 
 $( function() {
 $( "#buscar" ).autocomplete({
@@ -222,7 +252,7 @@ $('#remove_expenses').on('click', function(){
      })
 })
 //Event submit
- $('form').on('submit', function(e){
+ $('form[id="form_budget"]').on('submit', function(e){
         e.preventDefault();
         if(vents.items.incomes.length === 0 && vents.items.expenses.length === 0){
             mensaje_error('Debe tener almenos un item en su detalle de ingresos o egresos');
@@ -260,4 +290,35 @@ $('#remove_expenses').on('click', function(){
             });
         }
     });
+
+$('.buttonModal').on('click', function(){
+    var opt = $(this).val()
+    $("input[name='iva']").val(19)
+    Get_opt_select(opt)
+    var title = ' Nuevo ' + $(this).val()
+    $('#inputTypeSelect').val($(this).val())
+    $('.modal-title').html('<i class="fas fa-plus"></i> ' + title);
+    $('#ModalRegisterIncomeAndExpenses').modal('show')
+})
+
+$('form[id="form_register"]').on('submit', function(e){
+    e.preventDefault();
+    var type = $('#inputTypeSelect').val()
+    var parameters = new FormData(this);
+        parameters.append('action', $('#inputTypeSelect').val());
+    alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de crear un nuevo registro para ' + type + '?', parameters, function(){
+                Swal.fire({
+                      title: 'Alerta',
+                      text: 'Registro creado correctamente',
+                      icon: 'success',
+                      timer: 3000,
+                      onClose: () => {
+                        $('#ModalRegisterIncomeAndExpenses').modal('hide')
+                      }
+                });
+            });
+})
+$('#ModalRegisterIncomeAndExpenses').on('hidden.bs.modal', function (e){
+      $('form[id="form_register"]').trigger('reset');
+   });
 });

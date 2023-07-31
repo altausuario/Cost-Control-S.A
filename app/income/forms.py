@@ -36,6 +36,7 @@ class IncomeForm(ModelForm):
                     'class': 'col-md-8 form-control',
                     'style':'width: 30%; padding-left:8px;',
                     'readonly': 'readonly',
+
                 },
             ),
             'totaliva': NumberInput(

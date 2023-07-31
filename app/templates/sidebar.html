@@ -125,6 +125,14 @@
                                             </p>
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'list_locked' %}">
+                                            <i class="fas fa-user-times nav-icon"></i>
+                                            <p>
+                                                Usuarios inhabilitados
+                                            </p>
+                                        </a>
+                                    </li>
                                     {% endif %}
                                     {% endif %}
                                     {% if not request.user.groups.all %}

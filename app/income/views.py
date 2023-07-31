@@ -30,8 +30,8 @@ class IncomeListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListV
                   for c in Categories.objects.filter(id=i.user_id):
                       name = c.name
                       item['categorie'] = name
-                      print(item.catgorie)
-                  data.append(item)
+                      data.append(item)
+                  print(data)
                   position += 1
           else:
               data['error'] = 'Ha ocurrido un error'

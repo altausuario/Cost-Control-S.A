@@ -22,7 +22,6 @@ $(function(){
         var parameters = new FormData(this);
          parameters.append('action', 'new_group');
         alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de crear un nuevo grupo?', parameters, function(response){
-            console.log(response)
             $('#formAddGroup').modal('hide');
         });
     });
