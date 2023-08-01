@@ -92,7 +92,7 @@
     {% for i in income %}
         <tr {% if forloop.first %}style="padding-top: 3px;" {% endif %}>
             <td class="text-left">{{ i.description }}</td>
-            <td class="text-left">{{ i.date_creation }}</td>
+            <td class="text-left">{{ i.date_joined }}</td>
             <td >{{ i.categorie }}</td>
             <td>{{ i.state }}</td>
             <td style="text-align: left;">$ {{ i.amount }}</td>
@@ -132,7 +132,7 @@
     {% for e in expenses %}
         <tr {% if forloop.first %}style="padding-top: 3px;" {% endif %}>
             <td class="text-left">{{ e.description }}</td>
-            <td class="text-left">{{ e.date_creation }}</td>
+            <td class="text-left">{{ e.date_joined }}</td>
             <td >{{ e.categorie }}</td>
             <td>{{ e.state }}</td>
             <td style="text-align: left;">$ {{ e.amount }}</td>

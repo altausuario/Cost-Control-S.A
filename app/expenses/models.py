@@ -34,7 +34,7 @@ class Expenses(models.Model):
         super().save(*args, **kwargs)
     def toJSON(self):
         item = model_to_dict(self)
-        item['date_joined'] = self.date_joined.strftime('%Y-%m-%d %H:%m')
+        item['date_joined'] = self.date_joined.strftime('%Y-%m-%d')
         item['image'] = self.get_image()
         return item
     class Meta:

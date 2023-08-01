@@ -127,6 +127,30 @@ var graphColumn = Highcharts.chart('container', {
         backgroundColor: '#2b2b2b',
         type: 'column',
     },
+    exporting: {
+      buttons: {
+        contextButton: {
+          menuItems: [
+            'downloadPNG',
+            'downloadJPEG',
+            'downloadPDF',
+            'downloadSVG',
+            'separator',
+            'printChart'
+          ]
+        }
+      }
+    },
+    lang: {
+      downloadPNG: 'Descargar PNG',
+      downloadJPEG: 'Descargar JPEG',
+      downloadPDF: 'Descargar PDF',
+      downloadSVG: 'Descargar SVG',
+      downloadCSV: 'Descargar CSV',
+      downloadXLS: 'Descargar XLS',
+      exportButtonTitle: 'Exportar',
+      printChart: 'Imprimir gráfico'
+    },
     title: {
         text: 'Reporte del presupuesto del año {{año}}',
         style: {
@@ -213,6 +237,30 @@ var graphColumn = Highcharts.chart('container', {
                 plotShadow: false,
                 type: 'pie',
                 backgroundColor: '#2b2b2b'
+            },
+            exporting: {
+              buttons: {
+                contextButton: {
+                  menuItems: [
+                    'downloadPNG',
+                    'downloadJPEG',
+                    'downloadPDF',
+                    'downloadSVG',
+                    'separator',
+                    'printChart'
+                  ]
+                }
+              }
+            },
+            lang: {
+              downloadPNG: 'Descargar PNG',
+              downloadJPEG: 'Descargar JPEG',
+              downloadPDF: 'Descargar PDF',
+              downloadSVG: 'Descargar SVG',
+              downloadCSV: 'Descargar CSV',
+              downloadXLS: 'Descargar XLS',
+              exportButtonTitle: 'Exportar',
+              printChart: 'Imprimir gráfico'
             },
             title: {
                 text: 'Porcentaje de presupuesto del mes de {{mes}} del {{año}}',

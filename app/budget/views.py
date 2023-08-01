@@ -448,7 +448,7 @@ class BudgetInvoicePdfView(LoginRequiredMixin, View):
                         'address': 'Bucaramanga, Santander'
 
                     },
-                    'icon': '{}{}{}'.format(settings.DOMAIN, settings.STATIC_URL, 'img/logo.png'),
+                    'icon': '{}{}'.format(settings.STATIC_URL, 'img/logo.png'),
                     'title': 'PDF'
                 }
                 html = template.render(context)
