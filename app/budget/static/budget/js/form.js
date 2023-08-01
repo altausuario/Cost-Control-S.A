@@ -193,6 +193,7 @@ $( "#buscar" ).autocomplete({
       minLength: 1,
       select: function(event, ui){
           event.preventDefault();
+          console.log(ui.item)
           vents.add(ui.item);
           $(this).val('');
       }

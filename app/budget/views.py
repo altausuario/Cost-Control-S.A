@@ -400,15 +400,12 @@ class BudgetInvoicePdfView(LoginRequiredMixin, View):
         return total_iva
     def get_invoice_total_income(self, pk):
         data = []
-        amount = 0
-        total_iva=0
         total = 0
         for b in Budget.objects.filter(id=pk):
             for ic in IncomeConetion.objects.filter(budget_id=b.id):
                 for i in Income.objects.filter(id=ic.income_id).order_by('id'):
-                    amount += i.amount
-                    total_iva += i.totaliva
                     total += i.total
+        print(total)
         return total
     def link_callback(self, uri, rel):
         sUrl = settings.STATIC_URL
@@ -451,7 +448,7 @@ class BudgetInvoicePdfView(LoginRequiredMixin, View):
                         'address': 'Bucaramanga, Santander'
 
                     },
-                    'icon': '{}{}'.format(settings.STATIC_URL, 'img/logo.png'),
+                    'icon': '{}{}{}'.format(settings.DOMAIN, settings.STATIC_URL, 'img/logo.png'),
                     'title': 'PDF'
                 }
                 html = template.render(context)

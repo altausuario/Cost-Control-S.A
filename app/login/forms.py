@@ -8,7 +8,7 @@ from user.models import User
 class AuthenticationForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(
         attrs={
-            'placeholder': 'Ingerse su nombre de usuario',
+            'placeholder': 'Ingrese su nombre de usuario',
             'class': 'form-control',
             'autocomplete': 'off',
             'autofocus': True
@@ -26,26 +26,26 @@ class AuthenticationForm(forms.Form):
         username = cleaned.get('username', '')
         password = cleaned.get('password', '')
         if len(username) == 0:
-            raise forms.ValidationError('El campo username no puede ser vacio')
+            raise forms.ValidationError('El campo username no puede ser vacío')
         elif len(password) == 0:
-            raise forms.ValidationError('El campo password no puede ser vacio')
+            raise forms.ValidationError('El campo password no puede ser vacío')
         queryset = User.objects.filter(username=username)
         if queryset.exists():
             user = queryset[0]
             intent = user.accessusers_set.filter(type=LOGIN_TYPE[1][0], date_joined=datetime.now().date()).count()
             if not user.is_active:
-                    raise forms.ValidationError('El usuario ha sido bloqueado. Comuniquese con su administrador atrabes del correo eletronico costcontrolsa@gmail.com')
+                    raise forms.ValidationError('El usuario ha sido bloqueado. Comuníquese con su administrador por medio del correo electrónico costcontrolsa@gmail.com')
             if authenticate(username=username, password=password) is None:
                 AccessUsers(user=user, type=LOGIN_TYPE[1][0]).save()
                 if intent > 2:
                     user.is_active = False
                     user.save()
-                    raise forms.ValidationError('Su usuario ha sido bloquedo por superar el limite de intentos fallidos.')
+                    raise forms.ValidationError('Su usuario ha sido bloqueado por superar el limite de intentos fallidos')
                 count = 3 - intent
-                raise forms.ValidationError(f"Usuario o contraseña incorretos. Le quedan {count} {'intento' if count == 1 else 'intentos'}. Si supera los 3 intentos fallidos su cuenta sera bloqueada")
+                raise forms.ValidationError(f"Usuario o contraseña incorrectos. Le quedan {count} {'intento' if count == 1 else 'intentos'}. Si supera los 3 intentos fallidos su cuenta será bloqueada")
             AccessUsers(user=user).save()
             return cleaned
-        raise forms.ValidationError('Usuario o contraseña incorretos')
+        raise forms.ValidationError('Usuario o contraseña incorrectos')
     def get_user(self):
         username = self.cleaned_data.get('username')
         return User.objects.get(username=username)
@@ -60,8 +60,12 @@ class ResetPasswordForm(forms.Form):
     ))
     def clean(self):
         cleaned = super().clean()
-        if not User.objects.filter(username=cleaned['username']).exists():
+        user = cleaned['username']
+        if not User.objects.filter(username=user).exists():
             raise forms.ValidationError('El usuario no existe')
+        u = User.objects.get(username=user)
+        if u.is_active != True:
+            raise forms.ValidationError('El usuario ha sido bloqueado. Comuníquese con su administrador por medio del correo electrónico costcontrolsa@gmail.com')
         return cleaned
     def get_user(self):
         username = self.cleaned_data.get('username')
