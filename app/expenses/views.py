@@ -19,6 +19,9 @@ class ExpensesListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Lis
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+    def get_name_categories(self, pk):
+        cat = Categories.objects.get(pk=pk.id)
+        return cat.name
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -29,9 +32,8 @@ class ExpensesListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Lis
               for i in Expenses.objects.filter(user_id=request.user.id).order_by('id'):
                   item = i.toJSON()
                   item['position'] = position
-                  for c in Categories.objects.filter(id=i.user_id):
-                      name = c.name
-                      item['categorie'] = name
+                  name = self.get_name_categories(i.categorie)
+                  item['categorie'] = name
                   data.append(item)
                   position += 1
           else:
@@ -149,7 +151,9 @@ class ExpensesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, U
                 for i in pki:
                     pku = i.user_id
                 if pku == request.user.id:
-                    form = self.get_form()
+                    form = ExpensesForm(request.POST)
+
+                    print(form)
                     data = form.save()
                     self.get_calcular()
                 else:

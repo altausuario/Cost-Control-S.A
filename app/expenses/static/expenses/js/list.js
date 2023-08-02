@@ -1,3 +1,6 @@
+ function formatCurrency(number) {
+    return parseFloat(number).toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
+ }
 $(function () {
     $('#data').DataTable({
         responsive: true,
@@ -49,7 +52,8 @@ $(function () {
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    return '$ ' + data
+//                    return '$ ' + data
+                      return formatCurrency(data)
                 }
             },
         ],

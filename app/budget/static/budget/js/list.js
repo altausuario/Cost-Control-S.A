@@ -1,3 +1,6 @@
+function formatCurrency(number) {
+    return parseFloat(number).toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
+ }
 var tblBudget;
 function getData(){
  tblBudget = $('#data').DataTable({
@@ -52,7 +55,7 @@ function getData(){
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    return '$ ' + data
+                    return formatCurrency(data)
                 }
             },
         ],
@@ -84,10 +87,10 @@ function format(d) {
         html += '<tr>'
         html += '<td>'+ value.description +'</td>'
         html += '<td>'+ value.date_joined +'</td>'
-        html += '<td>$ '+ value.amount +'</td>'
+        html += '<td>'+ formatCurrency(value.amount) +'</td>'
         html += '<td>'+parseFloat(value.iva).toFixed(0) +'</td>'
-        html += '<td>$ '+ value.totaliva +'</td>'
-        html += '<td>$ '+ value.total +'</td>'
+        html += '<td>'+ formatCurrency(value.totaliva) +'</td>'
+        html += '<td>'+ formatCurrency(value.total) +'</td>'
         html += '<td>'+ value.state +'</td>'
         html += '</tr>'
     })
@@ -114,10 +117,10 @@ function format(d) {
         html += '<tr>'
         html += '<td>'+ value.description +'</td>'
         html += '<td>'+ value.date_joined +'</td>'
-        html += '<td>$ '+ value.amount +'</td>'
+        html += '<td>'+ formatCurrency(value.amount) +'</td>'
         html += '<td>'+ parseFloat(value.iva).toFixed(0) +'</td>'
-        html += '<td>$ '+ value.totaliva +'</td>'
-        html += '<td>$ '+ value.total +'</td>'
+        html += '<td>'+ formatCurrency(value.totaliva) +'</td>'
+        html += '<td>'+ formatCurrency(value.total) +'</td>'
         html += '<td>'+ value.state +'</td>'
         html += '</tr>'
     })

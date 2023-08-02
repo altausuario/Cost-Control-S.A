@@ -42,7 +42,7 @@ class IncomeForm(ModelForm):
                     'style': 'cursor: pointer',
                 },
             ),
-            'totaliva': NumberInput(
+            'totaliva': TextInput(
                 attrs={
                     'class': 'form-control',
                     'readonly': 'readonly',
@@ -50,7 +50,7 @@ class IncomeForm(ModelForm):
                     'style': 'cursor: pointer'
                 },
             ),
-            'total': NumberInput(
+            'total': TextInput(
                 attrs={
                     'class': 'form-control',
                     'readonly': 'readonly',

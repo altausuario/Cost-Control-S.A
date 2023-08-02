@@ -19,6 +19,10 @@ class IncomeListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListV
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+
+    def get_name_categories(self, pk):
+        cat = Categories.objects.get(pk=pk.id)
+        return cat.name
     def post(self, request, *args, **kwargs):
         data = []
         try:
@@ -28,9 +32,8 @@ class IncomeListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListV
               for i in Income.objects.filter(user_id=request.user.id).order_by('id'):
                   item = i.toJSON()
                   item['position'] = position
-                  for c in Categories.objects.filter(id=i.user_id):
-                      name = c.name
-                      item['categorie'] = name
+                  name = self.get_name_categories(i.categorie)
+                  item['categorie'] = name
                   data.append(item)
                   position += 1
           else:
@@ -139,16 +142,17 @@ class IncomeUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
         try:
             action = request.POST['action']
             if action == 'edit':
-                pku = 0
-                pki = Income.objects.filter(id=self.kwargs.get('pk'))
-                for i in pki:
-                    pku = i.user_id
-                if pku == request.user.id:
-                    form = self.get_form()
-                    data = form.save()
-                    self.get_calcular()
-                else:
-                    data['error'] = 'No tienes las credenciales correspondientes'
+                form = self.get_form()
+                if form.is_valid():
+                    pku = 0
+                    pki = Income.objects.filter(id=self.kwargs.get('pk'))
+                    for i in pki:
+                        pku = i.user_id
+                    if pku == request.user.id:
+                        data = form.save()
+                        self.get_calcular()
+                    else:
+                        data['error'] = 'No tienes las credenciales correspondientes'
             elif action == 'search_categories':
                 data = []
                 categories = Categories.objects.filter(name__icontains=request.POST['term'])[0:10]

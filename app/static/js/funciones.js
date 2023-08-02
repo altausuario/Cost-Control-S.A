@@ -71,6 +71,8 @@ function alert_confirm(url, title, content, parameters, callback){
         theme: 'material',
         title: title,
         icon: 'fa fa-info',
+        type: 'dark',
+        bg: 'dark',
         content: content,
         columnClass: 'small',
         typeAnimated: true,
