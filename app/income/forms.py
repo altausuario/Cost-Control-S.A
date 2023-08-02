@@ -10,37 +10,41 @@ class IncomeForm(ModelForm):
         super().__init__(*args, **kwargs)
         request = get_current_request()
         for form in self.visible_fields():
-            form.field.widget.attrs['class'] = 'form-control'
+            # form.field.widget.attrs['class'] = 'form-control'
             form.field.widget.attrs['autocomplete'] = 'off'
             self.fields['description'].widget.attrs['autofocus'] = True
+            self.fields['state'].widget.attrs['class'] = 'form-control'
+        # self.fields['categorie'].queryset = Categories.objects.none()
         categorie = Categories.objects.filter(user_id=request.user.id).distinct()
         self.fields['categorie'].queryset = categorie
-        print(usuario)
     class Meta:
         model = Income
         fields = 'description', 'amount', 'date_joined', 'annotations', 'categorie', 'state', 'iva', 'totaliva', 'total', 'image'
         widgets = {
             'description': Textarea(
                 attrs={
+                    'class': 'form-control',
                     'placeholder': 'Introduzca una breve descripción',
                     'style': 'height:130px; resize:none;',
                 },
             ),
             'amount': TextInput(
                 attrs={
+                    'class': 'form-control',
                     'placeholder': '0,0',
                 },
             ),
             'iva': NumberInput(
                 attrs={
-                    'class': 'col-md-8 form-control',
+                    'class': 'col-md-8 form-control text-center',
                     'style':'width: 30%; padding-left:8px;',
                     'readonly': 'readonly',
-
+                    'style': 'cursor: pointer',
                 },
             ),
             'totaliva': NumberInput(
                 attrs={
+                    'class': 'form-control',
                     'readonly': 'readonly',
                     'value': 0.00,
                     'style': 'cursor: pointer'
@@ -48,10 +52,16 @@ class IncomeForm(ModelForm):
             ),
             'total': NumberInput(
                 attrs={
+                    'class': 'form-control',
                     'readonly': 'readonly',
                     'value': 0.00,
-                    'style': 'cursor: pointer'
+                    'style': 'cursor: pointer',
                 },
+            ),
+            'categorie': Select(
+              attrs={
+                  'class': 'form-control select2'
+              }
             ),
             'date_joined': DateInput(
                 format='%Y-%m-%d',
@@ -65,6 +75,7 @@ class IncomeForm(ModelForm):
             ),
             'annotations': Textarea(
                 attrs={
+                    'class': 'form-control',
                     'placeholder': 'Ingrese comentarios',
                     'style': 'height:130px; resize:none;'
                 }

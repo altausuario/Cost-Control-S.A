@@ -6,6 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import *
 from budget.models import *
+from categories.forms import CategoriesForm
 from categories.models import Categories
 from income.forms import IncomeForm
 from income.models import Income
@@ -30,7 +31,7 @@ class IncomeListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListV
                   for c in Categories.objects.filter(id=i.user_id):
                       name = c.name
                       item['categorie'] = name
-                      data.append(item)
+                  data.append(item)
                   position += 1
           else:
               data['error'] = 'Ha ocurrido un error'
@@ -61,11 +62,23 @@ class IncomeCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Cre
             if action == 'add':
                 form = self.get_form()
                 data = form.save()
+            elif action == 'search_categories':
+                data = []
+                categories = Categories.objects.filter(name__icontains=request.POST['term'])[0:10]
+                for cat in categories:
+                    item = cat.toJSON()
+                    item['text'] = cat.name
+                    data.append(item)
+                print(data)
+            elif action == 'create_categories':
+                with transaction.atomic():
+                    frmCategories = CategoriesForm(request.POST)
+                    data = frmCategories.save()
             else:
                 data['error'] = 'No ha ingresado a ninguna opcion'
         except Exception as e:
             data['error'] = str(e)
-        return JsonResponse(data)
+        return JsonResponse(data, safe=False)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Nuevo ingreso'
@@ -73,6 +86,7 @@ class IncomeCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Cre
         context['icon'] = 'fa-plus mr-2'
         context['img'] = 'facture.png'
         context['url_link'] = self.success_url
+        context['cat'] = CategoriesForm
         return context
 class IncomeUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, UpdateView):
     model = Income
@@ -135,6 +149,18 @@ class IncomeUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
                     self.get_calcular()
                 else:
                     data['error'] = 'No tienes las credenciales correspondientes'
+            elif action == 'search_categories':
+                data = []
+                categories = Categories.objects.filter(name__icontains=request.POST['term'])[0:10]
+                for cat in categories:
+                    item = cat.toJSON()
+                    item['text'] = cat.name
+                    data.append(item)
+                print(data)
+            elif action == 'create_categories':
+                with transaction.atomic():
+                    frmCategories = CategoriesForm(request.POST)
+                    data = frmCategories.save()
             else:
                 data['error'] = 'No ha ingresado a ninguna opcion'
         except Exception as e:
@@ -148,6 +174,7 @@ class IncomeUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
         context['icon'] = 'fa-edit mr-2'
         context['img'] = self.image_income(pk)
         context['url_link'] = self.success_url
+        context['cat'] = CategoriesForm
         return context
 class IncomeDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, DeleteView):
     model = Income

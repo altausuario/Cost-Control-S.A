@@ -1,10 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
 from django.http import *
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import *
 from budget.models import *
+from categories.forms import CategoriesForm
 from categories.models import Categories
 from expenses.forms import ExpensesForm
 from expenses.models import Expenses
@@ -30,7 +32,7 @@ class ExpensesListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Lis
                   for c in Categories.objects.filter(id=i.user_id):
                       name = c.name
                       item['categorie'] = name
-                      data.append(item)
+                  data.append(item)
                   position += 1
           else:
               data['error'] = 'Ha ocurrido un error'
@@ -61,6 +63,18 @@ class ExpensesCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, C
             if action == 'add':
                 form = self.get_form()
                 data = form.save()
+            elif action == 'search_categories':
+                data = []
+                categories = Categories.objects.filter(name__icontains=request.POST['term'])[0:10]
+                for cat in categories:
+                    item = cat.toJSON()
+                    item['text'] = cat.name
+                    data.append(item)
+                print(data)
+            elif action == 'create_categories':
+                with transaction.atomic():
+                    frmCategories = CategoriesForm(request.POST)
+                    data = frmCategories.save()
             else:
                 data['error'] = 'No ha ingresado a ninguna opcion'
         except Exception as e:
@@ -73,6 +87,7 @@ class ExpensesCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, C
         context['icon'] = 'fa-plus mr-1'
         context['img'] = 'facture.png'
         context['url_link'] = self.success_url
+        context['cat'] = CategoriesForm
         return context
 class ExpensesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, UpdateView):
     model = Expenses
@@ -139,6 +154,18 @@ class ExpensesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, U
                     self.get_calcular()
                 else:
                     data['error'] = 'No tienes las credenciales correspondientes'
+            elif action == 'search_categories':
+                data = []
+                categories = Categories.objects.filter(name__icontains=request.POST['term'])[0:10]
+                for cat in categories:
+                    item = cat.toJSON()
+                    item['text'] = cat.name
+                    data.append(item)
+                print(data)
+            elif action == 'create_categories':
+                with transaction.atomic():
+                    frmCategories = CategoriesForm(request.POST)
+                    data = frmCategories.save()
             else:
                 data['error'] = 'No ha ingresado a ninguna opcion'
         except Exception as e:
@@ -152,6 +179,7 @@ class ExpensesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, U
         context['icon'] = 'fa-edit mr-1'
         context['img'] = self.image_expenses(pk)
         context['url_link'] = self.success_url
+        context['cat'] = CategoriesForm
         return context
 class ExpensesDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, DeleteView):
     model = Expenses
