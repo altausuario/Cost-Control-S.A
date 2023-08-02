@@ -25,7 +25,7 @@
         <div class="row">
             <div class="form-group mb-3 col-12 text-center">
                 <img class="img-fluid mx-auto d block image-user" src="/media/{{img}}"
-                     style="width: 100%; height:600px; border-radius:5px;">
+                    style="width: 100%; height:600px; border-radius:5px;">
             </div>
             <div class="form-group mb-3 col-12 text-center">
                 <div class="row">
@@ -99,8 +99,7 @@
 {% endblock %}
 {% block javaScript_form %}
 <div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal fade" id="myModelAddCategories"
-     role="dialog"
-     tabindex="-1">
+    role="dialog" tabindex="-1">
     <form method="POST" id="frmAddCategories" enctype="multipart/form-data">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -135,67 +134,67 @@
     </form>
 </div>
 <script>
-    $('.image-user-delete').on('click', function(){
-         var img = '/static/img/facture.png'
-         $('.image-user').attr('src', img);
+    $('.image-user-delete').on('click', function () {
+        var img = '/static/img/facture.png'
+        $('.image-user').attr('src', img);
     })
 </script>
 <script>
-    $('#fileInput').change(function() {
+    $('#fileInput').change(function () {
         var input = this;
         if (input.files && input.files[0]) {
-          var reader = new FileReader();
-          reader.onload = function(e) {
-            $('.image-user').attr('src', e.target.result);
-          }
-          reader.readAsDataURL(input.files[0]);
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('.image-user').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
         }
-      });
+    });
 </script>
 <script>
     {% if form.errors %}
-        var errors = '';
-        {% for field in form %}
-            {% for error in field.errors %}
-                errors += '{{error}}\n';
-            {% endfor %}
-        {% endfor %}
-        {% for error in form.non_field_errors %}
-            errors += '{{error}}\n\n';
-        {% endfor %}
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: errors,
+    var errors = '';
+    {% for field in form %}
+    {% for error in field.errors %}
+    errors += '{{error}}\n';
+    {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+    errors += '{{error}}\n\n';
+    {% endfor %}
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: errors,
     });
     {% endif %}
-    $('#formSave').on('submit', function(e){
+    $('#formSave').on('submit', function (e) {
         e.preventDefault();
         var parameters = new FormData(this);
         var action = '{{action}}'
-        if(action == 'add'){
-            alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de crear un nuevo registro?', parameters, function(){
-               Swal.fire({
-                  title: 'Alerta',
-                  text: 'Nuevo ingreso registrado correctamente',
-                  icon: 'success',
-                  timer: 3000,
-                  onClose: () => {
-                    location.href = '{{ url_link }}'
-                  }
+        if (action == 'add') {
+            alert_confirm(window.location.pathname, 'Notificacion', '¿Estas seguro de crear un nuevo registro?', parameters, function () {
+                Swal.fire({
+                    title: 'Alerta',
+                    text: 'Nuevo ingreso registrado correctamente',
+                    icon: 'success',
+                    timer: 3000,
+                    onClose: () => {
+                        location.href = '{{ url_link }}'
+                    }
                 });
             });
         }
-        else{
-            alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de editar el registro?', parameters, function(){
+        else {
+            alert_confirm(window.location.pathname, 'Notificacion', '¿Estas seguro de editar el registro?', parameters, function () {
                 Swal.fire({
-                  title: 'Alerta',
-                  text: 'Ingreso actualizado correctamente',
-                  icon: 'success',
-                  timer: 3000,
-                  onClose: () => {
-                    location.href = '{{ url_link }}'
-                  }
+                    title: 'Alerta',
+                    text: 'Ingreso actualizado correctamente',
+                    icon: 'success',
+                    timer: 3000,
+                    onClose: () => {
+                        location.href = '{{ url_link }}'
+                    }
                 });
             });
         }

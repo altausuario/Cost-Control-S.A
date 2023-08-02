@@ -17,73 +17,111 @@ from random import randint
 
 from user.models import User
 from webapp.forms import *
+
+
 # Create your views here.
 class homeView(LoginRequiredMixin, TemplateView):
-    template_name = 'home/index.html'
+    template_name = "home/index.html"
+
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+
     def meses_año(self):
-        data = '';
+        data = ""
         month = datetime.now().month.real
         if month == 1:
-            data = 'Enero'
+            data = "Enero"
         elif month == 2:
-            data = 'Febrero'
+            data = "Febrero"
         elif month == 3:
-            data = 'Marzo'
+            data = "Marzo"
         elif month == 4:
-            data = 'Abril'
+            data = "Abril"
         elif month == 5:
-            data = 'Mayo'
+            data = "Mayo"
         elif month == 6:
-            data = 'Junio'
+            data = "Junio"
         elif month == 7:
-            data = 'Julio'
+            data = "Julio"
         elif month == 8:
-            data = 'Agosto'
+            data = "Agosto"
         elif month == 9:
-            data = 'Septiembre'
+            data = "Septiembre"
         elif month == 10:
-            data = 'Octubre'
+            data = "Octubre"
         elif month == 11:
-            data = 'Noviembre'
+            data = "Noviembre"
         elif month == 12:
-            data = 'Diciembre'
+            data = "Diciembre"
         return data
+
     def get_graph_budget_year_month(self):
         data = []
         request = get_current_request()
         try:
             year = datetime.now().year
             for m in range(1, 13):
-                presupuestoTotal = Budget.objects.filter(date_creation__year=year, date_creation__month=m, user_id=request.user.id).aggregate(r=Coalesce(Sum('total'), 0, output_field=DecimalField())).get('r')
+                presupuestoTotal = (
+                    Budget.objects.filter(
+                        date_creation__year=year,
+                        date_creation__month=m,
+                        user_id=request.user.id,
+                    )
+                    .aggregate(r=Coalesce(Sum("total"), 0, output_field=DecimalField()))
+                    .get("r")
+                )
                 data.append(float(presupuestoTotal))
         except Exception as e:
-            print(f'error: {e}')
+            print(f"error: {e}")
         return data
+
     def get_graph_income_year_month(self):
         data = []
         request = get_current_request()
         try:
             year = datetime.now().year
             for m in range(1, 13):
-                presupuestoTotal = Budget.objects.filter(date_creation__year=year, date_creation__month=m, user_id=request.user.id).aggregate(r=Coalesce(Sum('total_income'), 0, output_field=DecimalField())).get('r')
+                presupuestoTotal = (
+                    Budget.objects.filter(
+                        date_creation__year=year,
+                        date_creation__month=m,
+                        user_id=request.user.id,
+                    )
+                    .aggregate(
+                        r=Coalesce(Sum("total_income"), 0, output_field=DecimalField())
+                    )
+                    .get("r")
+                )
                 data.append(float(presupuestoTotal))
         except Exception as e:
-            print(f'error: {e}')
+            print(f"error: {e}")
         return data
+
     def get_graph_expenses_year_month(self):
         data = []
         request = get_current_request()
         try:
             year = datetime.now().year
             for m in range(1, 13):
-                presupuestoTotal = Budget.objects.filter(date_creation__year=year, date_creation__month=m, user_id=request.user.id).aggregate(r=Coalesce(Sum('total_expenses'), 0, output_field=DecimalField())).get('r')
+                presupuestoTotal = (
+                    Budget.objects.filter(
+                        date_creation__year=year,
+                        date_creation__month=m,
+                        user_id=request.user.id,
+                    )
+                    .aggregate(
+                        r=Coalesce(
+                            Sum("total_expenses"), 0, output_field=DecimalField()
+                        )
+                    )
+                    .get("r")
+                )
                 data.append(float(presupuestoTotal))
         except Exception as e:
-            print(f'error: {e}')
+            print(f"error: {e}")
         return data
+
     def get_graph_budget_percentage_year_month(self):
         data = []
         year = datetime.now().year
@@ -91,59 +129,83 @@ class homeView(LoginRequiredMixin, TemplateView):
         request = get_current_request()
         try:
             for b in Budget.objects.all():
-                Total = Budget.objects.filter(date_creation__year=year, date_creation__month=month, user_id=request.user.id, id=b.id).aggregate(r=Coalesce(Sum('total'), 0, output_field=DecimalField())).get('r')
+                Total = (
+                    Budget.objects.filter(
+                        date_creation__year=year,
+                        date_creation__month=month,
+                        user_id=request.user.id,
+                        id=b.id,
+                    )
+                    .aggregate(r=Coalesce(Sum("total"), 0, output_field=DecimalField()))
+                    .get("r")
+                )
                 if Total > 0:
-                    data.append({
-                        'name': b.name,
-                        'y': float(Total)
-                    })
+                    data.append({"name": b.name, "y": float(Total)})
                     Total = 0
         except:
             pass
         return data
+
     def get_user_block(self):
         ahora = timezone.now()
         user = User.objects.filter(last_login__isnull=True)
         for u in user:
-           if u.last_login is None:
-               diferencia = ahora - u.date_joined
-               if diferencia >= timedelta(days=1):
-                  u.is_active = False
-                  u.save()
+            if u.last_login is None:
+                diferencia = ahora - u.date_joined
+                if diferencia >= timedelta(days=1):
+                    u.is_active = False
+                    u.save()
+
     def post(self, request, *args, **kwargs):
         data = []
         try:
-          action = request.POST['action']
-          if action == 'get_graph_budget_year_month':
-              data = {'name': 'Presupuesto', 'color': '#0000FF', 'data': self.get_graph_budget_year_month()}
-          elif action == 'get_graph_income_year_month':
-              data = {'name': 'Ingresos', 'color': '#00FF00', 'data': self.get_graph_income_year_month()}
-          elif action == 'get_graph_expenses_year_month':
-              data = {'name': 'Egresos', 'color': '#FF0000', 'data': self.get_graph_expenses_year_month()}
+            action = request.POST["action"]
+            if action == "get_graph_budget_year_month":
+                data = {
+                    "name": "Presupuesto",
+                    "color": "#0000FF",
+                    "data": self.get_graph_budget_year_month(),
+                }
+            elif action == "get_graph_income_year_month":
+                data = {
+                    "name": "Ingresos",
+                    "color": "#00FF00",
+                    "data": self.get_graph_income_year_month(),
+                }
+            elif action == "get_graph_expenses_year_month":
+                data = {
+                    "name": "Egresos",
+                    "color": "#FF0000",
+                    "data": self.get_graph_expenses_year_month(),
+                }
 
-          elif action == 'get_graph_budget_percentage_year_month':
-              data = {
-                  'name': 'Porcentaje',
-                  'colorByPoint': True,
-                  'data': self.get_graph_budget_percentage_year_month()
-              }
-          elif action == 'get_graph_online':
-              data = {'y': randint(1, 100)}
-          else:
-              data['error'] = 'Ha ocurrido un error'
+            elif action == "get_graph_budget_percentage_year_month":
+                data = {
+                    "name": "Porcentaje",
+                    "colorByPoint": True,
+                    "data": self.get_graph_budget_percentage_year_month(),
+                }
+            elif action == "get_graph_online":
+                data = {"y": randint(1, 100)}
+            else:
+                data["error"] = "Ha ocurrido un error"
         except Exception as e:
-            data['error'] = str(e)
+            data["error"] = str(e)
         return JsonResponse(data, safe=False)
+
     def get(self, request, *args, **kwargs):
         request.user.get_goup_session()
         self.get_user_block()
         return super().get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Inicio'
-        context['icon'] = 'fa-home'
-        context['año'] = datetime.now().year.real
-        context['mes'] = self.meses_año()
+        context["title"] = "Inicio"
+        context["icon"] = "fa-home"
+        context["año"] = datetime.now().year.real
+        context["mes"] = self.meses_año()
         return context
+
+
 def pageNotFound404(request, exception):
-    return render(request, '404.html')
+    return render(request, "404.html")

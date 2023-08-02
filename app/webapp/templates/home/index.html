@@ -11,7 +11,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
-<!--            <div id="container-online"></div>-->
+            <!--            <div id="container-online"></div>-->
         </div>
     </div>
     <div class="row mt-2">
@@ -27,270 +27,270 @@
 </div>
 <!-- CONTAINER ONLINE -->
 <script type="application/javascript">
-var graphOnline = Highcharts.chart('container-online', {
-    chart: {
-        type: 'spline',
-        animation: Highcharts.svg, // don't animate in old IE
-        marginRight: 10,
-        events: {
-            load: function () {
-                // set up the updating of the chart each second
-                var series = this.series[0];
-                setInterval(function () {
-                    $.ajax({
-                        url: window.location.pathname,
-                        type: 'POST',
-                        data: {
-                              'action': 'get_graph_online'
-                              },
-                        dataType: 'json',
-                    }).done(function(data){
-                        if(!data.hasOwnProperty('error')){
-                            var x = (new Date()).getTime();
-                            series.addPoint([x, data.y], true, true);
-                            return false;
-                        }
-                        mensaje_error(data.error);
-                    }).fail(function (jqXHR, textStatus, errorThrown){
-                        alert(textStatus + ': ' + errorThrown);
-                    }).always(function (data){
+    var graphOnline = Highcharts.chart('container-online', {
+        chart: {
+            type: 'spline',
+            animation: Highcharts.svg, // don't animate in old IE
+            marginRight: 10,
+            events: {
+                load: function () {
+                    // set up the updating of the chart each second
+                    var series = this.series[0];
+                    setInterval(function () {
+                        $.ajax({
+                            url: window.location.pathname,
+                            type: 'POST',
+                            data: {
+                                'action': 'get_graph_online'
+                            },
+                            dataType: 'json',
+                        }).done(function (data) {
+                            if (!data.hasOwnProperty('error')) {
+                                var x = (new Date()).getTime();
+                                series.addPoint([x, data.y], true, true);
+                                return false;
+                            }
+                            mensaje_error(data.error);
+                        }).fail(function (jqXHR, textStatus, errorThrown) {
+                            alert(textStatus + ': ' + errorThrown);
+                        }).always(function (data) {
 
-                    });
-                }, 1000);
-            }
-        }
-    },
-    time: {
-        useUTC: false
-    },
-    title: {
-        text: 'Live random data'
-    },
-    accessibility: {
-        announceNewData: {
-            enabled: true,
-            minAnnounceInterval: 15000,
-            announcementFormatter: function (allSeries, newSeries, newPoint) {
-                if (newPoint) {
-                    return 'New point added. Value: ' + newPoint.y;
+                        });
+                    }, 1000);
                 }
-                return false;
             }
-        }
-    },
-    xAxis: {
-        type: 'datetime',
-        tickPixelInterval: 150
-    },
-    yAxis: {
-        title: {
-            text: 'Value'
         },
-        plotLines: [{
-            value: 0,
-            width: 1,
-            color: '#808080'
-        }]
-    },
-    tooltip: {
-        headerFormat: '<b>{series.name}</b><br/>',
-        pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
-    },
-    legend: {
-        enabled: false
-    },
-    exporting: {
-        enabled: false
-    },
-    series: [{
-        name: 'Random data',
-        data: (function () {
-            // generate an array of random data
-            var data = [],
-                time = (new Date()).getTime(),
-                i;
-            for (i = -19; i <= 0; i += 1) {
-                data.push({
-                    x: time + i * 1000,
-                    y: Math.random()
-                });
+        time: {
+            useUTC: false
+        },
+        title: {
+            text: 'Live random data'
+        },
+        accessibility: {
+            announceNewData: {
+                enabled: true,
+                minAnnounceInterval: 15000,
+                announcementFormatter: function (allSeries, newSeries, newPoint) {
+                    if (newPoint) {
+                        return 'New point added. Value: ' + newPoint.y;
+                    }
+                    return false;
+                }
             }
-            return data;
-        }())
-    }]
-});
+        },
+        xAxis: {
+            type: 'datetime',
+            tickPixelInterval: 150
+        },
+        yAxis: {
+            title: {
+                text: 'Value'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            headerFormat: '<b>{series.name}</b><br/>',
+            pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
+        },
+        legend: {
+            enabled: false
+        },
+        exporting: {
+            enabled: false
+        },
+        series: [{
+            name: 'Random data',
+            data: (function () {
+                // generate an array of random data
+                var data = [],
+                    time = (new Date()).getTime(),
+                    i;
+                for (i = -19; i <= 0; i += 1) {
+                    data.push({
+                        x: time + i * 1000,
+                        y: Math.random()
+                    });
+                }
+                return data;
+            }())
+        }]
+    });
 </script>
 <!-- CONTAINER COLUMN -->
 <script type="application/javascript">
-var graphColumn = Highcharts.chart('container', {
-    chart: {
-        backgroundColor: '#2b2b2b',
-        type: 'column',
-    },
-    exporting: {
-      buttons: {
-        contextButton: {
-          menuItems: [
-            'downloadPNG',
-            'downloadJPEG',
-            'downloadPDF',
-            'downloadSVG',
-            'separator',
-            'printChart'
-          ]
-        }
-      }
-    },
-    lang: {
-      downloadPNG: 'Descargar PNG',
-      downloadJPEG: 'Descargar JPEG',
-      downloadPDF: 'Descargar PDF',
-      downloadSVG: 'Descargar SVG',
-      downloadCSV: 'Descargar CSV',
-      downloadXLS: 'Descargar XLS',
-      exportButtonTitle: 'Exportar',
-      printChart: 'Imprimir gráfico'
-    },
-    title: {
-        text: 'Reporte del presupuesto del año {{año}}',
-        style: {
-            color: '#fff',
-            fontSize: '18px',
-            fontWeight: 'bold'
-        }
-    },
-    subtitle: {
-        text: '',
-        style: {
-            color: '#fff',
-            fontSize: '14px'
-        }
-    },
-    xAxis: {
-        categories: [
-            'Enero',
-            'Febrero',
-            'Marzo',
-            'Abril',
-            'Mayo',
-            'Junio',
-            'Julio',
-            'Agosto',
-            'Septiembre',
-            'Octubre',
-            'Noviembre',
-            'Diciembre'
-        ],
-        labels: {
-            style: {
-                color: '#fff',
+    var graphColumn = Highcharts.chart('container', {
+        chart: {
+            backgroundColor: '#2b2b2b',
+            type: 'column',
+        },
+        exporting: {
+            buttons: {
+                contextButton: {
+                    menuItems: [
+                        'downloadPNG',
+                        'downloadJPEG',
+                        'downloadPDF',
+                        'downloadSVG',
+                        'separator',
+                        'printChart'
+                    ]
+                }
             }
         },
-        crosshair: true
-    },
-    yAxis: {
-<!--        min: 0,-->
-       title: {
-            text: 'Valores $',
+        lang: {
+            downloadPNG: 'Descargar PNG',
+            downloadJPEG: 'Descargar JPEG',
+            downloadPDF: 'Descargar PDF',
+            downloadSVG: 'Descargar SVG',
+            downloadCSV: 'Descargar CSV',
+            downloadXLS: 'Descargar XLS',
+            exportButtonTitle: 'Exportar',
+            printChart: 'Imprimir gráfico'
+        },
+        title: {
+            text: 'Reporte del presupuesto del año {{año}}',
             style: {
                 color: '#fff',
+                fontSize: '18px',
+                fontWeight: 'bold'
             }
         },
-        labels: {
+        subtitle: {
+            text: '',
             style: {
                 color: '#fff',
+                fontSize: '14px'
+            }
+        },
+        xAxis: {
+            categories: [
+                'Enero',
+                'Febrero',
+                'Marzo',
+                'Abril',
+                'Mayo',
+                'Junio',
+                'Julio',
+                'Agosto',
+                'Septiembre',
+                'Octubre',
+                'Noviembre',
+                'Diciembre'
+            ],
+            labels: {
+                style: {
+                    color: '#fff',
+                }
             },
-            formatter: function() {
-            return  "$ " + this.value;
-        }
-        }
-    },
-    tooltip: {
-        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:5px; color:#fff; "><b>{point.y:.2f} $ </b></td></tr>',
-        footerFormat: '</table>',
-        shared: true,
-        useHTML: true,
-        backgroundColor: '#2b2b2b'
-    },
-    plotOptions: {
-        column: {
-            pointPadding: 0.2,
-            borderWidth: 1
-        }
-    },
-    legend: {
-        itemStyle: {
-            color: '#fff',
-            fontSize: '12px'
-        }
-    },
-});
+            crosshair: true
+        },
+        yAxis: {
+            <!--        min: 0,-->
+            title: {
+                text: 'Valores $',
+                style: {
+                    color: '#fff',
+                }
+            },
+            labels: {
+                style: {
+                    color: '#fff',
+                },
+                formatter: function () {
+                    return "$ " + this.value;
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:5px; color:#fff; "><b>{point.y:.2f} $ </b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true,
+            backgroundColor: '#2b2b2b'
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 1
+            }
+        },
+        legend: {
+            itemStyle: {
+                color: '#fff',
+                fontSize: '12px'
+            }
+        },
+    });
 </script>
 <!-- CONTAINER PIE -->
 <script type="application/javascript">
     var graphPie = Highcharts.chart('container-pie', {
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie',
-                backgroundColor: '#2b2b2b'
-            },
-            exporting: {
-              buttons: {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie',
+            backgroundColor: '#2b2b2b'
+        },
+        exporting: {
+            buttons: {
                 contextButton: {
-                  menuItems: [
-                    'downloadPNG',
-                    'downloadJPEG',
-                    'downloadPDF',
-                    'downloadSVG',
-                    'separator',
-                    'printChart'
-                  ]
+                    menuItems: [
+                        'downloadPNG',
+                        'downloadJPEG',
+                        'downloadPDF',
+                        'downloadSVG',
+                        'separator',
+                        'printChart'
+                    ]
                 }
-              }
-            },
-            lang: {
-              downloadPNG: 'Descargar PNG',
-              downloadJPEG: 'Descargar JPEG',
-              downloadPDF: 'Descargar PDF',
-              downloadSVG: 'Descargar SVG',
-              downloadCSV: 'Descargar CSV',
-              downloadXLS: 'Descargar XLS',
-              exportButtonTitle: 'Exportar',
-              printChart: 'Imprimir gráfico'
-            },
-            title: {
-                text: 'Porcentaje de presupuesto del mes de {{mes}} del {{año}}',
-                style: {
-                    color: '#fff',
-                    fontSize: '18px',
-                    fontWeight: 'bold'
+            }
+        },
+        lang: {
+            downloadPNG: 'Descargar PNG',
+            downloadJPEG: 'Descargar JPEG',
+            downloadPDF: 'Descargar PDF',
+            downloadSVG: 'Descargar SVG',
+            downloadCSV: 'Descargar CSV',
+            downloadXLS: 'Descargar XLS',
+            exportButtonTitle: 'Exportar',
+            printChart: 'Imprimir gráfico'
+        },
+        title: {
+            text: 'Porcentaje de presupuesto del mes de {{mes}} del {{año}}',
+            style: {
+                color: '#fff',
+                fontSize: '18px',
+                fontWeight: 'bold'
+            }
+        },
+        tooltip: {
+            pointFormat: '<span style="color:{point.color}">{series.name}: {point.percentage:.1f}%</span>',
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: '#fff',
+                    },
                 }
-            },
-            tooltip: {
-                pointFormat: '<span style="color:{point.color}">{series.name}: {point.percentage:.1f}%</span>',
-            },
-            accessibility: {
-                point: {
-                    valueSuffix: '%'
-                }
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                        style: {
-                            color: '#fff',
-                        },
-                    }
-                }
-            },
-        });
+            }
+        },
+    });
 </script>
 {% endblock %}

@@ -1,4 +1,4 @@
-$(function(){
+$(function () {
     $('#data').DataTable({
         responsive: true,
         autoWidth: false,
@@ -9,21 +9,21 @@ $(function(){
             url: window.location.pathname,
             type: 'POST',
             data: {
-                'action':'searchdata'
+                'action': 'searchdata'
             },
             dataSrc: "",
         },
         columns: [
-            {'data': 'position'},
-            {'data': 'description'},
-            {'data': 'date_joined'},
-            {'data': 'categorie'},
-            {'data': 'state'},
-            {'data': 'amount'},
-            {'data': 'iva'},
-            {'data': 'totaliva'},
-            {'data': 'total'},
-            {'data': 'valor'}
+            { 'data': 'position' },
+            { 'data': 'description' },
+            { 'data': 'date_joined' },
+            { 'data': 'categorie' },
+            { 'data': 'state' },
+            { 'data': 'amount' },
+            { 'data': 'iva' },
+            { 'data': 'totaliva' },
+            { 'data': 'total' },
+            { 'data': 'valor' }
         ],
         columnDefs: [
             {
@@ -31,8 +31,8 @@ $(function(){
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    var buttons = '<a href="/expenses/update/'+row.id+'" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>  ';
-                    buttons +=  '<a href="/expenses/delete/'+row.id+'" class="btn btn-danger btn-xs btn-flat ml-1"><i class="fas fa-trash-alt"></i></a>';
+                    var buttons = '<a href="/expenses/update/' + row.id + '" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a>  ';
+                    buttons += '<a href="/expenses/delete/' + row.id + '" class="btn btn-danger btn-xs btn-flat ml-1"><i class="fas fa-trash-alt"></i></a>';
                     return buttons;
                 }
             },
@@ -53,7 +53,7 @@ $(function(){
                 }
             },
         ],
-        initComplete: function(settings, json) {
-          }
-        });
+        initComplete: function (settings, json) {
+        }
+    });
 });
