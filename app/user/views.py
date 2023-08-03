@@ -1,22 +1,23 @@
 from datetime import datetime
 
-from django.utils import timezone
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import Group
 from django.db import transaction
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import *
+
 from group.forms import GroupForm
 from user.forms import *
 from user.mixins import ValidatePermissionRequiredMinxin
 from user.models import User
+
+
 # Create your views here.
 class UserListView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, ListView):
     model = User
@@ -106,7 +107,7 @@ class UserCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Creat
                 data['error'] = 'No ha ingresado a ninguna opcion'
         except Exception as e:
             data['error'] = str(e)
-        return JsonResponse(data)
+        return JsonResponse(data, safe=False)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Nuevo usuario'
@@ -154,7 +155,7 @@ class UserUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Updat
                 data['error'] = 'No ha ingresado a ninguna opcion'
         except Exception as e:
             data['error'] = str(e)
-        return JsonResponse(data)
+        return JsonResponse(data, safe=False)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         pk=self.kwargs.get('pk')

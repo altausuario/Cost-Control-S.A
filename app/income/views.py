@@ -58,13 +58,30 @@ class IncomeCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Cre
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+    def get_conversor(self, amount):
+        print(amount)
+        # valor_convertido = float(amount.replace("$ ", "").replace(".", "").replace(".", ","))
+        valor_convertido = float(amount.replace("$", "").replace("\xa0", "").replace(".", "").replace(",", "."))
+        print(valor_convertido)
+        return valor_convertido
     def post(self, request, *args, **kwargs):
         data = {}
         try:
             action = request.POST['action']
             if action == 'add':
-                form = self.get_form()
-                data = form.save()
+                i = Income()
+                i.id = kwargs.get('pk')
+                i.description = request.POST['description']
+                i.amount = request.POST['amount']
+                i.iva = request.POST['iva']
+                i.totaliva = self.get_conversor(request.POST['totaliva'])
+                i.total = self.get_conversor(request.POST['total'])
+                i.image = request.POST['image']
+                i.state = request.POST['state']
+                i.date_joined = request.POST['date_joined']
+                i.annotations = request.POST['annotations']
+                i.categorie_id = request.POST['categorie']
+                i.save()
             elif action == 'search_categories':
                 data = []
                 categories = Categories.objects.filter(name__icontains=request.POST['term'])[0:10]
@@ -137,22 +154,38 @@ class IncomeUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
         if not income.image:
             return 'facture.png'
         return income.image
+    def get_conversor(self, amount):
+        print(amount)
+        # valor_convertido = float(amount.replace("$ ", "").replace(".", "").replace(".", ","))
+        valor_convertido = float(amount.replace("$", "").replace("\xa0", "").replace(".", "").replace(",", "."))
+        print(valor_convertido)
+        return valor_convertido
     def post(self, request, *args, **kwargs):
         data = {}
         try:
             action = request.POST['action']
             if action == 'edit':
-                form = self.get_form()
-                if form.is_valid():
-                    pku = 0
-                    pki = Income.objects.filter(id=self.kwargs.get('pk'))
-                    for i in pki:
-                        pku = i.user_id
-                    if pku == request.user.id:
-                        data = form.save()
-                        self.get_calcular()
-                    else:
-                        data['error'] = 'No tienes las credenciales correspondientes'
+                pku = 0
+                pki = Income.objects.filter(id=self.kwargs.get('pk'))
+                for i in pki:
+                    pku = i.user_id
+                if pku == request.user.id:
+                    i = Income()
+                    i.id = kwargs.get('pk')
+                    i.description = request.POST['description']
+                    i.amount = request.POST['amount']
+                    i.iva = request.POST['iva']
+                    i.totaliva = self.get_conversor(request.POST['totaliva'])
+                    i.total = self.get_conversor(request.POST['total'])
+                    i.image = request.POST['image']
+                    i.state = request.POST['state']
+                    i.date_joined = request.POST['date_joined']
+                    i.annotations = request.POST['annotations']
+                    i.categorie_id = request.POST['categorie']
+                    i.save()
+                    self.get_calcular()
+                else:
+                    data['error'] = 'No tienes las credenciales correspondientes'
             elif action == 'search_categories':
                 data = []
                 categories = Categories.objects.filter(name__icontains=request.POST['term'])[0:10]
@@ -160,7 +193,6 @@ class IncomeUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
                     item = cat.toJSON()
                     item['text'] = cat.name
                     data.append(item)
-                print(data)
             elif action == 'create_categories':
                 with transaction.atomic():
                     frmCategories = CategoriesForm(request.POST)
@@ -169,7 +201,7 @@ class IncomeUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
                 data['error'] = 'No ha ingresado a ninguna opcion'
         except Exception as e:
             data['error'] = str(e)
-        return JsonResponse(data)
+        return JsonResponse(data, safe=False)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         pk = self.kwargs.get('pk')

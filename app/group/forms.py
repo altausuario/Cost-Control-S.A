@@ -30,7 +30,14 @@ class GroupForm(ModelForm):
         form = super()
         try:
             if form.is_valid():
-                form.save()
+                instance = form.save()
+                if isinstance(instance, Group):
+                    group_id = instance.id
+                    group_name = instance.name
+
+                    # Puedes almacenar estos valores en data para devolverlos
+                    data['group_id'] = group_id
+                    data['group_name'] = group_name
             else:
                 data['error'] = form.errors
         except Exception as e:

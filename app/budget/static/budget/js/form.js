@@ -1,3 +1,6 @@
+function formatCurrency(number) {
+    return parseFloat(number).toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
+}
 var tblBudget;
 var tblBudgetexpenses;
 var vents = {
@@ -21,9 +24,13 @@ var vents = {
         this.items.total_income =  incomes_total
         this.items.total_expenses =  expenses_total
         this.items.total = this.items.total_income - this.items.total_expenses
-        $('input[name="total_income"]').val(this.items.total_income.toFixed(2));
-        $('input[name="total_expenses"]').val(this.items.total_expenses.toFixed(2));
-        $('input[name="total"]').val(this.items.total.toFixed(2));
+
+        this.items.total_income =  this.items.total_income.toFixed(2)
+        this.items.total_expenses = this.items.total_expenses.toFixed(2)
+        this.items.total = this.items.total.toFixed(2)
+        $('input[name="total_income"]').val(formatCurrency(this.items.total_income));
+        $('input[name="total_expenses"]').val(formatCurrency(this.items.total_expenses));
+        $('input[name="total"]').val(formatCurrency(this.items.total));
     },
     add: function(item){
         this.items.incomes.push(item);
@@ -70,7 +77,8 @@ var vents = {
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    return '$ ' + parseFloat(data).toFixed(2)
+                    var valor = parseFloat(data).toFixed(2)
+                    return formatCurrency(valor)
                 }
             },
             {
@@ -123,7 +131,8 @@ var vents = {
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    return '$ ' + parseFloat(data).toFixed(2)
+                    var valor = parseFloat(data).toFixed(2)
+                    return formatCurrency(valor)
                 }
             },
             {
@@ -172,6 +181,7 @@ function Get_opt_select(opt){
 }
 
 $( function() {
+$('select[name="categorie"]').next().find('.select2-search__field').focus();
 $( "#buscar" ).autocomplete({
       source: function(request, response) {
             $.ajax({
@@ -293,12 +303,13 @@ $('#remove_expenses').on('click', function(){
     });
 
 $('.buttonModal').on('click', function(){
+    $('select[name="categorie"]').next().find('.select2-search__field').focus();
     var opt = $(this).val()
     $("input[name='iva']").val(19)
     Get_opt_select(opt)
     var title = ' Nuevo ' + $(this).val()
     $('#inputTypeSelect').val($(this).val())
-    $('.modal-title').html('<i class="fas fa-plus"></i> ' + title);
+    $('#exampleModalLabel').html('<i class="fas fa-plus"></i> ' + title);
     $('#ModalRegisterIncomeAndExpenses').modal('show')
 })
 
@@ -307,7 +318,12 @@ $('form[id="form_register"]').on('submit', function(e){
     var type = $('#inputTypeSelect').val()
     var parameters = new FormData(this);
         parameters.append('action', $('#inputTypeSelect').val());
-    alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de crear un nuevo registro para ' + type + '?', parameters, function(){
+    alert_confirm(window.location.pathname,'Notificacion', '¿Estas seguro de crear un nuevo registro para ' + type + '?', parameters, function(response){
+                if(type == 'Ingreso'){
+                      vents.add(response);
+                }else{
+                    vents.addExpenses(response);
+                }
                 Swal.fire({
                       title: 'Alerta',
                       text: 'Registro creado correctamente',

@@ -58,13 +58,29 @@ class ExpensesCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, C
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+    def get_conversor(self, amount):
+        print(amount)
+        # valor_convertido = float(amount.replace("$ ", "").replace(".", "").replace(".", ","))
+        valor_convertido = float(amount.replace("$", "").replace("\xa0", "").replace(".", "").replace(",", "."))
+        print(valor_convertido)
+        return valor_convertido
     def post(self, request, *args, **kwargs):
         data = {}
         try:
             action = request.POST['action']
             if action == 'add':
-                form = self.get_form()
-                data = form.save()
+                e = Expenses()
+                e.description = request.POST['description']
+                e.amount = request.POST['amount']
+                e.iva = request.POST['iva']
+                e.totaliva = self.get_conversor(request.POST['totaliva'])
+                e.total = self.get_conversor(request.POST['total'])
+                e.image = request.POST['image']
+                e.state = request.POST['state']
+                e.date_joined = request.POST['date_joined']
+                e.annotations = request.POST['annotations']
+                e.categorie_id = request.POST['categorie']
+                e.save()
             elif action == 'search_categories':
                 data = []
                 categories = Categories.objects.filter(name__icontains=request.POST['term'])[0:10]
@@ -141,6 +157,12 @@ class ExpensesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, U
             total_ex = 0
             total_in = 0
         return ''
+    def get_conversor(self, amount):
+        print(amount)
+        # valor_convertido = float(amount.replace("$ ", "").replace(".", "").replace(".", ","))
+        valor_convertido = float(amount.replace("$", "").replace("\xa0", "").replace(".", "").replace(",", "."))
+        print(valor_convertido)
+        return valor_convertido
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -151,10 +173,19 @@ class ExpensesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, U
                 for i in pki:
                     pku = i.user_id
                 if pku == request.user.id:
-                    form = ExpensesForm(request.POST)
-
-                    print(form)
-                    data = form.save()
+                    e = Expenses()
+                    e.id = kwargs.get('pk')
+                    e.description = request.POST['description']
+                    e.amount = request.POST['amount']
+                    e.iva = request.POST['iva']
+                    e.totaliva = self.get_conversor(request.POST['totaliva'])
+                    e.total = self.get_conversor(request.POST['total'])
+                    e.image = request.POST['image']
+                    e.state = request.POST['state']
+                    e.date_joined = request.POST['date_joined']
+                    e.annotations = request.POST['annotations']
+                    e.categorie_id = request.POST['categorie']
+                    e.save()
                     self.get_calcular()
                 else:
                     data['error'] = 'No tienes las credenciales correspondientes'
@@ -174,7 +205,7 @@ class ExpensesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, U
                 data['error'] = 'No ha ingresado a ninguna opcion'
         except Exception as e:
             data['error'] = str(e)
-        return JsonResponse(data)
+        return JsonResponse(data, safe=False)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         pk = self.kwargs.get('pk')

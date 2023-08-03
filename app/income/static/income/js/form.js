@@ -1,3 +1,6 @@
+function formatCurrency(number) {
+    return parseFloat(number).toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
+}
 function get_Calcular() {
     var amount = $('#id_amount').val()
     var iva = $('#id_iva').val()
@@ -7,22 +10,32 @@ function get_Calcular() {
     }
     if (iva > 0) {
         var totalIva = parseFloat((amount * iva) / 100)
-        var total = parseFloat(amount) + parseFloat(totalIva)
-        $('#id_totaliva').val(parseFloat(totalIva).toFixed(2))
-        $('#id_total').val(parseFloat(total).toFixed(2))
+        var total = 0
+        total = parseFloat(total).toFixed(2)
+        totalIva = parseFloat(totalIva).toFixed(2)
+        $('#id_totaliva').val(formatCurrency(totalIva))
+        $('#id_total').val(formatCurrency(total))
     }
     if (amount > 0) {
         var totalIva = parseFloat((amount * iva) / 100)
         var total = parseFloat(amount) + parseFloat(totalIva)
-        $('#id_totaliva').val(parseFloat(totalIva).toFixed(2))
-        $('#id_total').val(parseFloat(total).toFixed(2))
+        total = parseFloat(total).toFixed(2)
+        totalIva = parseFloat(totalIva).toFixed(2)
+        $('#id_totaliva').val(formatCurrency(totalIva))
+        $('#id_total').val(formatCurrency(total))
     }
 }
+
 function formatNumberWithZero(number) {
         return number < 10 ? "0" + number : number;
         }
 $(function () {
+    get_Calcular()
     var originalValue = $("#date_joined").val();
+    var ivaOriginal = $('#id_iva').val()
+    if (ivaOriginal == ''){
+        $('#id_iva').val(19)
+    }
     if (originalValue == ''){
       var currentDate = new Date();
       var day = formatNumberWithZero(currentDate.getDate());
@@ -32,14 +45,12 @@ $(function () {
       // Mostrar la fecha en el formato deseado
       originalValue = year + "-" + month + "-" + day;
     }
-
     $('input[required], textarea[required], select[required]').filter(function () {
         return $(this).prev('label').length > 0;
     }).each(function () {
         //    $(this).prev('label').text($(this).prev('label').text() + ' *');
         $(this).prev('label').append('<b style="color:red; padding-left: 5px;"> *</b>');
     });
-    get_Calcular()
     $('#date_joined').datetimepicker({
         format: 'YYYY-MM-DD',
         //        date: moment().format("YYYY-MM-DD"),
@@ -57,7 +68,8 @@ $(function () {
         postfix: '%'
     }).on('change', function () {
         get_Calcular()
-    }).val(19);
+    })
+
     $("input[name='amount']").on('input', function () {
         get_Calcular()
     })

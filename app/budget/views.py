@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import *
 from budget.forms import PresupuestoForm
 from budget.models import *
+from categories.forms import CategoriesForm
 from categories.models import Categories
 from expenses.models import Expenses
 from income.forms import IncomeForm
@@ -61,6 +62,9 @@ class BudgetCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Cre
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+    def get_conversor(self, amount):
+        valor_convertido = float(amount.replace("$", "").replace("\xa0", "").replace(".", "").replace(",", "."))
+        return valor_convertido
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -100,19 +104,34 @@ class BudgetCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Cre
                     item['value'] = i.description
                     data.append(item)
             elif action == 'Ingreso':
-                income = Income()
-                income.description = request.POST['description']
-                income.annotations = request.POST['annotations']
-                income.date_joined = request.POST['date_joined']
-                income.categorie_id = request.POST['categorie']
-                income.state = request.POST['state']
-                income.amount = request.POST['amount']
-                income.iva = request.POST['iva']
-                income.totaliva = request.POST['totaliva']
-                income.total = request.POST['totalRegister']
-                income.image = request.POST['image']
-                income.user_id = request.user.id
-                income.save()
+                with transaction.atomic():
+                    income = Income()
+                    income.description = request.POST['description']
+                    income.annotations = request.POST['annotations']
+                    income.date_joined = request.POST['date_joined']
+                    income.categorie_id = request.POST['categorie']
+                    income.state = request.POST['state']
+                    income.amount = self.get_conversor(request.POST['amount'])
+                    income.iva = request.POST['iva']
+                    income.totaliva = self.get_conversor(request.POST['totaliva'])
+                    income.total = self.get_conversor(request.POST['totalRegister'])
+                    income.image = request.POST['image']
+                    income.user_id = request.user.id
+                    income.save()
+                    json_income = json.dumps({
+                        'id': income.id,
+                        'description': income.description,
+                        'annotations': income.annotations,
+                        'date_joined': income.date_joined,
+                        'categorie_id': income.categorie_id,
+                        'state': income.state,
+                        'amount': income.amount,
+                        'iva': income.iva,
+                        'totaliva': income.totaliva,
+                        'total': income.total,
+                        'user_id': income.user_id,
+                    })
+                    data = json.loads(json_income)
             elif action == 'Gasto':
                 expense = Expenses()
                 expense.description = request.POST['description']
@@ -120,13 +139,27 @@ class BudgetCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Cre
                 expense.date_joined = request.POST['date_joined']
                 expense.categorie_id = request.POST['categorie']
                 expense.state = request.POST['state']
-                expense.amount = request.POST['amount']
+                expense.amount = self.get_conversor(request.POST['amount'])
                 expense.iva = request.POST['iva']
-                expense.totaliva = request.POST['totaliva']
-                expense.total = request.POST['totalRegister']
+                expense.totaliva = self.get_conversor(request.POST['totaliva'])
+                expense.total = self.get_conversor(request.POST['totalRegister'])
                 expense.image = request.POST['image']
                 expense.user_id = request.user.id
                 expense.save()
+                json_expenses = json.dumps({
+                    'id': expense.id,
+                    'description': expense.description,
+                    'annotations': expense.annotations,
+                    'date_joined': expense.date_joined,
+                    'categorie_id': expense.categorie_id,
+                    'state': expense.state,
+                    'amount': expense.amount,
+                    'iva': expense.iva,
+                    'totaliva': expense.totaliva,
+                    'total': expense.total,
+                    'user_id': expense.user_id,
+                })
+                data = json.loads(json_expenses)
             else:
                 data['error'] = 'No ha ingresado a ninguna opcion'
         except Exception as e:
@@ -156,6 +189,9 @@ class BudgetUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
         if self.object.user_id != request.user.id:
             return HttpResponseRedirect(reverse_lazy('list_budget'))
         return super().dispatch(request, *args, **kwargs)
+    def get_conversor(self, amount):
+        valor_convertido = float(amount.replace("$", "").replace("\xa0", "").replace(".", "").replace(",", "."))
+        return valor_convertido
     def post(self, request, *args, **kwargs):
         data = {}
         try:
@@ -194,33 +230,63 @@ class BudgetUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
                     else:
                         data['error'] = 'No tienes las credenciales correspondientes'
             elif action == 'Ingreso':
-                income = Income()
-                income.description = request.POST['description']
-                income.annotations = request.POST['annotations']
-                income.date_joined = request.POST['date_joined']
-                income.categorie_id = request.POST['categorie']
-                income.state = request.POST['state']
-                income.amount = request.POST['amount']
-                income.iva = request.POST['iva']
-                income.totaliva = request.POST['totaliva']
-                income.total = request.POST['totalRegister']
-                income.image = request.POST['image']
-                income.user_id = request.user.id
-                income.save()
+                with transaction.atomic():
+                    income = Income()
+                    income.description = request.POST['description']
+                    income.annotations = request.POST['annotations']
+                    income.date_joined = request.POST['date_joined']
+                    income.categorie_id = request.POST['categorie']
+                    income.state = request.POST['state']
+                    income.amount = self.get_conversor(request.POST['amount'])
+                    income.iva = request.POST['iva']
+                    income.totaliva = self.get_conversor(request.POST['totaliva'])
+                    income.total = self.get_conversor(request.POST['totalRegister'])
+                    income.image = request.POST['image']
+                    income.user_id = request.user.id
+                    income.save()
+                    json_income = json.dumps({
+                        'id': income.id,
+                        'description': income.description,
+                        'annotations': income.annotations,
+                        'date_joined': income.date_joined,
+                        'categorie_id': income.categorie_id,
+                        'state': income.state,
+                        'amount': income.amount,
+                        'iva': income.iva,
+                        'totaliva': income.totaliva,
+                        'total': income.total,
+                        'user_id': income.user_id,
+                    })
+                    data = json.loads(json_income)
             elif action == 'Gasto':
-                expense = Expenses()
-                expense.description = request.POST['description']
-                expense.annotations = request.POST['annotations']
-                expense.date_joined = request.POST['date_joined']
-                expense.categorie_id = request.POST['categorie']
-                expense.state = request.POST['state']
-                expense.amount = request.POST['amount']
-                expense.iva = request.POST['iva']
-                expense.totaliva = request.POST['totaliva']
-                expense.total = request.POST['totalRegister']
-                expense.image = request.POST['image']
-                expense.user_id = request.user.id
-                expense.save()
+                with transaction.atomic():
+                    expense = Expenses()
+                    expense.description = request.POST['description']
+                    expense.annotations = request.POST['annotations']
+                    expense.date_joined = request.POST['date_joined']
+                    expense.categorie_id = request.POST['categorie']
+                    expense.state = request.POST['state']
+                    expense.amount = self.get_conversor(request.POST['amount'])
+                    expense.iva = request.POST['iva']
+                    expense.totaliva = self.get_conversor(request.POST['totaliva'])
+                    expense.total = self.get_conversor(request.POST['totalRegister'])
+                    expense.image = request.POST['image']
+                    expense.user_id = request.user.id
+                    expense.save()
+                    json_expenses = json.dumps({
+                        'id': expense.id,
+                        'description': expense.description,
+                        'annotations': expense.annotations,
+                        'date_joined': expense.date_joined,
+                        'categorie_id': expense.categorie_id,
+                        'state': expense.state,
+                        'amount': expense.amount,
+                        'iva': expense.iva,
+                        'totaliva': expense.totaliva,
+                        'total': expense.total,
+                        'user_id': expense.user_id,
+                    })
+                    data = json.loads(json_expenses)
             elif action == 'autocomplete':
                 data = []
                 for i in Income.objects.filter(description__icontains=request.POST['term'], user_id=request.user.id)[0:10]:
@@ -233,6 +299,17 @@ class BudgetUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
                     item = i.toJSON()
                     item['value'] = i.description
                     data.append(item)
+            elif action == 'search_categories':
+                data = []
+                categories = Categories.objects.filter(name__icontains=request.POST['term'])[0:10]
+                for cat in categories:
+                    item = cat.toJSON()
+                    item['text'] = cat.name
+                    data.append(item)
+            elif action == 'create_categories':
+                with transaction.atomic():
+                    frmCategories = CategoriesForm(request.POST)
+                    data = frmCategories.save()
             else:
                 data['error'] = 'No ha ingresado a ninguna opcion'
         except Exception as e:
@@ -288,6 +365,7 @@ class BudgetUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
         context['detExpenses'] = json.dumps(self.get_details_Expenses())
         context['url_link'] = self.success_url
         context['register'] = IncomeForm
+        context['cat'] = CategoriesForm
         return context
 class BudgetDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, DeleteView):
     model = Budget

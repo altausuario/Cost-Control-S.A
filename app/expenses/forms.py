@@ -10,7 +10,7 @@ class ExpensesForm(ModelForm):
         super().__init__(*args, **kwargs)
         request = get_current_request()
         for form in self.visible_fields():
-            form.field.widget.attrs['class'] = 'form-control'
+            # form.field.widget.attrs['class'] = 'form-control'
             form.field.widget.attrs['autocomplete'] = 'off'
             self.fields['description'].widget.attrs['autofocus'] = True
         categorie = Categories.objects.filter(user_id=request.user.id).distinct()
@@ -22,31 +22,35 @@ class ExpensesForm(ModelForm):
         widgets = {
             'description': Textarea(
                 attrs={
+                    'class': 'form-control',
                     'placeholder': 'Ingrese una descripción',
                     'style': 'height:130px; resize:none;',
                 },
             ),
             'amount': TextInput(
                 attrs={
+                    'class': 'form-control',
                     'placeholder': '0,0',
                 },
             ),
             'iva': NumberInput(
                 attrs={
-                    'class': 'col-md-8 form-control',
+                    'class': 'col-md-8 form-control text-center',
                     'style':'width: 60%; padding-left:8px;',
                     'readonly': 'readonly',
                 },
             ),
-            'totaliva': NumberInput(
+            'totaliva': TextInput(
                 attrs={
+                    'class': 'form-control',
                     'readonly': 'readonly',
                     'value': 0.00,
                     'style': 'cursor: pointer'
                 },
             ),
-            'total': NumberInput(
+            'total': TextInput(
                 attrs={
+                    'class': 'form-control',
                     'readonly': 'readonly',
                     'value': 0.00,
                     'style': 'cursor: pointer'
@@ -64,10 +68,16 @@ class ExpensesForm(ModelForm):
             ),
             'annotations': Textarea(
                 attrs={
+                    'class': 'form-control',
                     'placeholder': 'Ingrese comentarios',
                     'style': 'height:130px; resize:none;'
                 }
             ),
+            'state': Select(
+                attrs={
+                    'class': 'form-control',
+                }
+            )
         }
     def save(self, commit=True):
         data = {}
