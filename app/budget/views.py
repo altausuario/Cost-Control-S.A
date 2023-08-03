@@ -1,4 +1,5 @@
 import json
+from django import template
 from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
@@ -380,6 +381,7 @@ class BudgetDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Del
         if self.object.user_id != request.user.id:
             return HttpResponseRedirect(reverse_lazy('list_budget'))
         return super().dispatch(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         data = {}
         try:

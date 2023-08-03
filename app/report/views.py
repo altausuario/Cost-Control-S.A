@@ -19,6 +19,13 @@ class ReportBudgetView(LoginRequiredMixin,TemplateView):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+
+    def currency_format(self, value):
+        try:
+            value = float(value)
+            return "$ {:,.2f}".format(value).replace(",", ".")
+        except (ValueError, TypeError):
+            return value
     def post(self, request, *args, **kwargs):
         data = []
         try:
@@ -27,27 +34,29 @@ class ReportBudgetView(LoginRequiredMixin,TemplateView):
               start_date = request.POST.get('start_date', '')
               end_date = request.POST.get('end_date', '')
               search = Budget.objects.all()
+              position = 1
               if len(start_date) and len(end_date):
                 search = search.filter(date_creation__range=[start_date, end_date], user_id=request.user.id)
               for s in search:
                   data.append([
-                      s.id,
+                      position,
                       s.name,
                       s.date_creation.strftime('%Y-%m-%d'),
-                      format(s.total_income, '.2f'),
-                      format(s.total_expenses, '.2f'),
-                      format(s.total, '.2f'),
+                      self.currency_format(s.total_income),
+                      self.currency_format(s.total_expenses),
+                      self.currency_format(s.total),
                   ])
+                  position += 1
               income_total = search.aggregate(r=Coalesce(Sum('total_income'), 0, output_field=DecimalField())).get('r')
               expenses_total = search.aggregate(r=Coalesce(Sum('total_expenses'), 0, output_field=DecimalField())).get('r')
               total = search.aggregate(r=Coalesce(Sum('total'), 0, output_field=DecimalField())).get('r')
               data.append([
-                  '---',
+                  '',
                   '---',
                   '----',
-                  format(income_total, '.2f'),
-                  format(expenses_total, '.2f'),
-                  format(total, '.2f'),
+                  self.currency_format(income_total),
+                  self.currency_format(expenses_total),
+                  self.currency_format(total),
               ])
           else:
               data['error'] = 'Ha ocurrido un error'
@@ -66,6 +75,12 @@ class ReportIncomesView(LoginRequiredMixin, TemplateView):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+    def currency_format(self, value):
+        try:
+            value = float(value)
+            return "$ {:,.2f}".format(value).replace(",", ".")
+        except (ValueError, TypeError):
+            return value
     def post(self, request, *args, **kwargs):
         data = []
         try:
@@ -74,22 +89,24 @@ class ReportIncomesView(LoginRequiredMixin, TemplateView):
               start_date = request.POST.get('start_date', '')
               end_date = request.POST.get('end_date', '')
               search = Income.objects.all()
+              position = 1
               if len(start_date) and len(end_date):
                 search = search.filter(date_joined__range=[start_date, end_date], user_id=request.user.id)
               for s in search:
                   c = s.categorie.id
                   n = Categories.objects.get(id=c)
                   data.append([
-                      s.id,
+                      position,
                       s.description,
                       s.date_joined.strftime('%Y-%m-%d'),
                       n.name,
                       s.state,
-                      format(s.amount, '.2f'),
+                      self.currency_format(s.amount),
                       format(s.iva, '.0f'),
-                      format(s.totaliva, '.2f'),
-                      format(s.total, '.2f'),
+                      self.currency_format(s.totaliva),
+                      self.currency_format(s.total),
                   ])
+                  position += 1
               income_total = search.aggregate(r=Coalesce(Sum('total'), 0, output_field=DecimalField())).get('r')
               data.append([
                   '---',
@@ -100,7 +117,7 @@ class ReportIncomesView(LoginRequiredMixin, TemplateView):
                   '----',
                   '----',
                   f'----',
-                  format(income_total, '.2f'),
+                  self.currency_format(income_total),
               ])
           else:
               data['error'] = 'Ha ocurrido un error'
@@ -119,6 +136,12 @@ class ReportExpensesView(LoginRequiredMixin,TemplateView):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+    def currency_format(self, value):
+        try:
+            value = float(value)
+            return "$ {:,.2f}".format(value).replace(",", ".")
+        except (ValueError, TypeError):
+            return value
     def post(self, request, *args, **kwargs):
         data = []
         try:
@@ -128,22 +151,24 @@ class ReportExpensesView(LoginRequiredMixin,TemplateView):
               end_date = request.POST.get('end_date', '')
               search = Expenses.objects.all()
               name = '';
+              position = 1
               if len(start_date) and len(end_date):
                 search = search.filter(date_joined__range=[start_date, end_date], user_id=request.user.id)
               for s in search:
                   c = s.categorie.id
                   n = Categories.objects.get(id=c)
                   data.append([
-                      s.id,
+                      position,
                       s.description,
                       s.date_joined.strftime('%Y-%m-%d'),
                       n.name,
                       s.state,
-                      format(s.amount, '.2f'),
+                      self.currency_format(s.amount),
                       format(s.iva, '.0f'),
-                      format(s.totaliva, '.2f'),
-                      format(s.total, '.2f'),
+                      self.currency_format(s.totaliva),
+                      self.currency_format(s.total),
                   ])
+                  position += 1
               income_total = search.aggregate(r=Coalesce(Sum('total'), 0, output_field=DecimalField())).get('r')
               data.append([
                   '---',
@@ -154,7 +179,7 @@ class ReportExpensesView(LoginRequiredMixin,TemplateView):
                   '----',
                   '----',
                   '----',
-                  format(income_total, '.2f'),
+                  self.currency_format(income_total),
               ])
           else:
               data['error'] = 'Ha ocurrido un error'

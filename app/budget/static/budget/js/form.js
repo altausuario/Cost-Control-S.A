@@ -181,7 +181,9 @@ function Get_opt_select(opt){
 }
 
 $( function() {
-$('select[name="categorie"]').next().find('.select2-search__field').focus();
+$('#ModalRegisterIncomeAndExpenses').on('shown.bs.modal', function () {
+    $('#myModelAddCategories').modal('show')
+  });
 $( "#buscar" ).autocomplete({
       source: function(request, response) {
             $.ajax({
