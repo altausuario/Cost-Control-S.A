@@ -1,5 +1,6 @@
 import smtplib
 import uuid
+from django.contrib import messages
 from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -54,6 +55,10 @@ class LockedActivateFormView(LoginRequiredMixin, ValidatePermissionRequiredMinxi
     permission_required = 'add_user'
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
+        users_inactive = User.objects.filter(is_active=False).exists()
+        if not users_inactive:
+            messages.error(request, 'No hay usuarios inactivos.')
+            return HttpResponseRedirect(reverse_lazy('list_locked'))
         return super().dispatch(request, *args, **kwargs)
     def send_email_reset_password(self, user):
         data = {}

@@ -64,8 +64,8 @@ class homeView(LoginRequiredMixin, TemplateView):
             for m in range(1, 13):
                 presupuestoTotal = (
                     Budget.objects.filter(
-                        date_creation__year=year,
-                        date_creation__month=m,
+                        date_joined__year=year,
+                        date_joined__month=m,
                         user_id=request.user.id,
                     )
                     .aggregate(r=Coalesce(Sum("total"), 0, output_field=DecimalField()))
@@ -84,8 +84,8 @@ class homeView(LoginRequiredMixin, TemplateView):
             for m in range(1, 13):
                 presupuestoTotal = (
                     Budget.objects.filter(
-                        date_creation__year=year,
-                        date_creation__month=m,
+                        date_joined__year=year,
+                        date_joined__month=m,
                         user_id=request.user.id,
                     )
                     .aggregate(
@@ -106,8 +106,8 @@ class homeView(LoginRequiredMixin, TemplateView):
             for m in range(1, 13):
                 presupuestoTotal = (
                     Budget.objects.filter(
-                        date_creation__year=year,
-                        date_creation__month=m,
+                        date_joined__year=year,
+                        date_joined__month=m,
                         user_id=request.user.id,
                     )
                     .aggregate(
@@ -131,8 +131,8 @@ class homeView(LoginRequiredMixin, TemplateView):
             for b in Budget.objects.all():
                 Total = (
                     Budget.objects.filter(
-                        date_creation__year=year,
-                        date_creation__month=month,
+                        date_joined__year=year,
+                        date_joined__month=month,
                         user_id=request.user.id,
                         id=b.id,
                     )
@@ -178,7 +178,6 @@ class homeView(LoginRequiredMixin, TemplateView):
                     "color": "#FF0000",
                     "data": self.get_graph_expenses_year_month(),
                 }
-
             elif action == "get_graph_budget_percentage_year_month":
                 data = {
                     "name": "Porcentaje",

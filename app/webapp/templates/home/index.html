@@ -149,7 +149,8 @@
             downloadCSV: 'Descargar CSV',
             downloadXLS: 'Descargar XLS',
             exportButtonTitle: 'Exportar',
-            printChart: 'Imprimir gráfico'
+            printChart: 'Imprimir gráfico',
+            thousandsSep: ','
         },
         title: {
             text: 'Reporte del presupuesto del año {{año}}',
@@ -207,8 +208,10 @@
         },
         tooltip: {
             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:5px; color:#fff; "><b>{point.y:,.2f} $ </b></td></tr>',
+            pointFormatter: function () {
+                return '<tr><td style="color:' + this.series.color + ';padding:0">' + this.series.name + ': </td>' +
+                    '<td style="padding:5px; color:#fff; "><b>' + this.y.toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' $ </b></td></tr>';
+            },
             footerFormat: '</table>',
             shared: true,
             useHTML: true,

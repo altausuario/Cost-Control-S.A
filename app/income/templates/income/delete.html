@@ -1,7 +1,7 @@
 {% extends 'forms.html' %}
 {% block card-form %}
 {% load i18n %}
-{% csrf_token %}
+{% load custom_filters %}
 <input type="hidden" name="action" value="{{ action }}">
 <div class="alert alert-primary alert-dismissible">
     <h5>
@@ -30,10 +30,10 @@
                 <td style="text-align: center;">{{object.date_joined}}</td>
                 <td style="text-align: center;">{{object.categorie}}</td>
                 <td style="text-align: center;">{{object.state}}</td>
-                <td style="text-align: center;">$ {{object.amount}}</td>
+                <td style="text-align: center;">{{object.amount|currency}}</td>
                 <td style="text-align: center;">{{object.iva|floatformat}}</td>
-                <td style="text-align: center;">$ {{object.totaliva}}</td>
-                <td style="text-align: center;">$ {{object.total}}</td>
+                <td style="text-align: center;">{{object.totaliva|currency}}</td>
+                <td style="text-align: center;">{{object.total|currency}}</td>
             </tr>
         </tbody>
     </table>

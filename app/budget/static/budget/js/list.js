@@ -27,7 +27,7 @@ function getData(){
             },
             {'data': 'position'},
             {'data': 'name'},
-            {'data': 'date_creation'},
+            {'data': 'date_joined'},
             {'data': 'total_income'},
             {'data': 'total_expenses'},
             {'data': 'total'},

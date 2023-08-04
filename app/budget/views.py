@@ -547,7 +547,7 @@ class BudgetInvoicePdfView(LoginRequiredMixin, View):
                 id = self.kwargs['pk']
                 context = {
                     'budget_name':budget.name,
-                    'budget_date_creation':budget.date_creation,
+                    'budget_date_creation':budget.date_joined,
                     'budget_total': self.currency_format(budget.total),
                     'date_joined':datetime.now(),
                     'cli_names': request.user.first_name + ' ' + request.user.last_name,

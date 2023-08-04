@@ -1,6 +1,7 @@
 {% extends 'forms.html' %}
 {% block card-form %}
 {% load i18n %}
+{% load custom_filters %}
 <input name="action" type="hidden" value="{{ action }}">
 <div class="alert alert-primary alert-dismissible">
     <h5>
@@ -24,10 +25,10 @@
         <tr>
             <td style="text-align: center;">{{object.id}}</td>
             <td style="text-align: center;">{{object.name}}</td>
-            <td style="text-align: center;">{{object.date_creation}}</td>
-            <td style="text-align: center;">{{object.total_income}}</td>
-            <td style="text-align: center;">$ {{object.total_expenses}}</td>
-            <td style="text-align: center;">$ {{object.total}}</td>
+            <td style="text-align: center;">{{object.date_joined|date:"d-m-Y"}}</td>
+            <td style="text-align: center;">{{object.total_income|currency}}</td>
+            <td style="text-align: center;">{{object.total_expenses|currency }}</td>
+            <td style="text-align: center;">{{object.total|currency}}</td>
         </tr>
         </tbody>
     </table>

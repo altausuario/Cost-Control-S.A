@@ -7,7 +7,8 @@ from user.models import User
 # Create your models here.
 class Budget(models.Model):
     name = models.CharField(max_length=50, verbose_name='Name')
-    date_creation = models.DateTimeField(auto_now_add=True)
+    # date_creation = models.DateTimeField(auto_now_add=True)
+    date_joined = models.DateField(auto_now_add=True)
     total_income = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Total categories')
     total_expenses = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Total discharge')
     total = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Total')
@@ -15,9 +16,9 @@ class Budget(models.Model):
     def __str__(self):
         return self.name
     def fecha_creation(self):
-        if self.date_creation:
-            return '{}'.format(self.date_creation.strftime('%Y-%m-%d'))
-        return '{}'.format(self.date_creation.strftime('%Y-%m-%d'))
+        if self.date_joined:
+            return '{}'.format(self.date_joined.strftime('%Y-%m-%d'))
+        return '{}'.format(self.date_joined.strftime('%Y-%m-%d'))
     def save(self, *args, **kwargs):
         request = get_current_request()
         if not self.user_id:
@@ -39,7 +40,7 @@ class Budget(models.Model):
         return data
     def toJSON(self):
         item = model_to_dict(self)
-        item['date_creation'] = self.fecha_creation()
+        item['date_joined'] = self.fecha_creation()
         item['detIncome'] = [i.toJSON() for i in self.DetIncome()]
         item['detExpenses'] = [i.toJSON() for i in self.DetExpenses()]
         return item

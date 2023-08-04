@@ -52,9 +52,11 @@ $(function () {
             }
         });
     $('.drp-buttons').hide();
+
     $('.btnSearch').on('click', function () {
         access_users.list(false);
     });
+
     $('.btnSearchAll').on('click', function () {
         access_users.list(true);
     });

@@ -33,15 +33,18 @@ class ReportBudgetView(LoginRequiredMixin,TemplateView):
           if action == 'search_report_budget':
               start_date = request.POST.get('start_date', '')
               end_date = request.POST.get('end_date', '')
+              print('-----------------')
+              print(start_date)
+              print(end_date)
               search = Budget.objects.all()
               position = 1
               if len(start_date) and len(end_date):
-                search = search.filter(date_creation__range=[start_date, end_date], user_id=request.user.id)
+                search = search.filter(date_joined__range=[start_date, end_date], user_id=request.user.id)
               for s in search:
                   data.append([
                       position,
                       s.name,
-                      s.date_creation.strftime('%Y-%m-%d'),
+                      s.date_joined.strftime('%Y-%m-%d'),
                       self.currency_format(s.total_income),
                       self.currency_format(s.total_expenses),
                       self.currency_format(s.total),
