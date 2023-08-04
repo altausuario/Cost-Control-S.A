@@ -201,14 +201,14 @@
                     color: '#fff',
                 },
                 formatter: function () {
-                    return "$ " + this.value;
+                    return Highcharts.numberFormat(this.value, 2, ",", ".") + " $";
                 }
             }
         },
         tooltip: {
             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
             pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:5px; color:#fff; "><b>{point.y:.2f} $ </b></td></tr>',
+                '<td style="padding:5px; color:#fff; "><b>{point.y:,.2f} $ </b></td></tr>',
             footerFormat: '</table>',
             shared: true,
             useHTML: true,

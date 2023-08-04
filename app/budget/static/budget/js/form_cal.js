@@ -2,7 +2,8 @@ function formatCurrency(number) {
     return parseFloat(number).toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
 }
 function get_Calcular(){
-    var amount = $('#id_amount').val()
+    var amount = $('#id_amount').maskMoney('unmasked')[0]
+    $('#id_amount').val(formatCurrency(amount))
     var iva = $('#id_iva').val()
         if(amount==0 && iva==0){
             $('#id_totaliva').val(0.00)
@@ -32,9 +33,21 @@ function get_Calcular(){
         $('#id_totaliva').val(formatCurrency(totalIva))
         $('#total_required').val(formatCurrency(total))
     }
+    var total_iva = $('#id_totaliva').maskMoney('unmasked')[0]
+    var totals = $('#id_total').maskMoney('unmasked')[0]
+    if(total_iva == 0 && totals == 0){
+        $('#id_totaliva').val(formatCurrency(total_iva))
+        $('#total_required').val(formatCurrency(total_iva))
+    }
 }
 $(function(){
     get_Calcular()
+    $('#id_amount').maskMoney({
+        prefix: '$ ',
+        thousands: '.',
+        decimal: ',',
+        precision: 2
+    });
     var originalValue = $("#date_joined").val();
     var ivaOriginal = $('#id_iva').val()
     if(ivaOriginal == ''){
@@ -73,7 +86,7 @@ $("input[name='iva']").TouchSpin({
         get_Calcular()
     }).val(19);
 
-$('#id_amount').on('input', function() {
+$('#id_amount').on('keyup', function() {
     get_Calcular()
 })
 $('#id_iva').on('input', function() {

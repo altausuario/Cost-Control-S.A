@@ -181,9 +181,6 @@ function Get_opt_select(opt){
 }
 
 $( function() {
-$('#ModalRegisterIncomeAndExpenses').on('shown.bs.modal', function () {
-    $('#myModelAddCategories').modal('show')
-  });
 $( "#buscar" ).autocomplete({
       source: function(request, response) {
             $.ajax({
@@ -339,5 +336,7 @@ $('form[id="form_register"]').on('submit', function(e){
 })
 $('#ModalRegisterIncomeAndExpenses').on('hidden.bs.modal', function (e){
       $('form[id="form_register"]').trigger('reset');
+      $('select[name="categorie"]').val(null).trigger('change');
+      get_Calcular()
    });
 });

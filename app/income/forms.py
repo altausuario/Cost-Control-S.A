@@ -30,6 +30,7 @@ class IncomeForm(ModelForm):
             ),
             'amount': TextInput(
                 attrs={
+                    'value': 0.00,
                     'class': 'form-control',
                     'placeholder': '0,0',
                 },

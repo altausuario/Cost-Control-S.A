@@ -72,7 +72,7 @@ class IncomeCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Cre
                 i = Income()
                 i.id = kwargs.get('pk')
                 i.description = request.POST['description']
-                i.amount = request.POST['amount']
+                i.amount = self.get_conversor(request.POST['amount'])
                 i.iva = request.POST['iva']
                 i.totaliva = self.get_conversor(request.POST['totaliva'])
                 i.total = self.get_conversor(request.POST['total'])
@@ -173,7 +173,7 @@ class IncomeUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Upd
                     i = Income()
                     i.id = kwargs.get('pk')
                     i.description = request.POST['description']
-                    i.amount = request.POST['amount']
+                    i.amount = self.get_conversor(request.POST['amount'])
                     i.iva = request.POST['iva']
                     i.totaliva = self.get_conversor(request.POST['totaliva'])
                     i.total = self.get_conversor(request.POST['total'])

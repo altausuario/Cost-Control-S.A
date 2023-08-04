@@ -71,7 +71,7 @@ class ExpensesCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, C
             if action == 'add':
                 e = Expenses()
                 e.description = request.POST['description']
-                e.amount = request.POST['amount']
+                e.amount = self.get_conversor(request.POST['amount'])
                 e.iva = request.POST['iva']
                 e.totaliva = self.get_conversor(request.POST['totaliva'])
                 e.total = self.get_conversor(request.POST['total'])
@@ -176,7 +176,7 @@ class ExpensesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, U
                     e = Expenses()
                     e.id = kwargs.get('pk')
                     e.description = request.POST['description']
-                    e.amount = request.POST['amount']
+                    e.amount = self.get_conversor(request.POST['amount'])
                     e.iva = request.POST['iva']
                     e.totaliva = self.get_conversor(request.POST['totaliva'])
                     e.total = self.get_conversor(request.POST['total'])

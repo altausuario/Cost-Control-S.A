@@ -71,6 +71,7 @@ function alert_confirm(url, title, content, parameters, callback){
         theme: 'material',
         title: title,
         icon: 'fa fa-info',
+        autoClose: 'danger|10000',
         type: 'dark',
         bg: 'dark',
         content: content,
@@ -120,6 +121,7 @@ function alert_confirm_delete_user(url, title, content, parameters, callback){
         theme: 'material',
         title: title,
         icon: 'fa fa-info',
+        autoClose: 'danger|10000',
         content: content,
         columnClass: 'small',
         typeAnimated: true,
@@ -188,6 +190,7 @@ function alert_confirm_ResetPassword(url, title, content, parameters, callback){
         theme: 'material',
         title: title,
         icon: 'fa fa-info',
+        autoClose: 'danger|10000',
         content: content,
         columnClass: 'small',
         typeAnimated: true,
@@ -234,6 +237,7 @@ function alert_activate_user(url, title, content, parameters, callback){
         theme: 'material',
         title: title,
         icon: 'fa fa-info',
+        autoClose: 'danger|10000',
         content: content,
         columnClass: 'small',
         typeAnimated: true,
@@ -280,6 +284,7 @@ function alert_action(title, content, callback){
         theme: 'material',
         title: title,
         icon: 'fa fa-info',
+        autoClose: 'danger|10000',
         content: content,
         columnClass: 'small',
         typeAnimated: true,
@@ -303,6 +308,7 @@ function alert_action(title, content, callback){
         }
     })
 }
+
 
 
 

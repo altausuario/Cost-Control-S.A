@@ -161,6 +161,17 @@ class BudgetCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Cre
                     'user_id': expense.user_id,
                 })
                 data = json.loads(json_expenses)
+            elif action == 'search_categories':
+                data = []
+                categories = Categories.objects.filter(name__icontains=request.POST['term'])[0:10]
+                for cat in categories:
+                    item = cat.toJSON()
+                    item['text'] = cat.name
+                    data.append(item)
+            elif action == 'create_categories':
+                with transaction.atomic():
+                    frmCategories = CategoriesForm(request.POST)
+                    data = frmCategories.save()
             else:
                 data['error'] = 'No ha ingresado a ninguna opcion'
         except Exception as e:
@@ -176,6 +187,7 @@ class BudgetCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Cre
         context['detExpenses'] = []
         context['url_link'] = self.success_url
         context['register'] = IncomeForm
+        context['cat'] = CategoriesForm
         return context
 class BudgetUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, UpdateView):
     model = Budget
@@ -403,6 +415,22 @@ class BudgetDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, Del
         context['url_link'] = self.success_url
         return context
 class BudgetInvoicePdfView(LoginRequiredMixin, View):
+    def currency_format(self, value):
+        try:
+            value = float(value)
+            return "$ {:,.2f}".format(value).replace(",", ".")
+        except (ValueError, TypeError):
+            return value
+
+    def get_invoice_budget(self,pk):
+        data = []
+        budget = Budget.objects.filter(id=pk)
+        for b in budget:
+            item = b.toJSON()
+            item['total'] = self.currency_format(b.total)
+            data.append(item)
+        print(data)
+        return data
     def get_invoice_income(self, pk):
         data = []
         for b in Budget.objects.filter(id=pk):
@@ -410,6 +438,9 @@ class BudgetInvoicePdfView(LoginRequiredMixin, View):
                 for i in Income.objects.filter(id=ic.income_id).order_by('id'):
                     item = i.toJSON()
                     item['categorie'] = i.categorie
+                    item['amount'] = self.currency_format(i.amount)
+                    item['totaliva'] = self.currency_format(i.totaliva)
+                    item['total'] = self.currency_format(i.total)
                     data.append(item)
         return data
     def get_invoice_expenses(self, pk):
@@ -419,6 +450,9 @@ class BudgetInvoicePdfView(LoginRequiredMixin, View):
                 for e in Expenses.objects.filter(id=ec.expenses_id).order_by('id'):
                     item = e.toJSON()
                     item['categorie'] = e.categorie
+                    item['amount'] = self.currency_format(e.amount)
+                    item['totaliva'] = self.currency_format(e.totaliva)
+                    item['total'] = self.currency_format(e.total)
                     data.append(item)
         return data
     def get_invoice_total_amount_expenses(self, pk):
@@ -431,7 +465,7 @@ class BudgetInvoicePdfView(LoginRequiredMixin, View):
                     amount += e.amount
                     total_iva += e.totaliva
                     total += total
-        return amount
+        return self.currency_format(amount)
     def get_invoice_total_iva_expenses(self, pk):
         amount = 0
         total_iva = 0
@@ -442,7 +476,7 @@ class BudgetInvoicePdfView(LoginRequiredMixin, View):
                     amount += e.amount
                     total_iva += e.totaliva
                     total += total
-        return total_iva
+        return self.currency_format(total_iva)
     def get_invoice_total_expenses(self, pk):
         amount = 0
         total_iva = 0
@@ -453,7 +487,7 @@ class BudgetInvoicePdfView(LoginRequiredMixin, View):
                     amount += e.amount
                     total_iva += e.totaliva
                     total += e.total
-        return total
+        return self.currency_format(total)
     def get_invoice_total_amount_income(self, pk):
         data = []
         amount = 0
@@ -465,7 +499,7 @@ class BudgetInvoicePdfView(LoginRequiredMixin, View):
                     amount += i.amount
                     total_iva += i.totaliva
                     total += i.total
-        return amount
+        return self.currency_format(amount)
     def get_invoice_total_iva_income(self, pk):
         data = []
         amount = 0
@@ -477,7 +511,7 @@ class BudgetInvoicePdfView(LoginRequiredMixin, View):
                     amount += i.amount
                     total_iva += i.totaliva
                     total += i.total
-        return total_iva
+        return self.currency_format(total_iva)
     def get_invoice_total_income(self, pk):
         data = []
         total = 0
@@ -485,8 +519,7 @@ class BudgetInvoicePdfView(LoginRequiredMixin, View):
             for ic in IncomeConetion.objects.filter(budget_id=b.id):
                 for i in Income.objects.filter(id=ic.income_id).order_by('id'):
                     total += i.total
-        print(total)
-        return total
+        return self.currency_format(total)
     def link_callback(self, uri, rel):
         sUrl = settings.STATIC_URL
         sRoot = settings.STATIC_ROOT
@@ -507,12 +540,15 @@ class BudgetInvoicePdfView(LoginRequiredMixin, View):
         return path
     def get(self, request, *args, **kwargs):
         try:
-            budget = Budget.objects.get(pk=self.kwargs['pk'])
+            pk = self.kwargs['pk']
+            budget = Budget.objects.get(pk=pk)
             if budget.user_id == request.user.id:
                 template = get_template('budget/invoice.html')
                 id = self.kwargs['pk']
                 context = {
-                    'budget': Budget.objects.get(pk=self.kwargs['pk']),
+                    'budget_name':budget.name,
+                    'budget_date_creation':budget.date_creation,
+                    'budget_total': self.currency_format(budget.total),
                     'date_joined':datetime.now(),
                     'cli_names': request.user.first_name + ' ' + request.user.last_name,
                     'income': self.get_invoice_income(id),

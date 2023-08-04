@@ -2,7 +2,8 @@ function formatCurrency(number) {
     return parseFloat(number).toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
 }
 function get_Calcular() {
-    var amount = $('#id_amount').val()
+    var amount = $('#id_amount').maskMoney('unmasked')[0]
+    $('#id_amount').val(formatCurrency(amount))
     var iva = $('#id_iva').val()
     if (amount == 0 && iva == 0) {
         $('#id_totaliva').val(0.00)
@@ -24,13 +25,27 @@ function get_Calcular() {
         $('#id_totaliva').val(formatCurrency(totalIva))
         $('#id_total').val(formatCurrency(total))
     }
+    var total_iva = $('#id_totaliva').maskMoney('unmasked')[0]
+    var totals = $('#id_total').maskMoney('unmasked')[0]
+    if(total_iva == 0 && totals == 0){
+        $('#id_totaliva').val(formatCurrency(total_iva))
+        $('#id_total').val(formatCurrency(total_iva))
+    }
 }
 
 function formatNumberWithZero(number) {
         return number < 10 ? "0" + number : number;
         }
-$(function () {
+$(document).ready(function() {
     get_Calcular()
+
+    $('#id_amount').maskMoney({
+        prefix: '$ ',
+        thousands: '.',
+        decimal: ',',
+        precision: 2
+    });
+
     var originalValue = $("#date_joined").val();
     var ivaOriginal = $('#id_iva').val()
     if (ivaOriginal == ''){
@@ -70,7 +85,7 @@ $(function () {
         get_Calcular()
     })
 
-    $("input[name='amount']").on('input', function () {
+    $("input[name='amount']").on('keyup', function () {
         get_Calcular()
     })
     $("input[name='iva']").on('input', function () {

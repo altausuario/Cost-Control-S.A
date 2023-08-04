@@ -113,11 +113,11 @@ $(function(){
    getData();
    $('#data').on('click', '.blockUser' , function(){
         var pk = $(this).val()
-
         $.confirm({
         theme: 'material',
         title: 'Notificación',
         icon: 'fa fa-info',
+        autoClose: 'danger|8000',
         content: '¿Estas segura de bloquear al usuario?',
         columnClass: 'small',
         typeAnimated: true,
@@ -126,15 +126,15 @@ $(function(){
         dragWindowBorder: false,
         buttons: {
             info: {
-                text: "Si",
+                text: "Aceptar",
                 btnClass: 'btn-primary',
                 action: function () {
                     getBlockUser(pk)
                 }
             },
             danger: {
-                text: "No",
-                btnClass: 'btn-red',
+                text: "Cancelar",
+                btnClass: 'btn-red btn_cancel_alert',
                 action: function () {
 
                 }
