@@ -149,7 +149,7 @@ class ExpensesUpdateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, U
             but =Budget()
             but.id = b.id
             but.name = b.name
-            but.date_creation = b.date_creation
+            but.date_joined = b.date_joined
             but.total_income = total_in
             but.total_expenses = total_ex
             but.total = total
@@ -252,7 +252,7 @@ class ExpensesDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, D
             but =Budget()
             but.id = b.id
             but.name = b.name
-            but.date_creation = b.date_creation
+            but.date_joined = b.date_joined
             but.total_income = total_in
             but.total_expenses = total_ex
             but.total = total

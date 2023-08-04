@@ -7,7 +7,6 @@ from user.models import User
 # Create your models here.
 class Budget(models.Model):
     name = models.CharField(max_length=50, verbose_name='Name')
-    # date_creation = models.DateTimeField(auto_now_add=True)
     date_joined = models.DateField(auto_now_add=True)
     total_income = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Total categories')
     total_expenses = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Total discharge')
