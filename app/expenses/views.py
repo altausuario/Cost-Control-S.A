@@ -97,7 +97,7 @@ class ExpensesCreateView(LoginRequiredMixin, ValidatePermissionRequiredMinxin, C
                 data['error'] = 'No ha ingresado a ninguna opcion'
         except Exception as e:
             data['error'] = str(e)
-        return JsonResponse(data)
+        return JsonResponse(data, safe=False)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Nuevo gasto'

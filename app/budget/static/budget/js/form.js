@@ -28,6 +28,7 @@ var vents = {
         this.items.total_income =  this.items.total_income.toFixed(2)
         this.items.total_expenses = this.items.total_expenses.toFixed(2)
         this.items.total = this.items.total.toFixed(2)
+        alert(this.items.total_income)
         $('input[name="total_income"]').val(formatCurrency(this.items.total_income));
         $('input[name="total_expenses"]').val(formatCurrency(this.items.total_expenses));
         $('input[name="total"]').val(formatCurrency(this.items.total));

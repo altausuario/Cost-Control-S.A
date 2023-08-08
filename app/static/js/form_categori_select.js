@@ -28,7 +28,10 @@ $(function () {
         $('#myModelAddCategories').modal('show')
     })
     $('#myModelAddCategories').on('hidden.bs.modal', function (e) {
-         $('body').addClass('modal-open');
+//         $('body').addClass('modal-open');
+          if ($('.modal.show').length > 0) {
+             $('body').addClass('modal-open');
+          }
          $('#frmAddCategories').trigger('reset')
     })
     $('#frmAddCategories').on('submit', function (e) {
